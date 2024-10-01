@@ -19,55 +19,48 @@ export const allNav = [
         title : 'Orders',
         icon: <MdOutlineShoppingBag/>,
         role: 'admin',
-        path: '/admin/orders'
+        path: '/admin/dashboard/orders'
     },
     {
         id: 3,
         title : 'Category',
         icon: <MdOutlineDashboard/>,
         role: 'admin',
-        path: '/admin/category'
+        path: '/admin/dashboard/category'
     },
     {
         id: 4,
-        title : 'Seller',
+        title : 'Sellers',
         icon: <GrUserManager/>,
         role: 'admin',
-        path: '/admin/seller'
+        path: '/admin/dashboard/sellers'
     },
     {
         id: 5,
         title : 'Payment request',
         icon: <FaMoneyBillTransfer/>,
         role: 'admin',
-        path: '/admin/payment_request'
+        path: '/admin/dashboard/payment_request'
     },
     {
         id: 6,
-        title : 'Deactive Seller',
+        title : 'Inactive Seller',
         icon: <LuUserX/>,
         role: 'admin',
-        path: '/admin/deactive_seller'
+        path: '/admin/dashboard/inactive_seller'
     },
     {
         id: 7,
         title : 'Seller Request',
         icon: <BiLoaderCircle />,
         role: 'admin',
-        path: '/admin/seller_request'
+        path: '/admin/dashboard/seller_request'
     },
     {
         id: 8,
         title : 'Chat Seller',
         icon: <BsFillChatLeftTextFill/>,
         role: 'admin',
-        path: '/admin/chat_seller'
-    },
-    {
-        id: 9,
-        title : 'Log out',
-        icon: <MdOutlineLogout/>,
-        role: 'admin',
-        path: '/admin/logout'
+        path: '/admin/dashboard/chat_seller'
     },
 ]
