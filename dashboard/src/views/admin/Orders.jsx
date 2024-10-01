@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { BsArrowBarDown } from "react-icons/bs";
 import { Link } from 'react-router-dom';
+import Pagination from '../Pagination';
 const Orders = () => {
     const [currentPage,setCurrentPage] = useState(1)
     const [searchValue,setSearchvalue] = useState('')
@@ -121,9 +122,109 @@ const Orders = () => {
                             </div>
                         </div>
                     </div>
+                    <div className='text-[#d0d2d6]'>
+                        <div className='flex justify-between items-start border-b border-slate-700'>
+                            <div className='py-4 w-[25%] font-medium whitespace-nowrap '>33434343434</div>
+                            <div className='py-4 w-[13%]'>$500</div>
+                            <div className='py-4 w-[18%]'>Pending</div>
+                            <div className='py-4 w-[18%]'>Pending</div>
+                            <div className='py-4 w-[18%]'>
+                                <Link>View</Link>
+                            </div>
+                            <div onClick={(e)=>setShow(!show)} className='py-4 cursor-pointer w-[8%]'>
+                                <BsArrowBarDown />
+                            </div>
+                        </div>
+                        <div className={show ? 'block border-b border-slate-700 bg-slate-800' : 'hidden'}>
+                            <div className='flex justify-start items-start border-b border-slate-700'>
+                                <div className='py-4 w-[25%] font-medium whitespace-nowrap px-2'>33434343434</div>
+                                <div className='py-4 w-[13%]'>$500</div>
+                                <div className='py-4 w-[18%]'>Pending</div>
+                                <div className='py-4 w-[18%]'>Pending</div>   
+                            </div>
+                        </div>
+                        <div className={show ? 'block border-b border-slate-700 bg-slate-800' : 'hidden'}>
+                            <div className='flex justify-start items-start border-b border-slate-700'>
+                                <div className='py-4 w-[25%] font-medium whitespace-nowrap px-2'>33434343434</div>
+                                <div className='py-4 w-[13%]'>$500</div>
+                                <div className='py-4 w-[18%]'>Pending</div>
+                                <div className='py-4 w-[18%]'>Pending</div>   
+                            </div>
+                        </div>
+                    </div>
+                    <div className='text-[#d0d2d6]'>
+                        <div className='flex justify-between items-start border-b border-slate-700'>
+                            <div className='py-4 w-[25%] font-medium whitespace-nowrap '>33434343434</div>
+                            <div className='py-4 w-[13%]'>$500</div>
+                            <div className='py-4 w-[18%]'>Pending</div>
+                            <div className='py-4 w-[18%]'>Pending</div>
+                            <div className='py-4 w-[18%]'>
+                                <Link>View</Link>
+                            </div>
+                            <div onClick={(e)=>setShow(!show)} className='py-4 cursor-pointer w-[8%]'>
+                                <BsArrowBarDown />
+                            </div>
+                        </div>
+                        <div className={show ? 'block border-b border-slate-700 bg-slate-800' : 'hidden'}>
+                            <div className='flex justify-start items-start border-b border-slate-700'>
+                                <div className='py-4 w-[25%] font-medium whitespace-nowrap px-2'>33434343434</div>
+                                <div className='py-4 w-[13%]'>$500</div>
+                                <div className='py-4 w-[18%]'>Pending</div>
+                                <div className='py-4 w-[18%]'>Pending</div>   
+                            </div>
+                        </div>
+                        <div className={show ? 'block border-b border-slate-700 bg-slate-800' : 'hidden'}>
+                            <div className='flex justify-start items-start border-b border-slate-700'>
+                                <div className='py-4 w-[25%] font-medium whitespace-nowrap px-2'>33434343434</div>
+                                <div className='py-4 w-[13%]'>$500</div>
+                                <div className='py-4 w-[18%]'>Pending</div>
+                                <div className='py-4 w-[18%]'>Pending</div>   
+                            </div>
+                        </div>
+                    </div>
+                    <div className='text-[#d0d2d6]'>
+                        <div className='flex justify-between items-start border-b border-slate-700'>
+                            <div className='py-4 w-[25%] font-medium whitespace-nowrap '>33434343434</div>
+                            <div className='py-4 w-[13%]'>$500</div>
+                            <div className='py-4 w-[18%]'>Pending</div>
+                            <div className='py-4 w-[18%]'>Pending</div>
+                            <div className='py-4 w-[18%]'>
+                                <Link>View</Link>
+                            </div>
+                            <div onClick={(e)=>setShow(!show)} className='py-4 cursor-pointer w-[8%]'>
+                                <BsArrowBarDown />
+                            </div>
+                        </div>
+                        <div className={show ? 'block border-b border-slate-700 bg-slate-800' : 'hidden'}>
+                            <div className='flex justify-start items-start border-b border-slate-700'>
+                                <div className='py-4 w-[25%] font-medium whitespace-nowrap px-2'>33434343434</div>
+                                <div className='py-4 w-[13%]'>$500</div>
+                                <div className='py-4 w-[18%]'>Pending</div>
+                                <div className='py-4 w-[18%]'>Pending</div>   
+                            </div>
+                        </div>
+                        <div className={show ? 'block border-b border-slate-700 bg-slate-800' : 'hidden'}>
+                            <div className='flex justify-start items-start border-b border-slate-700'>
+                                <div className='py-4 w-[25%] font-medium whitespace-nowrap px-2'>33434343434</div>
+                                <div className='py-4 w-[13%]'>$500</div>
+                                <div className='py-4 w-[18%]'>Pending</div>
+                                <div className='py-4 w-[18%]'>Pending</div>   
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
+            <div className='w-full flex justify-end mt-4 bottom-4 right-4'>
+                <Pagination 
+                    pageNumber = {currentPage}
+                    setPageNumber = {setCurrentPage}
+                    totalItem = {50}
+                    parPage = {parPage}
+                    showItem = {3}
+                />
+            </div>
+            
         </div>
     </div>
   )

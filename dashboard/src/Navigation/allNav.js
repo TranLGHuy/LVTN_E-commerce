@@ -47,14 +47,14 @@ export const allNav = [
         title : 'Inactive Seller',
         icon: <LuUserX/>,
         role: 'admin',
-        path: '/admin/dashboard/inactive_seller'
+        path: '/admin/dashboard/inactive_sellers'
     },
     {
         id: 7,
         title : 'Seller Request',
         icon: <BiLoaderCircle />,
         role: 'admin',
-        path: '/admin/dashboard/seller_request'
+        path: '/admin/dashboard/sellers_request'
     },
     {
         id: 8,
