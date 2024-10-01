@@ -3,9 +3,11 @@ import { BsCurrencyDollar ,BsCart3} from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
 import { FaProductHunt } from "react-icons/fa6";
 import Chart from "react-apexcharts";
+import { Link } from "react-router-dom";
 const AdminDashboard = () => {
 
-  const state ={
+  const state = {
+    
     series : [
       {
         name: "Orders",
@@ -114,14 +116,99 @@ const AdminDashboard = () => {
           </div>
           <div className='w-full lg:w-5/12 lg: pl-4 mt-6 lg:mt-0'>
             <div className='w-full bg-[#283046] p-4 rounded-md text-[#d0d2d6]'>
-              <div className='flex justify-center items-center'>
-                  <h2 className='font-semibold'>Recent seller message</h2>
+              <div className='flex justify-between items-center'>
+                  <h2 className='font-semibold text-lg text-[#d0d2d6] pd-3'>Recent seller message</h2>
+                  <Link className='font-semibold text-sm text-[#d0d2d6]'>View All</Link>
+              </div>
+              <div className='flex flex-col gap-2 pt-6 text-[#d0d2d6]'>
+                <ol className='relative border-1 border-slate-600 ml-4'>
+                    <li className='mb-3 ml-6'>
+                      <div className='flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#001d1e848] rounded-full z-10'>
+                        <img className='w-full rounded-full h-full shadow-lg' src="http://localhost:3000/images/admin.jpg" alt="" />
+                      </div>
+                      <div className='p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm'>
+                        <div className='flex justify-between items-center mb-2'>
+                          <Link className='text-md font-normal'>Admin</Link>
+                          <time className='mb-1 text-sm font-normal sm:order-last sm:mb-0'>3 day ago</time>
+                        </div>
+                        <div className='p-2 text-xs font-normal bg-slate-700 border border-slate-800'>
+                          Hello how are u
+                        </div>
+                      </div>
+                    </li>
+                    <li className='mb-3 ml-6'>
+                      <div className='flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#001d1e848] rounded-full z-10'>
+                        <img className='w-full rounded-full h-full shadow-lg' src="http://localhost:3000/images/admin.jpg" alt="" />
+                      </div>
+                      <div className='p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm'>
+                        <div className='flex justify-between items-center mb-2'>
+                          <Link className='text-md font-normal'>Admin</Link>
+                          <time className='mb-1 text-sm font-normal sm:order-last sm:mb-0'>3 day ago</time>
+                        </div>
+                        <div className='p-2 text-xs font-normal bg-slate-700 border border-slate-800'>
+                          Hello how are u
+                        </div>
+                      </div>
+                    </li>
+                    <li className='mb-3 ml-6'>
+                      <div className='flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#001d1e848] rounded-full z-10'>
+                        <img className='w-full rounded-full h-full shadow-lg' src="http://localhost:3000/images/admin.jpg" alt="" />
+                      </div>
+                      <div className='p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm'>
+                        <div className='flex justify-between items-center mb-2'>
+                          <Link className='text-md font-normal'>Admin</Link>
+                          <time className='mb-1 text-sm font-normal sm:order-last sm:mb-0'>3 day ago</time>
+                        </div>
+                        <div className='p-2 text-xs font-normal bg-slate-700 border border-slate-800'>
+                          Hello how are u
+                        </div>
+                      </div>
+                    </li>
+                </ol>
+
               </div>
             </div>
+          </div>
+        </div>
+        <div className='w-full p-4 bg-[#283046] rounded-md mt-6'>
+          <div className='flex justify-between items-center'>
+            <h2 className='font-semibold text-lg text-[#d0d2d6] pd-3'>Recent Orders</h2>
+            <Link className='font-semibold text-sm text-[#d0d2d6]'>View All</Link>
+          </div>
+          <div className='relative overflow-x-auto'>
+            <table className='w-full text-sm text-left text-[#d0d2d6]'>
+                <thead className='text-sm  text-[#d0d2d6] uppercase border-b border-slate-700'>
+                  <tr>
+                    <th scope='col' className='py-3 px-4'>Order ID</th>
+                    <th scope='col' className='py-3 px-4'>Price</th>
+                    <th scope='col' className='py-3 px-4'>Payment Status</th>
+                    <th scope='col' className='py-3 px-4'>Order Status</th>
+                    <th scope='col' className='py-3 px-4'>Active</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    [1,2,3,4,5].map((d,i) => <tr key={i}>
+                    <td scope='row' className='py-3 px-4 font-medium whitespace-nowrap'>#1456fgh3313</td>
+                    <td scope='row' className='py-3 px-4 font-medium whitespace-nowrap'>$300</td>
+                    <td scope='row' className='py-3 px-4 font-medium whitespace-nowrap'>
+                      <span>Pending</span>
+                    </td>
+                    <td scope='row' className='py-3 px-4 font-medium whitespace-nowrap'>
+                      <span>Pending</span>
+                    </td>
+                    <td scope='row' className='py-3 px-4 font-medium whitespace-nowrap'>
+                    <Link>View</Link>
+                    </td>
+                  </tr>)
+                  }
+                  
+                </tbody>
+            </table>
           </div>
         </div>
     </div>
   )
 }
 
-export default AdminDashboard
+export default AdminDashboard;
