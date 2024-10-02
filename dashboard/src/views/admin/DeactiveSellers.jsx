@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import Pagination from '../Pagination';
+import Pagination from '../seller/Pagination';
 import { Link } from "react-router-dom";
 import { GrView } from "react-icons/gr";
 const DeactiveSellers = () => {

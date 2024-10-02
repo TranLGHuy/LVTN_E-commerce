@@ -4,7 +4,7 @@ import { FaEdit } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaImages } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
-import Pagination from '../Pagination';
+import Pagination from '../seller/Pagination';
 const Category = () => {
     const [currentPage,setCurrentPage] = useState(1)
     const [searchValue,setSearchvalue] = useState('')

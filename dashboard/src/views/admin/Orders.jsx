@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { BsArrowBarDown } from "react-icons/bs";
 import { Link } from 'react-router-dom';
-import Pagination from '../Pagination';
+import Pagination from '../seller/Pagination';
 const Orders = () => {
     const [currentPage,setCurrentPage] = useState(1)
     const [searchValue,setSearchvalue] = useState('')
