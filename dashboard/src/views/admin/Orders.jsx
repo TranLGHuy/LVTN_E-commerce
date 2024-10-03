@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { BsArrowBarDown } from "react-icons/bs";
 import { Link } from 'react-router-dom';
-import Pagination from '../seller/Pagination';
+import Pagination from '../Pagination';
 const Orders = () => {
     const [currentPage,setCurrentPage] = useState(1)
-    const [searchValue,setSearchvalue] = useState('')
+    const [searchValue,setSearchValue] = useState('')
     const[parPage,setParPage] = useState(5)
     const [show,setShow] = useState(false)
   return (
@@ -39,7 +39,7 @@ const Orders = () => {
                             <div className='py-4 w-[18%]'>Pending</div>
                             <div className='py-4 w-[18%]'>Pending</div>
                             <div className='py-4 w-[18%]'>
-                                <Link>View</Link>
+                                <Link to="/admin/dashboard/order/details/1">View</Link>
                             </div>
                             <div onClick={(e)=>setShow(!show)} className='py-4 cursor-pointer w-[8%]'>
                                 <BsArrowBarDown />

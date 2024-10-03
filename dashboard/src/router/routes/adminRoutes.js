@@ -9,7 +9,7 @@ const Category = lazy(() => import("../../views/admin/Category"))
 const Sellers = lazy(() => import("../../views/admin/Sellers"))
 const PaymentRequest = lazy(() => import("../../views/admin/PaymentRequest"))
 const ChatSeller = lazy(() => import("../../views/admin/ChatSeller"))
-// const OrderDetails = lazy(() => import("../../views/admin/OrderDetails"))
+const OrderDetails = lazy(() => import("../../views/admin/OrderDetails"))
 export const adminRoutes = [
     {
         path: '/admin/dashboard',
@@ -32,17 +32,17 @@ export const adminRoutes = [
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/payment_request',
+        path: 'admin/dashboard/payment-request',
         element: <PaymentRequest />,
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/deactive_sellers',
+        path: 'admin/dashboard/deactive-sellers',
         element: <DeactiveSellers />,
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/sellers_request',
+        path: 'admin/dashboard/sellers-request',
         element: <SellersRequest />,
         role: 'admin'
     },
@@ -52,7 +52,7 @@ export const adminRoutes = [
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/chat_seller',
+        path: 'admin/dashboard/chat-seller',
         element: <ChatSeller />,
         role: 'admin'
     },
@@ -61,9 +61,9 @@ export const adminRoutes = [
     //     element: <ChatSeller />,
     //     role: 'admin'
     // },
-    // {
-    //     path: 'admin/dashboard/order/details/:orderId',
-    //     element: <OrderDetails />,
-    //     role: 'admin'
-    // }
+    {
+        path: 'admin/dashboard/order/details/:orderId',
+        element: <OrderDetails />,
+        role: 'admin'
+    }
 ]

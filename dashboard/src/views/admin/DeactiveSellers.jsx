@@ -1,10 +1,10 @@
 import React,{useState} from 'react'
-import Pagination from '../seller/Pagination';
+import Pagination from '../Pagination';
 import { Link } from "react-router-dom";
 import { GrView } from "react-icons/gr";
 const DeactiveSellers = () => {
     const [currentPage,setCurrentPage] = useState(1)
-    const [searchValue,setSearchvalue] = useState('')
+    const [searchValue,setSearchValue] = useState('')
     const[parPage,setParPage] = useState(5)
     const [show,setShow] = useState(false)
   return (
