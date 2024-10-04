@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-
+import { useDispatch,useSelector } from "react-redux";
+import {PropagateLoader} from 'react-spinners'
+import { overrideStyle } from '../../utils/utils'
+import { messageClear, seller_register } from '../../store/Reducers/authReducer'
 function Register() {
+    const dispatch = useDispatch()
+    const { loader, errorMessage, successMessage } = useSelector(state => state.auth)
+
     const [state,setState] = useState({
         name : '',
         email: "",
         password: '',
-        re_password: '',
     })
     const inputHandle = (e) => {
       setState({
@@ -16,10 +21,9 @@ function Register() {
       })
     }
     const submit = (e) => {
-      e.preventDefault()
-      console.log(state)
+      e.preventDefault();
+      dispatch(seller_register(state))
     }
-    
   return (
     <div className='min-w-screen min-h-screen bg-[#36336a] flex justify-center items-center'>
       <div className='w-[350px] text-[#f0f9ff] p-2'>
@@ -39,15 +43,14 @@ function Register() {
                     <label htmlFor='password'>Password</label>
                     <input className='px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md text-[#d0d2d6] focus:border-indigo-500 overflow-hidden 'type='text' name='password' placeholder='Please enter your password' id='password' required />
                 </div>
-                <div onChange={inputHandle}  value={state.re} className='flex flex-col w-full gap-1 mb-3'>
-                    <label htmlFor='re_password'>Re-Password</label>
-                    <input className='px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md text-[#d0d2d6] focus:border-indigo-500 overflow-hidden 'type='text' name='re_password' placeholder='Please re-enter your password' id='re_password' required />
-                </div>
                 <div className='flex items-center w-full gap-1 mb-3'>
                     <input className='w-5 h-5 text-blue-600 overflow-hidden bg-gray-100 rounded border-gray-300 focus:ring-blue-500 'type='checkbox' name='checkbox'id='checkbox' required />
                     <label htmlFor='checkbox'> I agree to privacy policy && terms</label>
                 </div>
-                <button className='bg-blue-500 w-full hover:shadow-blue-500/50 hover:shadow-lg text-white  rounded-md px7 py-2 mb-3'>Sign Up</button>
+                <button disabled = { loader ? true : false } className='bg-blue-500 w-full hover:shadow-blue-500/50 hover:shadow-lg text-white  rounded-md px7 py-2 mb-3'>
+                  {
+                    loader ? <PropagateLoader color='#fff' cssOverride={overrideStyle} /> : 'Sign Up'
+                  }</button>
                 <div className='flex items-center mb-3 gap-3 justify-center'>
                     <p>Already have account? <Link to='/login'>Signin here</Link></p>
                 </div>

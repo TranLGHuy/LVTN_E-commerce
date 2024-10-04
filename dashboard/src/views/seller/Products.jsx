@@ -3,7 +3,6 @@ import Search from '../components/Search'
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { GrClose } from "react-icons/gr";
 import Pagination from '../Pagination';
 import { GrView } from "react-icons/gr";
 
@@ -57,7 +56,7 @@ const AllProduct = () => {
                           </td>
                           <td scope='row' className='py-1 px-4 font-medium whitespace-nowrap'>
                               <div className='flex justify-start items-center gap-4'>
-                                  <Link className='p-[6px] bg-blue-500 rounded hover:shadow-lg hover:shadow-blue-500/50'><FaEdit/></Link>
+                                  <Link to={'/seller/dashboard/edit-product/:productId'} className='p-[6px] bg-blue-500 rounded hover:shadow-lg hover:shadow-blue-500/50'><FaEdit/></Link>
                                   <Link className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'><GrView/></Link>
                                   <button className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaRegTrashCan/></button>
                               </div>
