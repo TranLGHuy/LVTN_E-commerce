@@ -41,7 +41,7 @@ function AdminLogin() {
       }
     },[errorMessage,successMessage])
     return (
-      <div className='min-w-screen min-h-screen bg-[#36336a] flex justify-center items-center'>
+      <div className='min-w-screen min-h-screen bg-[#f8d7da] flex justify-center items-center'>
         <div className='w-[350px] text-[#f0f9ff] p-2'>
           <div className='bg-[#51596b] p-4 rounded-md '>
               <div className='h-[70px] flex justify-center items-center'>

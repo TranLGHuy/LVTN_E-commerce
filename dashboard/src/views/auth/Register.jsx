@@ -8,6 +8,7 @@ import { messageClear, seller_register } from '../../store/Reducers/authReducer'
 import toast from 'react-hot-toast'
 
 function Register() {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { loader, errorMessage, successMessage } = useSelector(state => state.auth)
 
@@ -30,7 +31,7 @@ function Register() {
       if (successMessage) {
           toast.success(successMessage)
           dispatch(messageClear())
-          // navigate('/')
+          navigate('/')
       }
       if (errorMessage) {
           toast.error(errorMessage)
@@ -38,7 +39,7 @@ function Register() {
       }
   }, [successMessage, errorMessage])
   return (
-    <div className='min-w-screen min-h-screen bg-[#36336a] flex justify-center items-center'>
+    <div className='min-w-screen min-h-screen bg-[#f8d7da] flex justify-center items-center'>
       <div className='w-[350px] text-[#f0f9ff] p-2'>
         <div className='bg-[#51596b] p-4 rounded-md '>
             <h2 className='text-xl mb-3 font-bold'>Welcome to e-commerce</h2>

@@ -1,15 +1,43 @@
-import React ,{useState}from 'react'
-import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaImages } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
-import Pagination from '../Pagination';
+import React, { useEffect, useState } from 'react'
+import { PropagateLoader } from 'react-spinners'
+import { overrideStyle } from '../../utils/utils'
+import { Link } from 'react-router-dom'
+import Pagination from '../Pagination'
+import toast from 'react-hot-toast'
+import { useSelector, useDispatch } from 'react-redux'
+import Search from '../components/Search'
+import { categoryAdd, messageClear, get_category } from '../../store/Reducers/categoryReducer'
 const Category = () => {
-    const [currentPage,setCurrentPage] = useState(1)
-    const [searchValue,setSearchValue] = useState('')
-    const[parPage,setParPage] = useState(5)
-    const [show,setShow] = useState(false)
+    const dispatch = useDispatch()
+    const { loader, successMessage, errorMessage, categories } = useSelector(state => state.category)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [searchValue, setSearchValue] = useState('')
+    const [parPage, setParPage] = useState(5)
+    const [show, setShow] = useState(false)
+    const [imageShow, setImage] = useState('')
+    const [state, setState] = useState({
+        name: '',
+        image: ''
+    })
+    const imageHandle = (e) => {
+        let files = e.target.files
+        if (files.length > 0) {
+            setImage(URL.createObjectURL(files[0]))
+            setState({
+                ...state,
+                image: files[0],
+            })
+        }
+    }
+    const add_category = (e) => {
+        e.preventDefault()
+        // dispatch(categoryAdd(state))
+        console.log(state)
+    }
     return (
         <div className='px-2 lg:px-7 pt-5'>
             <div className='flex lg:hidden justify-between items-center mb-5 p-4 bg-[#283046] rounded-md '>
@@ -76,20 +104,29 @@ const Category = () => {
                             <h1 className='text-[#d0d2d6] font-semibold text-xl w-full text-center'>Add Category</h1>
                             <div onClick={()=>setShow(false)} className='block lg:hidden cursor-pointer '><GrClose className='text-[#d0d2d6]' /></div>
                         </div>
-                        <form>
+                        <form onSubmit={add_category}>
                             <div className='flex flex-col w-full gap-1 mb-3'>
                                 <label  htmlFor='name'>Category Name</label>
-                                <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-500 rounded-md text-[#d0d2d6]' type="text" id='name' name='category_name' placeholder='category name' />
+                                <input value={state.name} onChange={(e) => setState({ ...state, name: e.target.value })} className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-500 rounded-md text-[#d0d2d6]' type="text" id='name' name='category_name' placeholder='category name' required/>
                             </div>
                             <div>
                                 <label className='flex justify-center items-center flex-col h-[235px] cursor-pointer border border-dashed hover:border-indigo-500 w-full border-[#d0d2d6]' htmlFor="image">
-                                    <span><FaImages/></span>
-                                    <span>Select Image</span>
+                                    {
+                                        imageShow ? <img className='w-full h-full' src={imageShow} /> : <>
+                                            <span><FaImages/></span>
+                                            <span>Select Image</span>
+                                        </>
+                                    }
+                                    
                                 </label>
-                            </div>
-                            <input className='hidden' type='file' name='image' id='image' />
-                            <div>
-                                <button className='bg-blue-500 w-full hover:shadow-blue-500/50 hover:shadow-lg hover: text-white rounded-md px-7 py-2 my-2'>Add Category</button>
+                            </div >
+                            <input onChange={imageHandle}  className='hidden' type='file' name='image' id='image' required />
+                            <div className='mt-4'>
+                                <button disabled={loader ? true : false} className='bg-blue-500 w-full hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3'>
+                                    {
+                                        loader ? <PropagateLoader color='#fff' cssOverride={overrideStyle} /> : 'Add Category'
+                                    }
+                                </button>
                             </div>
                         </form>
                     </div>   
