@@ -19,6 +19,7 @@ export const seller_register = createAsyncThunk(
         try {
             console.log(info)
             const { data } = await api.post('/seller-register', info, { withCredentials: true })
+            
             localStorage.setItem('accessToken', data.token)
             return fulfillWithValue(data)
         } catch (error) {
@@ -31,6 +32,7 @@ export const seller_login = createAsyncThunk(
     async (info, { rejectWithValue, fulfillWithValue }) => {
         try {
             const { data } = await api.post('/seller-login', info, { withCredentials: true })
+            console.log(data)
             localStorage.setItem('accessToken', data.token)
             return fulfillWithValue(data)
         } catch (error) {
@@ -75,6 +77,20 @@ export const authReducer =  createSlice({
             state.loader = false
             state.successMessage = payload.message
         });
+        builder.addCase(seller_login.pending, (state, _) => {
+            state.loader = true;
+        });
+        builder.addCase(seller_login.rejected, (state, { payload }) => {
+            state.loader = false;
+            state.errorMessage = payload?.error || 'Login failed'; // Kiểm tra payload error
+        });
+        builder.addCase(seller_login.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.successMessage = payload.message;
+            state.token = payload.token;
+            // state.role = returnRole(payload.token); // Giải mã role từ token nếu có
+        });
+        
     }
       
       

@@ -9,6 +9,10 @@ const sellerSchema = new Schema({
         type: String,
         required: true
     },
+    phoneNumber: {
+        type: String,
+        required: false
+    },
     password: {
         type: String,
         required: true,

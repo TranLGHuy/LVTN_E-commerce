@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { Link } from "react-router-dom";
+import React, { useState ,useEffect} from 'react'
+import { Link ,useNavigate} from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useDispatch,useSelector } from "react-redux";
 import {PropagateLoader} from 'react-spinners'
 import { overrideStyle } from '../../utils/utils'
 import { messageClear, seller_register } from '../../store/Reducers/authReducer'
+import toast from 'react-hot-toast'
+
 function Register() {
     const dispatch = useDispatch()
     const { loader, errorMessage, successMessage } = useSelector(state => state.auth)
@@ -24,6 +26,17 @@ function Register() {
       e.preventDefault();
       dispatch(seller_register(state))
     }
+    useEffect(() => {
+      if (successMessage) {
+          toast.success(successMessage)
+          dispatch(messageClear())
+          // navigate('/')
+      }
+      if (errorMessage) {
+          toast.error(errorMessage)
+          dispatch(messageClear())
+      }
+  }, [successMessage, errorMessage])
   return (
     <div className='min-w-screen min-h-screen bg-[#36336a] flex justify-center items-center'>
       <div className='w-[350px] text-[#f0f9ff] p-2'>

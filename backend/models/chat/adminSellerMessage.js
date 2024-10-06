@@ -9,7 +9,7 @@ const adminSellerMessageSchema = new Schema({
         type: String,
         default: ''
     },
-    receverId: {
+    receiverId: {
         type: String,
         default: ''
     },

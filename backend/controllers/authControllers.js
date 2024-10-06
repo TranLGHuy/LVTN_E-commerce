@@ -5,6 +5,7 @@ const bcrypt = require ('bcrypt')
 const jwt = require('jsonwebtoken')
 const { responseReturn} = require('../utiles/response')
 const { createToken } = require('../utiles/tokenCreate')
+const sellerCustomerModel = require('../models/chat/sellerCustomerModel')
 class authControllers {
     admin_login = async (req,res) => {
         const { email, password } = req.body
@@ -32,18 +33,43 @@ class authControllers {
         }
     
     }
+    seller_login = async (req, res) => {
+        const { email, password } = req.body
+        try {
+            const seller = await sellerModel.findOne({ email }).select('+password')
+            if (seller) {
+                const match = await bcrypt.compare(password, seller.password)
+                if (match) {
+                    const token = await createToken({
+                        id: seller.id,
+                        role: seller.role
+                    })
+                    res.cookie('accessToken', token, {
+                        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                    })
+                    responseReturn(res, 200, { token, message: 'Login success' })
+                } else {
+                    responseReturn(res, 404, { error: "Password wrong" })
+                }
+            } else {
+                responseReturn(res, 404, { error: "Email not found" })
+            }
+        } catch (error) {
+            responseReturn(res, 500, { error: error.message })
+        }
+    }
     seller_register = async (req, res) => {
         
         const { email, name, password } = req.body
         try {
             const getUser = await sellerModel.findOne({ email })
             if (getUser) {
-                responseReturn(res, 404, { error: 'Email alrady exit' })
+                responseReturn(res, 404, { error: 'Email already exist' })
             } else {
                 const seller = await sellerModel.create({
                     name,
                     email,
-                    password: await bcrpty.hash(password, 10),
+                    password: await bcrypt.hash(password, 10),
                     method: 'manually',
                     shopInfo: {}
                 })
