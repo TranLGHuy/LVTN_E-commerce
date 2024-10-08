@@ -22,37 +22,37 @@ export const adminRoutes = [
         role:'admin'
     },
     {
-        path: 'admin/dashboard/category',
+        path: '/admin/dashboard/category',
         element: <Category />,
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/sellers',
+        path: '/admin/dashboard/sellers',
         element: <Sellers />,
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/payment-request',
+        path: '/admin/dashboard/payment-request',
         element: <PaymentRequest />,
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/deactive-sellers',
+        path: '/admin/dashboard/deactive-sellers',
         element: <DeactiveSellers />,
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/sellers-request',
+        path: '/admin/dashboard/sellers-request',
         element: <SellersRequest />,
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/sellers/details/:sellerId',
+        path: '/admin/dashboard/sellers/details/:sellerId',
         element: <SellerDetails />,
         role: 'admin'
     },
     {
-        path: 'admin/dashboard/chat-seller',
+        path: '/admin/dashboard/chat-seller',
         element: <ChatSeller />,
         role: 'admin'
     },
@@ -62,7 +62,7 @@ export const adminRoutes = [
     //     role: 'admin'
     // },
     {
-        path: 'admin/dashboard/order/details/:orderId',
+        path: '/admin/dashboard/order/details/:orderId',
         element: <OrderDetails />,
         role: 'admin'
     }

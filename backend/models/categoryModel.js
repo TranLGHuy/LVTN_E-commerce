@@ -19,4 +19,4 @@ categorySchema.index({
     name: 'text'
 })
 
-module.exports = model('categorys', categorySchema)
+module.exports = model('categories', categorySchema)
