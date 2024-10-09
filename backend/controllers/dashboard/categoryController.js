@@ -12,9 +12,6 @@ class categoryController {
                 return responseReturn(res, 400, { error: 'Error parsing the form' });
             }
     
-            console.log('Fields:', fields); // In ra toàn bộ fields
-            console.log('Files:', files);
-    
             // Truy cập giá trị đầu tiên trong mảng
             let name = String(fields.name[0]).trim(); // Lấy giá trị đầu tiên trong mảng name
             let image = files.image[0]; // Lấy giá trị đầu tiên trong mảng image
@@ -52,36 +49,38 @@ class categoryController {
             }
         });
     }
+
     get_category = async (req, res) => {
-        const { page, searchValue, parPage } = req.query
+        const { page, searchValue, parPage } = req.query;
         try {
-            let skipPage = ''
+            // Xác định số trang cần bỏ qua
+            let skipPage = '';
             if (parPage && page) {
-                skipPage = parseInt(parPage) * (parseInt(page) - 1)
+                skipPage = parseInt(parPage) * (parseInt(page) - 1);
             }
-            if (searchValue && page && parPage) {
-                const categories = await categoryModel.find({
-                    $text: { $search: searchValue }
-                }).skip(skipPage).limit(parPage).sort({ createdAt: -1 })
-                const totalCategory = await categoryModel.find({
-                    $text: { $search: searchValue }
-                }).countDocuments()
-                responseReturn(res, 200, { totalCategory, categories })
+    
+            // Tạo query để tìm kiếm
+            let query = {};
+            if (searchValue) {
+                // Sử dụng `regex` để tìm kiếm từ khoá xuất hiện ở bất kỳ vị trí nào
+                query = { name: { $regex: searchValue, $options: 'i' } };
             }
-            else if (searchValue === '' && page && parPage) {
-                const categories = await categoryModel.find({}).skip(skipPage).limit(parPage).sort({ createdAt: -1 })
-                const totalCategory = await categoryModel.find({}).countDocuments()
-                responseReturn(res, 200, { totalCategory, categories })
-            }
-            else {
-                const categories = await categoryModel.find({}).sort({ createdAt: -1 })
-                const totalCategory = await categoryModel.find({}).countDocuments()
-                responseReturn(res, 200, { totalCategory, categories })
-            }
+    
+            // Thực hiện truy vấn dựa trên các điều kiện đã xác định
+            const categories = await categoryModel.find(query)
+                .skip(skipPage)
+                .limit(parseInt(parPage) || 0)
+                .sort({ createdAt: -1 });
+    
+            const totalCategory = await categoryModel.countDocuments(query);
+    
+            // Trả về kết quả
+            responseReturn(res, 200, { totalCategory, categories });
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
+            responseReturn(res, 500, { error: 'Internal server error' });
         }
-    }
+    };
     
 }
 

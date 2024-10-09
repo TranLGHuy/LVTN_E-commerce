@@ -110,7 +110,7 @@ const Category = () => {
                                 setPageNumber={setCurrentPage}
                                 totalItem={50}
                                 parPage={parPage}
-                                showItem={4}
+                                showItem={3}
                             />
                         </div>
                     </div>

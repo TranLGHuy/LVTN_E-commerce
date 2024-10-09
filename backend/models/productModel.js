@@ -31,17 +31,17 @@ const productSchema = new Schema({
     },
     discount: {
         type: Number,
-        required: true
+        required: false
     },
 
     description: {
         type: String,
         required: true
     },
-    shopName: {
-        type: String,
-        required: true
-    },
+    // shopName: {
+    //     type: String,
+    //     required: true
+    // },
     images: {
         type: Array,
         required: true
