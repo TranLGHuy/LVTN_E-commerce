@@ -6,6 +6,438 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": "trash/middlewares/authMiddleware.js",
+        "hash": "14893087053985872382"
+      },
+      {
+        "file": "backend/controllers/authControllers.js",
+        "hash": "7316976951087180199"
+      },
+      {
+        "file": "trash/routes/home/customerAuthRoutes.js",
+        "hash": "2479238523874748034"
+      },
+      {
+        "file": ".git/objects/35/e9fe5f80e586a7283bdbdbb4f5717cb46a703c",
+        "hash": "6934337686540323717"
+      },
+      {
+        "file": "trash/routes/home/homeRoutes.js",
+        "hash": "10771039117814865673"
+      },
+      {
+        "file": "backend/controllers/dashboard/productController.js",
+        "hash": "8460068030630652894"
+      },
+      {
+        "file": ".nx/workspace-data/d/daemon.log",
+        "hash": "794307079285131864"
+      },
+      {
+        "file": "dashboard/src/store/rootReducers.js",
+        "hash": "4043940926882818623"
+      },
+      {
+        "file": "trash/controllers/home/homeController.js",
+        "hash": "2429535697394192001"
+      },
+      {
+        "file": "dashboard/src/router/routes/sellerRoutes.js",
+        "hash": "15058273074017154386"
+      },
+      {
+        "file": "trash/models/adminModel.js",
+        "hash": "10468329554906136217"
+      },
+      {
+        "file": ".nx/workspace-data/project-graph.json",
+        "hash": "6707034381010409921"
+      },
+      {
+        "file": "dashboard/src/views/admin/DeactiveSellers.jsx",
+        "hash": "9595183309027712050"
+      },
+      {
+        "file": "dashboard/public/robots.txt",
+        "hash": "2790380794362165217"
+      },
+      {
+        "file": ".git/objects/4b/193b9532f2f264f0238290077e934643cc1080",
+        "hash": "16299804230785576886"
+      },
+      {
+        "file": "backend/models/customerModel.js",
+        "hash": "15050509011895886915"
+      },
+      {
+        "file": "dashboard/package-lock.json",
+        "hash": "6972418020779802140"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/OrderReducer.js",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "dashboard/src/views/components/Search.jsx",
+        "hash": "14573031920447705846"
+      },
+      {
+        "file": "trash/models/categoryModel.js",
+        "hash": "5712548473076740462"
+      },
+      {
+        "file": ".git/objects/55/73b3b33b14e88cebfaa8b2a145136a81f28ce9",
+        "hash": "4714000116141106969"
+      },
+      {
+        "file": "backend/utiles/tokenCreate.js",
+        "hash": "1657695140013895174"
+      },
+      {
+        "file": "backend/models/sellerWallet.js",
+        "hash": "1847431466259067104"
+      },
+      {
+        "file": "dashboard/public/logo512.png",
+        "hash": "9339365414554387981"
+      },
+      {
+        "file": ".git/index",
+        "hash": "9584493010119911633"
+      },
+      {
+        "file": "backend/models/reviewModel.js",
+        "hash": "1478300446611349678"
+      },
+      {
+        "file": "dashboard/public/logo192.png",
+        "hash": "7585273181698778288"
+      },
+      {
+        "file": "backend/routes/authRoutes.js",
+        "hash": "10854525483788294414"
+      },
+      {
+        "file": "dashboard/src/views/seller/OrderDetails.jsx",
+        "hash": "10813257148565022062"
+      },
+      {
+        "file": ".git/objects/9c/e88b554261a644c5fa450b5cced04b91b3b12c",
+        "hash": "12758910708622081904"
+      },
+      {
+        "file": "trash/models/stripeModel.js",
+        "hash": "16782763696647658895"
+      },
+      {
+        "file": "trash/controllers/chat/chatController.js",
+        "hash": "5981071543094971959"
+      },
+      {
+        "file": "backend/middlewares/authMiddleware.js",
+        "hash": "14893087053985872382"
+      },
+      {
+        "file": ".nx/workspace-data/file-map.json",
+        "hash": "12943675931483046740"
+      },
+      {
+        "file": "trash/controllers/dashboard/dashboardIndexController.js",
+        "hash": "10612098897038099238"
+      },
+      {
+        "file": "trash/package-lock.json",
+        "hash": "4452576655418834836"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/dashboardIndexReducer.js",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "dashboard/public/images/category/6.jpg",
+        "hash": "10992751501297498331"
+      },
+      {
+        "file": "dashboard/src/layout/Header.jsx",
+        "hash": "14628403179618768620"
+      },
+      {
+        "file": "dashboard/src/App.jsx",
+        "hash": "16077842519906642899"
+      },
+      {
+        "file": "trash/models/customerOrder.js",
+        "hash": "13203849820528151408"
+      },
+      {
+        "file": "dashboard/public/manifest.json",
+        "hash": "1447645250373428393"
+      },
+      {
+        "file": ".git/objects/69/c4b3a304adbf67667940421c1952e20db9b855",
+        "hash": "10696529301027622760"
+      },
+      {
+        "file": "trash/models/productModel.js",
+        "hash": "15891240923187311675"
+      },
+      {
+        "file": "dashboard/src/index.css",
+        "hash": "2172668849966456987"
+      },
+      {
+        "file": "backend/.env",
+        "hash": "4821704275566873792"
+      },
+      {
+        "file": "trash/models/customerModel.js",
+        "hash": "15050509011895886915"
+      },
+      {
+        "file": ".git/objects/a4/e3735d9db71883aef5fefbb4e95f65611aa674",
+        "hash": "14020290403469604436"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/categoryReducer.js",
+        "hash": "5345258814506654151"
+      },
+      {
+        "file": "dashboard/src/App.css",
+        "hash": "3472201094699472689"
+      },
+      {
+        "file": "dashboard/src/api/api.js",
+        "hash": "14396810868904107200"
+      },
+      {
+        "file": "dashboard/src/views/auth/AdminLogin.jsx",
+        "hash": "10155936675829990523"
+      },
+      {
+        "file": "dashboard/public/images/Logo.png",
+        "hash": "3092735995283456772"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/bannerReducer.js",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "trash/package.json",
+        "hash": "5026126607044473640"
+      },
+      {
+        "file": "dashboard/src/store/index.js",
+        "hash": "3228360824327725188"
+      },
+      {
+        "file": "backend/models/paypal.js",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "trash/routes/dashboard/sellerRoutes.js",
+        "hash": "12374792415932841502"
+      },
+      {
+        "file": "trash/controllers/payment/paymentController.js",
+        "hash": "3351708740564375832"
+      },
+      {
+        "file": "trash/routes/paymentRoutes.js",
+        "hash": "13381126781492015967"
+      },
+      {
+        "file": ".git/objects/74/0989c1254c8320fcd551a845330591152e4305",
+        "hash": "875708290672046838"
+      },
+      {
+        "file": "dashboard/src/views/admin/SellersRequest.jsx",
+        "hash": "8524048801574552063"
+      },
+      {
+        "file": "dashboard/src/Navigation/index.js",
+        "hash": "8929510089088092245"
+      },
+      {
+        "file": "dashboard/src/views/seller/AddProduct.jsx",
+        "hash": "14111673873667368031"
+      },
+      {
+        "file": "dashboard/src/App.test.js",
+        "hash": "14776661775854159295"
+      },
+      {
+        "file": "backend/models/productModel.js",
+        "hash": "1559192213069134523"
+      },
+      {
+        "file": ".git/objects/42/a915cd816d5238bb446b0ac40523101df54276",
+        "hash": "4536864572334709607"
+      },
+      {
+        "file": "backend/routes/dashboard/productRoutes.js",
+        "hash": "4388273081958267609"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/sellerReducer.js",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "dashboard/src/layout/MainLayout.jsx",
+        "hash": "8836680361975784563"
+      },
+      {
+        "file": "trash/routes/home/cardRoutes.js",
+        "hash": "7418845972758246588"
+      },
+      {
+        "file": "backend/models/authOrder.js",
+        "hash": "4070981984874061141"
+      },
+      {
+        "file": ".git/objects/dc/874e6da6a052f52ce4c042b8b6e623ec154c0e",
+        "hash": "8523484741106786477"
+      },
+      {
+        "file": "backend/models/myShopWallet.js",
+        "hash": "12668201883002067962"
+      },
+      {
+        "file": "dashboard/src/views/admin/AdminDashboard.jsx",
+        "hash": "17746440652673187713"
+      },
+      {
+        "file": "backend/models/stripeModel.js",
+        "hash": "16782763696647658895"
+      },
+      {
+        "file": "dashboard/public/images/category/5.jpg",
+        "hash": "2992447222811169466"
+      },
+      {
+        "file": "dashboard/src/views/Success.jsx",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "dashboard/src/Navigation/allNav.js",
+        "hash": "11281086019949451327"
+      },
+      {
+        "file": ".git/objects/b2/b35e7ab6cbdc0c93bcf5154cd02de6fba339bd",
+        "hash": "14971730275131760234"
+      },
+      {
+        "file": "trash/models/sellerModel.js",
+        "hash": "14017079098022446545"
+      },
+      {
+        "file": "trash/controllers/dashboard/productController.js",
+        "hash": "9363098984927451515"
+      },
+      {
+        "file": "trash/utiles/db.js",
+        "hash": "17785863833226883873"
+      },
+      {
+        "file": "backend/models/admin.js",
+        "hash": "10468329554906136217"
+      },
+      {
+        "file": "trash/utiles/tokenCreate.js",
+        "hash": "1657695140013895174"
+      },
+      {
+        "file": "dashboard/src/views/admin/PaymentRequest.jsx",
+        "hash": "15301604677728972175"
+      },
+      {
+        "file": "dashboard/src/router/routes/adminRoutes.js",
+        "hash": "2125171407782945634"
+      },
+      {
+        "file": "dashboard/README.md",
+        "hash": "398510412849694860"
+      },
+      {
+        "file": "package.json",
+        "hash": "15167522034186744046"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/PaymentReducer.js",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "dashboard/src/views/Pagination.jsx",
+        "hash": "13466936766721734481"
+      },
+      {
+        "file": "backend/models/chat/sellerCustomerModel.js",
+        "hash": "12675625448696659133"
+      },
+      {
+        "file": "trash/controllers/home/cardController.js",
+        "hash": "1028717293641238614"
+      },
+      {
+        "file": "backend/models/withdrowRequest.js",
+        "hash": "14383590726023460781"
+      },
+      {
+        "file": "trash/controllers/dashboard/categoryController.js",
+        "hash": "9548542694103823470"
+      },
+      {
+        "file": ".git/objects/11/tmp_obj_0IkVt3",
+        "hash": "17383904743370551313"
+      },
+      {
+        "file": "backend/controllers/dashboard/categoryController.js",
+        "hash": "14317347064267426592"
+      },
+      {
+        "file": "dashboard/src/views/seller/SellerToCustomer.jsx",
+        "hash": "337830000771475289"
+      },
+      {
+        "file": "trash/.env",
+        "hash": "14394101427083148653"
+      },
+      {
+        "file": "dashboard/src/views/admin/Sellers.jsx",
+        "hash": "11639914028191698975"
+      },
+      {
+        "file": ".git/objects/71/e29d3e5a29229745080e4b98d8aceb5819b03e",
+        "hash": "2295423783589222187"
+      },
+      {
+        "file": "trash/models/chat/adminSellerMessage.js",
+        "hash": "6007963470682818964"
+      },
+      {
+        "file": "backend/models/cardModel.js",
+        "hash": "7165553697453323520"
+      },
+      {
+        "file": "backend/.gitignore",
+        "hash": "14836991431865605984"
+      },
+      {
+        "file": "dashboard/src/reportWebVitals.js",
+        "hash": "8937667725995285050"
+      },
+      {
+        "file": "dashboard/public/index.html",
+        "hash": "13308863839730475495"
+      },
+      {
+        "file": "trash/routes/bannerRoutes.js",
+        "hash": "17871133242837278915"
+      },
+      {
+        "file": "backend/models/chat/adminSellerMessage.js",
+        "hash": "11885783488981040217"
+      },
+      {
         "file": "trash/controllers/order/orderController.js",
         "hash": "16776760753892177710"
       },
@@ -14,152 +446,80 @@
         "hash": "18097943005332407420"
       },
       {
-        "file": "dashboard/public/robots.txt",
-        "hash": "2790380794362165217"
-      },
-      {
-        "file": "dashboard/src/views/auth/Login.jsx",
-        "hash": "1069855512354362768"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/OrderReducer.js",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "dashboard/src/views/admin/Sellers.jsx",
-        "hash": "11639914028191698975"
-      },
-      {
-        "file": "trash/routes/paymentRoutes.js",
-        "hash": "13381126781492015967"
-      },
-      {
-        "file": "dashboard/public/favicon.ico",
-        "hash": "2949791817221603359"
-      },
-      {
-        "file": "trash/models/bannerModel.js",
-        "hash": "3651619276595154456"
-      },
-      {
-        "file": "trash/models/categoryModel.js",
-        "hash": "5712548473076740462"
-      },
-      {
-        "file": "dashboard/src/views/admin/ChatSeller.jsx",
-        "hash": "9386317245644507038"
-      },
-      {
-        "file": "dashboard/src/views/seller/Profile.jsx",
-        "hash": "15988581592243891975"
-      },
-      {
-        "file": "dashboard/src/views/Home.jsx",
-        "hash": "8845112797067189009"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/categoryReducer.js",
-        "hash": "5345258814506654151"
-      },
-      {
-        "file": "dashboard/src/views/seller/AddProduct.jsx",
-        "hash": "14111673873667368031"
-      },
-      {
-        "file": "dashboard/public/logo192.png",
-        "hash": "7585273181698778288"
-      },
-      {
-        "file": "trash/package-lock.json",
-        "hash": "4452576655418834836"
-      },
-      {
-        "file": "backend/utiles/tokenCreate.js",
-        "hash": "1657695140013895174"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/chatReducer.js",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "dashboard/src/reportWebVitals.js",
-        "hash": "8937667725995285050"
-      },
-      {
-        "file": "backend/models/myShopWallet.js",
-        "hash": "12668201883002067962"
-      },
-      {
-        "file": "dashboard/public/images/category/3.jpg",
-        "hash": "9770493661529248503"
-      },
-      {
-        "file": "package-lock.json",
-        "hash": "12978312713687614859"
-      },
-      {
-        "file": "trash/utiles/queryProducts.js",
-        "hash": "2064752837292191625"
-      },
-      {
-        "file": "dashboard/src/App.jsx",
-        "hash": "16077842519906642899"
-      },
-      {
-        "file": "dashboard/src/Navigation/index.js",
-        "hash": "8929510089088092245"
-      },
-      {
-        "file": "dashboard/src/views/seller/SellerDashboard.jsx",
-        "hash": "16053246568078173529"
-      },
-      {
-        "file": "dashboard/src/router/routes/privateRoutes.js",
-        "hash": "8466856769637953214"
-      },
-      {
-        "file": "trash/models/customerOrder.js",
-        "hash": "13203849820528151408"
-      },
-      {
-        "file": "trash/models/wishlistModel.js",
-        "hash": "9627648425996200468"
+        "file": "dashboard/src/router/routes/ProtectRoute.jsx",
+        "hash": "15456063004262871418"
       },
       {
         "file": "trash/routes/dashboard/dashboardIndexRoutes.js",
         "hash": "10896099846816767726"
       },
       {
-        "file": "backend/models/wishlistModel.js",
-        "hash": "9627648425996200468"
+        "file": ".git/objects/81/3cd6c71695e216ed79b7a397e895acad8352bd",
+        "hash": "16745930062693571149"
       },
       {
-        "file": "trash/routes/dashboard/sellerRoutes.js",
-        "hash": "12374792415932841502"
+        "file": "dashboard/src/views/admin/Orders.jsx",
+        "hash": "15455661730719761739"
       },
       {
-        "file": "backend/controllers/dashboard/productController.js",
-        "hash": "8460068030630652894"
+        "file": "backend/models/categoryModel.js",
+        "hash": "7329762581104163571"
       },
       {
-        "file": "dashboard/public/manifest.json",
-        "hash": "1447645250373428393"
+        "file": "dashboard/src/views/admin/Category.jsx",
+        "hash": "607812097502913554"
       },
       {
-        "file": "dashboard/src/views/UnAuthorized.jsx",
-        "hash": "6734242648517818850"
+        "file": "dashboard/src/index.js",
+        "hash": "11873528048343811303"
       },
       {
-        "file": "dashboard/src/App.test.js",
-        "hash": "14776661775854159295"
+        "file": "dashboard/.gitignore",
+        "hash": "5403484524555424706"
       },
       {
-        "file": "trash/.env",
-        "hash": "14394101427083148653"
+        "file": "trash/models/chat/sellerCustomerMessage.js",
+        "hash": "4739729053806721152"
       },
       {
-        "file": "trash/routes/home/homeRoutes.js",
-        "hash": "10771039117814865673"
+        "file": "dashboard/src/views/seller/Products.jsx",
+        "hash": "12224355483636612892"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/authReducer.js",
+        "hash": "7906178174427615614"
+      },
+      {
+        "file": "trash/controllers/home/customerAuthController.js",
+        "hash": "14459420721980633922"
+      },
+      {
+        "file": "trash/models/cardModel.js",
+        "hash": "7165553697453323520"
+      },
+      {
+        "file": "dashboard/src/views/auth/Login.jsx",
+        "hash": "1069855512354362768"
+      },
+      {
+        "file": "dashboard/src/logo.svg",
+        "hash": "5137778160416929466"
+      },
+      {
+        "file": "dashboard/public/images/seller.jpg",
+        "hash": "1912722176946214488"
+      },
+      {
+        "file": "dashboard/src/views/admin/ChatSeller.jsx",
+        "hash": "9386317245644507038"
+      },
+      {
+        "file": ".git/objects/13/ecdc06e405347dbec2768903154d3d41825e73",
+        "hash": "8938783759717588632"
+      },
+      {
+        "file": "dashboard/public/images/admin.jpg",
+        "hash": "916493099333635965"
       },
       {
         "file": "trash/controllers/authControllers.js",
@@ -170,550 +530,276 @@
         "hash": "6132470404143634160"
       },
       {
-        "file": "dashboard/src/router/routes/ProtectRoute.jsx",
-        "hash": "15456063004262871418"
+        "file": "dashboard/public/favicon.ico",
+        "hash": "2949791817221603359"
       },
       {
-        "file": "trash/models/chat/sellerCustomerModel.js",
-        "hash": "12675625448696659133"
+        "file": "dashboard/public/images/category/3.jpg",
+        "hash": "9770493661529248503"
       },
       {
-        "file": "trash/routes/dashboard/categoryRoutes.js",
-        "hash": "11661499568462879658"
-      },
-      {
-        "file": "trash/controllers/payment/paymentController.js",
-        "hash": "3351708740564375832"
-      },
-      {
-        "file": "dashboard/public/images/category/2.jpg",
-        "hash": "16082644337700710917"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/sellerReducer.js",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "trash/utiles/db.js",
-        "hash": "17785863833226883873"
-      },
-      {
-        "file": "backend/models/customerModel.js",
-        "hash": "15050509011895886915"
-      },
-      {
-        "file": "trash/controllers/home/homeController.js",
-        "hash": "2429535697394192001"
-      },
-      {
-        "file": "dashboard/tailwind.config.js",
-        "hash": "1254979131349073941"
-      },
-      {
-        "file": "dashboard/src/views/admin/Orders.jsx",
-        "hash": "15455661730719761739"
-      },
-      {
-        "file": "dashboard/src/views/Deactive.jsx",
-        "hash": "16071851906801484376"
-      },
-      {
-        "file": "trash/controllers/home/customerAuthController.js",
-        "hash": "14459420721980633922"
-      },
-      {
-        "file": "backend/middlewares/authMiddleware.js",
-        "hash": "14893087053985872382"
-      },
-      {
-        "file": "dashboard/src/views/components/Search.jsx",
-        "hash": "14573031920447705846"
-      },
-      {
-        "file": "backend/models/admin.js",
-        "hash": "10468329554906136217"
-      },
-      {
-        "file": "trash/middlewares/authMiddleware.js",
-        "hash": "14893087053985872382"
-      },
-      {
-        "file": "trash/controllers/home/cardController.js",
-        "hash": "1028717293641238614"
-      },
-      {
-        "file": "dashboard/src/views/seller/Payments.jsx",
-        "hash": "8712460999864960598"
-      },
-      {
-        "file": "trash/models/myShopWallet.js",
-        "hash": "12668201883002067962"
-      },
-      {
-        "file": "trash/routes/home/cardRoutes.js",
-        "hash": "7418845972758246588"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/authReducer.js",
-        "hash": "7906178174427615614"
-      },
-      {
-        "file": "dashboard/public/images/admin.jpg",
-        "hash": "916493099333635965"
-      },
-      {
-        "file": "trash/models/authOrder.js",
-        "hash": "4070981984874061141"
-      },
-      {
-        "file": "dashboard/public/images/category/6.jpg",
-        "hash": "10992751501297498331"
-      },
-      {
-        "file": "trash/controllers/dashboard/productController.js",
-        "hash": "9363098984927451515"
-      },
-      {
-        "file": "backend/models/stripeModel.js",
-        "hash": "16782763696647658895"
-      },
-      {
-        "file": "dashboard/public/images/category/1.jpg",
-        "hash": "8790491959874577228"
-      },
-      {
-        "file": "dashboard/src/layout/MainLayout.jsx",
-        "hash": "8836680361975784563"
-      },
-      {
-        "file": "trash/controllers/dashboard/sellerController.js",
-        "hash": "851327018087369646"
-      },
-      {
-        "file": "trash/.gitignore",
-        "hash": "14836991431865605984"
-      },
-      {
-        "file": "dashboard/src/views/Success.jsx",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "dashboard/src/logo.svg",
-        "hash": "5137778160416929466"
-      },
-      {
-        "file": "backend/routes/dashboard/categoryRoutes.js",
-        "hash": "11661499568462879658"
-      },
-      {
-        "file": "trash/controllers/chat/chatController.js",
-        "hash": "5981071543094971959"
-      },
-      {
-        "file": "dashboard/src/router/routes/adminRoutes.js",
-        "hash": "2125171407782945634"
-      },
-      {
-        "file": "trash/models/paypal.js",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "dashboard/src/views/auth/AdminLogin.jsx",
-        "hash": "10155936675829990523"
-      },
-      {
-        "file": "backend/models/authOrder.js",
-        "hash": "4070981984874061141"
-      },
-      {
-        "file": "dashboard/src/api/api.js",
-        "hash": "14396810868904107200"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/bannerReducer.js",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "dashboard/src/views/seller/SellerToAdmin.jsx",
-        "hash": "8829542688418931760"
-      },
-      {
-        "file": "backend/models/productModel.js",
-        "hash": "1559192213069134523"
-      },
-      {
-        "file": "trash/models/sellerWallet.js",
-        "hash": "1847431466259067104"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/PaymentReducer.js",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "backend/package-lock.json",
-        "hash": "7699203529945812714"
-      },
-      {
-        "file": "trash/controllers/dashboard/dashboardIndexController.js",
-        "hash": "10612098897038099238"
-      },
-      {
-        "file": "dashboard/src/views/admin/PaymentRequest.jsx",
-        "hash": "15301604677728972175"
-      },
-      {
-        "file": "backend/models/bannerModel.js",
-        "hash": "3651619276595154456"
-      },
-      {
-        "file": "dashboard/src/router/Router.jsx",
-        "hash": "2508971473233315213"
-      },
-      {
-        "file": "backend/utiles/response.js",
-        "hash": "17473589166376898511"
-      },
-      {
-        "file": "dashboard/src/views/seller/Products.jsx",
-        "hash": "12224355483636612892"
-      },
-      {
-        "file": "trash/models/reviewModel.js",
-        "hash": "1478300446611349678"
-      },
-      {
-        "file": "trash/routes/order/orderRoutes.js",
-        "hash": "9505057589938757722"
-      },
-      {
-        "file": "backend/models/chat/adminSellerMessage.js",
-        "hash": "11885783488981040217"
-      },
-      {
-        "file": "trash/routes/bannerRoutes.js",
-        "hash": "17871133242837278915"
-      },
-      {
-        "file": "dashboard/src/Navigation/allNav.js",
-        "hash": "11281086019949451327"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/productReducer.js",
-        "hash": "4109367935130691249"
-      },
-      {
-        "file": "backend/models/cardModel.js",
-        "hash": "7165553697453323520"
-      },
-      {
-        "file": "backend/.env",
-        "hash": "4821704275566873792"
-      },
-      {
-        "file": "dashboard/public/images/success.png",
-        "hash": "12065932030655793266"
-      },
-      {
-        "file": "dashboard/src/store/index.js",
-        "hash": "3228360824327725188"
-      },
-      {
-        "file": "dashboard/src/views/admin/OrderDetails.jsx",
-        "hash": "5014428399069401774"
-      },
-      {
-        "file": "backend/models/seller.js",
-        "hash": "2093972542885542857"
-      },
-      {
-        "file": "dashboard/src/router/routes/index.js",
-        "hash": "13834870630724805090"
-      },
-      {
-        "file": "dashboard/src/layout/Header.jsx",
-        "hash": "14628403179618768620"
-      },
-      {
-        "file": "trash/package.json",
-        "hash": "5026126607044473640"
-      },
-      {
-        "file": "trash/utiles/tokenCreate.js",
-        "hash": "1657695140013895174"
-      },
-      {
-        "file": "dashboard/public/index.html",
-        "hash": "13308863839730475495"
-      },
-      {
-        "file": "dashboard/public/logo512.png",
-        "hash": "9339365414554387981"
-      },
-      {
-        "file": "trash/models/customerModel.js",
-        "hash": "15050509011895886915"
-      },
-      {
-        "file": "trash/controllers/dashboard/categoryController.js",
-        "hash": "9548542694103823470"
-      },
-      {
-        "file": "trash/routes/dashboard/productRoutes.js",
-        "hash": "4388273081958267609"
-      },
-      {
-        "file": "package.json",
-        "hash": "15167522034186744046"
-      },
-      {
-        "file": "dashboard/.gitignore",
-        "hash": "5403484524555424706"
-      },
-      {
-        "file": "trash/controllers/bannerController.js",
-        "hash": "1145271320208238391"
-      },
-      {
-        "file": "dashboard/package-lock.json",
-        "hash": "6972418020779802140"
-      },
-      {
-        "file": "backend/models/paypal.js",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "dashboard/src/views/admin/Category.jsx",
-        "hash": "607812097502913554"
-      },
-      {
-        "file": "dashboard/src/views/auth/Register.jsx",
-        "hash": "16918286608236580242"
-      },
-      {
-        "file": "trash/server.js",
-        "hash": "3084884220473377924"
-      },
-      {
-        "file": "backend/utiles/db.js",
-        "hash": "17785863833226883873"
-      },
-      {
-        "file": "dashboard/src/setupTests.js",
-        "hash": "16903885983588411080"
-      },
-      {
-        "file": "dashboard/src/router/routes/sellerRoutes.js",
-        "hash": "15058273074017154386"
-      },
-      {
-        "file": "dashboard/src/views/admin/SellersRequest.jsx",
-        "hash": "8524048801574552063"
-      },
-      {
-        "file": "dashboard/public/images/Logo.png",
-        "hash": "3092735995283456772"
+        "file": ".git/objects/0a/dd768f7f47a20a5d5913b72440b6366ffd00c5",
+        "hash": "8931033245809670886"
       },
       {
         "file": "trash/routes/chatRoutes.js",
         "hash": "4420031510012593694"
       },
       {
-        "file": "backend/package.json",
-        "hash": "172435705513072446"
+        "file": "trash/models/bannerModel.js",
+        "hash": "3651619276595154456"
       },
       {
-        "file": "dashboard/README.md",
-        "hash": "398510412849694860"
+        "file": "backend/models/wishlistModel.js",
+        "hash": "9627648425996200468"
       },
       {
-        "file": "dashboard/src/views/seller/EditProduct.jsx",
-        "hash": "6418693267347721471"
+        "file": "dashboard/src/views/admin/OrderDetails.jsx",
+        "hash": "5014428399069401774"
       },
       {
-        "file": "backend/models/reviewModel.js",
-        "hash": "1478300446611349678"
+        "file": ".git/objects/0f/5e40cf994dc8bcb8586d2a71e2acb9423c4356",
+        "hash": "4748107318013610597"
       },
       {
-        "file": "dashboard/public/images/error.jpg",
-        "hash": "8144374158218850819"
+        "file": "dashboard/public/images/success.png",
+        "hash": "12065932030655793266"
       },
       {
-        "file": "backend/routes/authRoutes.js",
-        "hash": "10854525483788294414"
-      },
-      {
-        "file": ".nx/workspace-data/project-graph.json",
-        "hash": "6707034381010409921"
-      },
-      {
-        "file": "dashboard/public/images/category/4.jpg",
-        "hash": "9397598184028132393"
-      },
-      {
-        "file": "backend/routes/dashboard/productRoutes.js",
-        "hash": "4388273081958267609"
-      },
-      {
-        "file": "trash/models/adminModel.js",
-        "hash": "10468329554906136217"
-      },
-      {
-        "file": "trash/routes/authRoutes.js",
-        "hash": "9253887488981778950"
-      },
-      {
-        "file": "dashboard/public/images/seller.jpg",
-        "hash": "1912722176946214488"
-      },
-      {
-        "file": "dashboard/src/views/seller/SellerToCustomer.jsx",
-        "hash": "337830000771475289"
-      },
-      {
-        "file": "backend/server.js",
-        "hash": "2049648218853324224"
-      },
-      {
-        "file": "dashboard/src/store/rootReducers.js",
-        "hash": "4043940926882818623"
-      },
-      {
-        "file": "trash/models/sellerModel.js",
-        "hash": "14017079098022446545"
-      },
-      {
-        "file": "trash/models/withdrowRequest.js",
-        "hash": "14383590726023460781"
-      },
-      {
-        "file": "backend/models/chat/sellerCustomerModel.js",
-        "hash": "12675625448696659133"
-      },
-      {
-        "file": "trash/models/chat/sellerCustomerMessage.js",
-        "hash": "4739729053806721152"
-      },
-      {
-        "file": "dashboard/src/router/routes/publicRoutes.js",
-        "hash": "13451249067107434298"
-      },
-      {
-        "file": "backend/models/chat/sellerCustomerMessage.js",
-        "hash": "13777558845468991149"
-      },
-      {
-        "file": "trash/utiles/response.js",
-        "hash": "17473589166376898511"
-      },
-      {
-        "file": "backend/models/withdrowRequest.js",
-        "hash": "14383590726023460781"
-      },
-      {
-        "file": "backend/controllers/authControllers.js",
-        "hash": "7316976951087180199"
-      },
-      {
-        "file": "dashboard/public/images/category/5.jpg",
-        "hash": "2992447222811169466"
-      },
-      {
-        "file": "trash/models/chat/adminSellerMessage.js",
-        "hash": "6007963470682818964"
-      },
-      {
-        "file": "trash/models/productModel.js",
-        "hash": "15891240923187311675"
-      },
-      {
-        "file": "backend/models/sellerWallet.js",
-        "hash": "1847431466259067104"
-      },
-      {
-        "file": "dashboard/src/utils/utils.js",
-        "hash": "9910744594110259909"
-      },
-      {
-        "file": "dashboard/src/views/seller/Orders.jsx",
-        "hash": "7254619645592985064"
-      },
-      {
-        "file": "trash/models/stripeModel.js",
-        "hash": "16782763696647658895"
-      },
-      {
-        "file": "dashboard/src/views/admin/SellerDetails.jsx",
-        "hash": "1058841381275873557"
-      },
-      {
-        "file": "dashboard/src/index.js",
-        "hash": "11873528048343811303"
-      },
-      {
-        "file": "trash/models/cardModel.js",
-        "hash": "7165553697453323520"
-      },
-      {
-        "file": "backend/models/categoryModel.js",
-        "hash": "7329762581104163571"
-      },
-      {
-        "file": "backend/.gitignore",
-        "hash": "14836991431865605984"
-      },
-      {
-        "file": "dashboard/src/views/seller/OrderDetails.jsx",
-        "hash": "10813257148565022062"
-      },
-      {
-        "file": "dashboard/src/views/admin/DeactiveSellers.jsx",
-        "hash": "9595183309027712050"
-      },
-      {
-        "file": "nx.json",
-        "hash": "14443875240832808589"
-      },
-      {
-        "file": "dashboard/src/index.css",
-        "hash": "2172668849966456987"
-      },
-      {
-        "file": "dashboard/src/views/Pending.jsx",
-        "hash": "4697132357717647575"
-      },
-      {
-        "file": "dashboard/src/App.css",
-        "hash": "3472201094699472689"
-      },
-      {
-        "file": "dashboard/src/views/admin/AdminDashboard.jsx",
-        "hash": "17746440652673187713"
-      },
-      {
-        "file": "backend/controllers/dashboard/categoryController.js",
-        "hash": "14317347064267426592"
-      },
-      {
-        "file": "dashboard/src/store/Reducers/dashboardIndexReducer.js",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "dashboard/src/views/Pagination.jsx",
-        "hash": "13466936766721734481"
-      },
-      {
-        "file": "trash/routes/home/customerAuthRoutes.js",
-        "hash": "2479238523874748034"
+        "file": "backend/models/bannerModel.js",
+        "hash": "3651619276595154456"
       },
       {
         "file": "backend/models/customerOrder.js",
         "hash": "13203849820528151408"
       },
       {
-        "file": ".nx/workspace-data/file-map.json",
-        "hash": "8614484302548495240"
-      }
-    ],
-    "projectFileMap": {}
-  }
-}
+        "file": "trash/routes/order/orderRoutes.js",
+        "hash": "9505057589938757722"
+      },
+      {
+        "file": "backend/routes/dashboard/categoryRoutes.js",
+        "hash": "11661499568462879658"
+      },
+      {
+        "file": "backend/server.js",
+        "hash": "2049648218853324224"
+      },
+      {
+        "file": "trash/models/myShopWallet.js",
+        "hash": "12668201883002067962"
+      },
+      {
+        "file": "trash/controllers/dashboard/sellerController.js",
+        "hash": "851327018087369646"
+      },
+      {
+        "file": "nx.json",
+        "hash": "14443875240832808589"
+      },
+      {
+        "file": "dashboard/public/images/category/4.jpg",
+        "hash": "9397598184028132393"
+      },
+      {
+        "file": "trash/models/withdrowRequest.js",
+        "hash": "14383590726023460781"
+      },
+      {
+        "file": "trash/models/authOrder.js",
+        "hash": "4070981984874061141"
+      },
+      {
+        "file": "trash/models/paypal.js",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "dashboard/src/router/Router.jsx",
+        "hash": "2508971473233315213"
+      },
+      {
+        "file": "dashboard/src/utils/utils.js",
+        "hash": "9910744594110259909"
+      },
+      {
+        "file": "trash/routes/dashboard/categoryRoutes.js",
+        "hash": "11661499568462879658"
+      },
+      {
+        "file": "trash/models/chat/sellerCustomerModel.js",
+        "hash": "12675625448696659133"
+      },
+      {
+        "file": "dashboard/public/images/error.jpg",
+        "hash": "8144374158218850819"
+      },
+      {
+        "file": "dashboard/src/views/Deactive.jsx",
+        "hash": "16071851906801484376"
+      },
+      {
+        "file": "trash/models/sellerWallet.js",
+        "hash": "1847431466259067104"
+      },
+      {
+        "file": ".git/objects/2a/2a16255cfc5e1bc91725b9c4bf2bdce8c55a1f",
+        "hash": "10676634238851361035"
+      },
+      {
+        "file": "trash/routes/dashboard/productRoutes.js",
+        "hash": "4388273081958267609"
+      },
+      {
+        "file": "backend/models/seller.js",
+        "hash": "2093972542885542857"
+      },
+      {
+        "file": "backend/package.json",
+        "hash": "172435705513072446"
+      },
+      {
+        "file": "dashboard/public/images/category/2.jpg",
+        "hash": "16082644337700710917"
+      },
+      {
+        "file": "dashboard/src/views/auth/Register.jsx",
+        "hash": "16918286608236580242"
+      },
+      {
+        "file": "backend/utiles/response.js",
+        "hash": "17473589166376898511"
+      },
+      {
+        "file": "dashboard/src/router/routes/privateRoutes.js",
+        "hash": "8466856769637953214"
+      },
+      {
+        "file": "dashboard/src/router/routes/index.js",
+        "hash": "13834870630724805090"
+      },
+      {
+        "file": ".git/objects/68/0089d75d66c2006a2837f033a6d81191dac6a1",
+        "hash": "2247331885326458699"
+      },
+      {
+        "file": "dashboard/src/setupTests.js",
+        "hash": "16903885983588411080"
+      },
+      {
+        "file": "dashboard/src/views/admin/SellerDetails.jsx",
+        "hash": "1058841381275873557"
+      },
+      {
+        "file": "trash/.gitignore",
+        "hash": "14836991431865605984"
+      },
+      {
+        "file": "dashboard/src/views/seller/EditProduct.jsx",
+        "hash": "6418693267347721471"
+      },
+      {
+        "file": "backend/models/chat/sellerCustomerMessage.js",
+        "hash": "13777558845468991149"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "12978312713687614859"
+      },
+      {
+        "file": "dashboard/tailwind.config.js",
+        "hash": "1254979131349073941"
+      },
+      {
+        "file": "backend/utiles/db.js",
+        "hash": "17785863833226883873"
+      },
+      {
+        "file": "trash/server.js",
+        "hash": "3084884220473377924"
+      },
+      {
+        "file": "trash/models/reviewModel.js",
+        "hash": "1478300446611349678"
+      },
+      {
+        "file": ".git/objects/61/47c5846666ad8fba2225604df0848498de4ce0",
+        "hash": "4071139519883153627"
+      },
+      {
+        "file": "trash/routes/authRoutes.js",
+        "hash": "9253887488981778950"
+      },
+      {
+        "file": "dashboard/src/views/UnAuthorized.jsx",
+        "hash": "6734242648517818850"
+      },
+      {
+        "file": "dashboard/src/views/seller/SellerToAdmin.jsx",
+        "hash": "8829542688418931760"
+      },
+      {
+        "file": "dashboard/src/views/seller/Payments.jsx",
+        "hash": "8712460999864960598"
+      },
+      {
+        "file": "trash/utiles/response.js",
+        "hash": "17473589166376898511"
+      },
+      {
+        "file": "dashboard/src/views/seller/SellerDashboard.jsx",
+        "hash": "16053246568078173529"
+      },
+      {
+        "file": "trash/models/wishlistModel.js",
+        "hash": "9627648425996200468"
+      },
+      {
+        "file": "backend/package-lock.json",
+        "hash": "7699203529945812714"
+      },
+      {
+        "file": "dashboard/public/images/category/1.jpg",
+        "hash": "8790491959874577228"
+      },
+      {
+        "file": "dashboard/src/views/seller/Orders.jsx",
+        "hash": "7254619645592985064"
+      },
+      {
+        "file": "dashboard/src/views/Pending.jsx",
+        "hash": "4697132357717647575"
+      },
+      {
+        "file": ".git/objects/ea/d93a8aa7aaa14acbf4436ccf5637a423e7207e",
+        "hash": "1461712662179159307"
+      },
+      {
+        "file": "trash/utiles/queryProducts.js",
+        "hash": "2064752837292191625"
+      },
+      {
+        "file": "trash/controllers/bannerController.js",
+        "hash": "1145271320208238391"
+      },
+      {
+        "file": "dashboard/src/views/seller/Profile.jsx",
+        "hash": "15988581592243891975"
+      },
+      {
+        "file": "dashboard/src/router/routes/publicRoutes.js",
+        "hash": "13451249067107434298"
+      },
+      {
+        "file": ".git/objects/7c/76600984c51a39fc47bb21ae27c8c776644352",
+        "hash": "12964370725390973338"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/chatReducer.js",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "dashboard/src/store/Reducers/productReducer.js",
+        "hash": "4109367935130691249"
+      },
+      {
+        "file": "dashboar
