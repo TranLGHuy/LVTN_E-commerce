@@ -1,9 +1,11 @@
 import React from 'react'
 import Headers from '../components/Headers'
+import Banner from '../components/Banner'
 const Home = () => {
   return (
     <div className='w-full'>
         <Headers />
+        <Banner />
     </div>
   )
 }
