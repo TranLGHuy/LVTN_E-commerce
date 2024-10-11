@@ -19,8 +19,8 @@ const Headers = () => {
         "Dresses",
         "Jackets",
         "Shoes",
-        "Accessories",
-        "Sweaters"
+        "Hats",
+        "Suits"
     ]
   return (
     <div className='w-full bg-white'>
