@@ -125,45 +125,72 @@ class productController {
             console.log(error.message)
         }
     }
+
+
     product_image_update = async (req, res) => {
-        const form = formidable({ multiples: true })
-
-        form.parse(req, async (err, field, files) => {
-            const { productId, oldImage } = field;
-            const { newImage } = files
-
+        const form = formidable({ multiples: true });
+        form.parse(req, async (err, field, files) => {   
             if (err) {
-                responseReturn(res, 404, { error: err.message })
-            } else {
-                try {
-                    cloudinary.config({
-                        cloud_name: process.env.cloud_name,
-                        api_key: process.env.api_key,
-                        api_secret: process.env.api_secret,
-                        secure: true
-                    })
-                    const result = await cloudinary.uploader.upload(newImage.filepath, { folder: 'products' })
-
-                    if (result) {
-                        let { images } = await productModel.findById(productId)
-                        const index = images.findIndex(img => img === oldImage)
-                        images[index] = result.url;
-
-                        await productModel.findByIdAndUpdate(productId, {
-                            images
-                        })
-
-                        const product = await productModel.findById(productId)
-                        responseReturn(res, 200, { product, message: 'product image update success' })
-                    } else {
-                        responseReturn(res, 404, { error: 'image upload failed' })
-                    }
-                } catch (error) {
-                    responseReturn(res, 404, { error: error.message })
-                }
+                console.error('Form parsing error:', err);
+                return responseReturn(res, 500, { error: 'Error parsing form data' });
             }
-        })
-    }
+            const productId = field.productId;
+            const oldImage = Array.isArray(field.oldImage) ? field.oldImage[0] : field.oldImage;
+            const newImage = files.newImage[0]; 
+            if (!newImage || !newImage.filepath) {
+                console.error('No image file provided');
+                return responseReturn(res, 400, { error: 'No image file provided' });
+            }
+
+            if (!productId || !oldImage || !newImage) {
+                console.error('Missing required fields:', { productId, oldImage, newImage });
+                return responseReturn(res, 400, { error: 'Missing required fields' });
+            }
+            try {
+                cloudinary.config({
+                    cloud_name: process.env.cloud_name,
+                    api_key: process.env.api_key,
+                    api_secret: process.env.api_secret,
+                    secure: true
+                });
+    
+                console.log('Uploading image to Cloudinary...');
+                const result = await cloudinary.uploader.upload(newImage.filepath, { folder: 'products' });
+                
+                if (result && result.url) {
+                    console.log('Cloudinary upload successful:', result.url);
+                    
+                    let product = await productModel.findById(productId);
+                    if (!product) {
+                        console.error('Product not found:', productId);
+                        return responseReturn(res, 404, { error: 'Product not found' });
+                    }
+    
+                    const index = product.images.findIndex(img => img === oldImage);
+                    if (index === -1) {
+                        console.error('Old image not found in product images:', oldImage);
+                        return responseReturn(res, 404, { error: 'Old image not found in product images' });
+                    }
+                    const publicId = oldImage.split('/').pop().split('.')[0]; // Lấy public ID từ URL
+                    await cloudinary.uploader.destroy(`products/${publicId}`); // Xóa hình ảnh cũ
+                    
+                    product.images[index] = result.url;
+                    await product.save();
+    
+                    console.log('Product image updated successfully');
+                    responseReturn(res, 200, { product, message: 'Product image updated successfully' });
+                } else {
+                    console.error('Cloudinary upload failed');
+                    responseReturn(res, 500, { error: 'Image upload to Cloudinary failed' });
+                }
+    
+            } catch (error) {
+                console.error('Error updating product image:', error);
+                responseReturn(res, 500, { error: `Error updating product image: ${error.message}` });
+            }
+        });
+    };
+    
 }
 
 module.exports = new productController()

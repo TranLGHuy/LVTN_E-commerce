@@ -56,7 +56,7 @@ function AdminLogin() {
                   </div>
                   <div className='flex flex-col w-full gap-1 mb-5'>
                       <label htmlFor='password'>Password</label>
-                      <input onChange={inputHandle} value={state.password} className='px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md text-[#d0d2d6] focus:border-indigo-500 overflow-hidden 'type='text' name='password' placeholder='Please enter your password' id='password' required />
+                      <input onChange={inputHandle} value={state.password} className='px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md text-[#d0d2d6] focus:border-indigo-500 overflow-hidden 'type='password' name='password' placeholder='Please enter your password' id='password' required />
                   </div>
                   <button  disabled = { loader ? true : false } className='bg-blue-500 w-full hover:shadow-blue-500/50 hover:shadow-lg text-white  rounded-md px7 py-2 mb-3'>
                   {

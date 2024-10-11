@@ -55,7 +55,7 @@ function Register() {
                 </div>
                 <div onChange={inputHandle}  value={state.password} className='flex flex-col w-full gap-1 mb-3'>
                     <label htmlFor='password'>Password</label>
-                    <input className='px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md text-[#d0d2d6] focus:border-indigo-500 overflow-hidden 'type='text' name='password' placeholder='Please enter your password' id='password' required />
+                    <input className='px-3 py-2 outline-none border border-slate-700 bg-transparent rounded-md text-[#d0d2d6] focus:border-indigo-500 overflow-hidden 'type='password' name='password' placeholder='Please enter your password' id='password' required />
                 </div>
                 <div className='flex items-center w-full gap-1 mb-3'>
                     <input className='w-5 h-5 text-blue-600 overflow-hidden bg-gray-100 rounded border-gray-300 focus:ring-blue-500 'type='checkbox' name='checkbox'id='checkbox' required />

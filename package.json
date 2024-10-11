@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "formidable": "^3.5.1"
-  },
-  "devDependencies": {
-    "nx": "20.0.0"
-  }
-}

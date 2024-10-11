@@ -41,10 +41,12 @@ class categoryController {
                     });
                     return responseReturn(res, 201, { category, message: 'Category added successfully' });
                 } else {
+                    console.error(err)
                     return responseReturn(res, 404, { error: 'Image upload failed' });
+                    
                 }
             } catch (error) {
-                console.error(error);
+                ;
                 return responseReturn(res, 500, { error: 'Internal server error' });
             }
         });
