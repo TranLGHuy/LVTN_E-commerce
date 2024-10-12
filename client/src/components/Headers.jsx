@@ -82,7 +82,7 @@ const Headers = () => {
                         <div className='flex justify-between md-lg:justify-center items-center flex-wrap pl-8'>
                             <ul className='flex justify-start items-start gap-8 text-md font-bold uppercase md-lg:hidden'>
                                 <li>
-                                    <Link className={`p-2 block ${pathname === '/' ? 'text-[#7fad39]' : 'text-slate-600'}`}>Home</Link>
+                                    <Link to='/' className={`p-2 block ${pathname === '/' ? 'text-[#7fad39]' : 'text-slate-600'}`}>Home</Link>
                                 </li>
                                 <li>
                                     <Link to='/shops' className={`p-2 block ${pathname === '/shop' ? 'text-[#7fad39]' : 'text-slate-600'}`}>Shop</Link>
@@ -106,7 +106,7 @@ const Headers = () => {
                                     </div>
                                 </div>
                                 <div  className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
-                                    <span className='text-xl text-orange-500'><FaShoppingCart /></span>
+                                    <Link to = '/cart' className='text-xl text-orange-500'><FaShoppingCart /></Link>
                                     <div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
                                         {cart_product_count}
                                     </div>

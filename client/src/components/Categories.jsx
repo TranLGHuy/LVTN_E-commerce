@@ -29,7 +29,7 @@ const Categories = () => {
     },
     mobile: {
         breakpoint: { max: 768, min: 0 },
-        items: 3
+        items: 1
     },
     
 }

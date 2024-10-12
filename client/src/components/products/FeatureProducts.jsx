@@ -18,10 +18,10 @@ const FeatureProducts = () => {
             [1,2,3,4,5,6,7].map((p,i)=><div className='border group transition-all duration-500 hover:shadow-md hover:-mt-3'>
                 <div className='relative overflow-hidden'>
                     <div className='flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2'>10%</div>
-                    <img className='sm:w-full w-full h-[250px]' src={`http://localhost:3000/images/category/${p}.jpg`} alt='product image' />
+                    <img className='sm:w-full w-full h-[250px]' src={`http://localhost:3000/images/product/${p}.jpg`} alt='product image' />
                     <ul className='flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3'>
                         <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaHeart /></li>
-                        <Link  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all' ><FaEye /></Link>
+                        <Link to='/product/details/ao-thun' className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all' ><FaEye /></Link>
                         <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaCartArrowDown /></li>
                     </ul>
                 </div>
