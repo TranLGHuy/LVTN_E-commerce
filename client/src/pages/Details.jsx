@@ -10,7 +10,8 @@ import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
-import { Pagination } from 'swiper'
+import { Pagination } from 'swiper/modules'
+import Reviews from '../components/Reviews'
 import Ratings from '../components/Ratings'
 import { FaFacebookSquare,FaTwitterSquare,FaGithubSquare,FaLinkedin,FaHeart } from "react-icons/fa";
 const Details = () => {
@@ -106,8 +107,10 @@ const Details = () => {
                                     </> : <h2>Price : $95</h2>
                                 }
                             </div>
-                            <div className='text-slate-600'>
-                                <p>Chiếc áo thun trắng nam này là món đồ cơ bản không thể thiếu trong tủ quần áo của mọi chàng trai. Được làm từ 100% cotton mềm mại, thoáng khí, mang lại cảm giác dễ chịu suốt cả ngày. Thiết kế cổ tròn, tay ngắn, dễ dàng phối với nhiều trang phục khác nhau, từ quần jean đến shorts. Với màu trắng tinh khôi, áo thun này phù hợp cho cả những dịp thường ngày và đi chơi. Size XL.</p>
+                            <div>
+                                <div className='text-slate-600'>
+                                    <p>Chiếc áo thun trắng nam này là món đồ cơ bản không thể thiếu trong tủ quần áo của mọi chàng trai. Được làm từ 100% cotton mềm mại, thoáng khí, mang lại cảm giác dễ chịu suốt cả ngày. Thiết kế cổ tròn, tay ngắn, dễ dàng phối với nhiều trang phục khác nhau, từ quần jean đến shorts. Với màu trắng tinh khôi, áo thun này phù hợp cho cả những dịp thường ngày và đi chơi. Size XL.</p>
+                                </div>
                             </div>
                             <div className='flex gap-3 pb-10 border-b'>
                                 {
@@ -174,7 +177,7 @@ const Details = () => {
                                 </div>
                                 <div>
                                     {
-                                        state === 'reviews' ? 'reviews' : 'description'
+                                        state === 'reviews' ? <Reviews /> : <p className='py-5 text-slate-600'>Chiếc áo thun trắng nam này là món đồ cơ bản không thể thiếu trong tủ quần áo của mọi chàng trai. Được làm từ 100% cotton mềm mại, thoáng khí, mang lại cảm giác dễ chịu suốt cả ngày. Thiết kế cổ tròn, tay ngắn, dễ dàng phối với nhiều trang phục khác nhau, từ quần jean đến shorts. Với màu trắng tinh khôi, áo thun này phù hợp cho cả những dịp thường ngày và đi chơi. Size XL.</p>
                                     }
                                 </div>
                             </div>
@@ -212,6 +215,65 @@ const Details = () => {
                     </div>
                 </div>
             </section>
+            <section>
+                <div className='w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto'>
+                        <h2 className='text-2xl py-8 text-slate-600'>Related Products</h2>
+                        <div>
+                            <Swiper
+                            slidesPerView='auto'
+                            breakpoints={{
+                                1280: {
+                                    slidesPerView: 3
+                                },
+                                565: {
+                                    slidesPerView: 2
+                                }
+                            }}
+                            spaceBetween={25}
+                            loop={true}
+                            pagination={{
+                                clickable: true,
+                                el: '.custom_bullet'
+                            }}
+                            modules={[Pagination]}
+                            className='mySwiper'
+                            >
+                                {
+                                [1,2,3,4,5].map((p, i) => {
+                                    return (
+                                        <SwiperSlide key={i}>
+                                            <Link className='block'>
+                                                <div className='relative h-[300px]'>
+                                                    <div className='w-full h-full'>
+                                                        <img className='w-full h-full' src={`http://localhost:3000/images/product/${p}.jpg`} />
+                                                        <div className='absolute h-full w-full top-0 left-0 bg-[#000] opacity-25 hover:opacity-50 transition-all duration-500'></div>
+                                                    </div>
+                                                    {
+                                                        discount !== 0 && <div className='flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2'>{discount}%</div>
+                                                    }
+                                                </div>
+                                                <div className='p-4 flex flex-col gap-1'>
+                                                    <h2 className='text-slate-600 text-lg font-semibold'>Ao Khoac The Thao</h2>
+                                                    <div className='flex justify-start items-center gap-3'>
+                                                        <h2 className='text-[#6699ff] text-lg font-bold'>$200</h2>
+                                                        <div className='flex'>
+                                                            <Ratings ratings={4.5} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </SwiperSlide>
+                                    )
+                                })
+                            }
+                            </Swiper>
+                        </div>
+                        <div className='w-full flex justify-center items-center py-10'>
+                            <div className='custom_bullet justify-center gap-3 !w-auto'></div>
+                        </div>
+                </div>
+            </section>
+        <Footer />
     </div>
   )
 }

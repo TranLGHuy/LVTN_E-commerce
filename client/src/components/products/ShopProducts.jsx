@@ -14,7 +14,7 @@ const ShopProducts = ({styles}) => {
                     <img className='h-[240px] rounded-md md:h-[270px] xs:h-[170px] w-full object-cover' src={`http://localhost:3000/images/category/${i+1}.jpg`} alt="image" />
                     <ul className='flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3'>
                         <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaHeart /></li>
-                        <Link  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all' ><FaEye /></Link>
+                        <Link  to='/product/details/ao-thun' className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all' ><FaEye /></Link>
                         <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaCartArrowDown /></li>
                     </ul>
                 </div>
