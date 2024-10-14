@@ -4,11 +4,8 @@ import 'react-multi-carousel/lib/styles.css'
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 
-const Products = ({title}) => {
-    const products = [
-        [1,2,3],
-        [4,5,6]
-    ]
+const Products = ({title,products}) => {
+    
     const responsive = {
         superLargeDesktop: {
             breakpoint: { max: 4000, min: 3000 },
@@ -60,11 +57,11 @@ const Products = ({title}) => {
                             <div key={i} className='flex flex-col justify-start gap-2'>
                                 {
                                     p.map((pl, j) => <Link key={j} className='flex justify-start items-start' to='#'>
-                                        <img className='w-[80px] h-[80px]' src={`http://localhost:3000/images/product/${pl}.jpg`} alt='product image' />
+                                        <img className='w-[80px] h-[80px]' src={pl.images[0]} alt="images" />
                                         <div className='px-3 flex justify-start items-start gap-1 flex-col text-slate-600'>
-                                            <h2 className='text-[13px]'>Ao Thun nam cao cap</h2>
-                                            <span className='text-md font-bold'>$203</span>
-                                            <p className='text-[13px]'>Ao thun mong nhe cao cap size xl</p>
+                                            <h2 className='text-[13px]'>{pl.name?.slice(0, 40)}</h2>
+                                            <span className='text-md font-bold'>${pl.price}</span>
+                                            <p className='text-[13px]'>{pl.description?.slice(0, 50)}...</p>
                                         </div>
 
                                     </Link>)

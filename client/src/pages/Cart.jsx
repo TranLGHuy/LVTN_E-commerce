@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, redirect } from 'react-router-dom'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import Headers from '../components/Headers'
 import Footer from '../components/Footer'
@@ -7,8 +7,19 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 const Cart = () => { 
+    const navigate = useNavigate()
     const cart_products =  [1,2,3]
     const outOfStockProducts  = [1,2]
+    const redirect = () => {
+        navigate('/shipping',{
+            state: {
+                products: [],
+                price: 400,
+                shipping_fee: 30,
+                items: 4
+            }
+        })
+    }
   return (
     <div>
        <Headers/>
@@ -135,7 +146,7 @@ const Cart = () => {
                                                 <span>Total</span>
                                                 <span className='text-lg text-orange-500'>$810</span>
                                             </div>
-                                            <button className='px-5 py-[6px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-orange-500 text-sm text-white uppercase'>Proceed to checkout 4</button>
+                                            <button onClick={redirect} className='px-5 py-[6px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-orange-500 text-sm text-white uppercase'>Proceed to checkout 4</button>
                                         </div>
                                     }
                                 </div>

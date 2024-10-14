@@ -11,26 +11,51 @@ import { BsFillGridFill } from 'react-icons/bs'
 import { FaThList } from 'react-icons/fa'
 import ShopProducts from '../components/products/ShopProducts'
 import Pagination from '../components/Pagination'
-// import { price_range_product, query_products } from '../store/reducers/homeReducer'
+import { price_range_product, query_products } from '../store/reducers/homeReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Shops = () => {
-    const category = [
-        "T-Shirts",
-        "Jeans",
-        "Dresses",
-        "Jackets",
-        "Shoes",
-        "Hats",
-        "Suits"
-    ]
+    const {products,totalProduct, latest_product,categories,priceRange } = useSelector(state => state.home)
+   
+    const dispatch = useDispatch()
+   
     const [pageNumber, setPageNumber] = useState(1)
     const [perPage, setPerPage] = useState(3)
     const [rating, setRating] = useState('')
     const [filter, setFilter] = useState(true)
-    const [state, setState] = useState({values : [10,1000]})
+    const [state, setState] = useState({values : [50,100]})
     const [styles, setStyles] = useState('grid')
-  return (
+    const [category, setCategory] = useState('')
+    const [sortPrice, setSortPrice] = useState('')
+    useEffect(() => {
+        dispatch(price_range_product())
+    }, [])
+    useEffect(() => {
+        setState({
+            values: [priceRange.low, priceRange.high === priceRange.low ? priceRange.high + 1 : priceRange.high]
+        });
+    }, [priceRange])
+    const queryCategory = (e, value) => {
+        if (e.target.checked) {
+            setCategory(value)
+        } else {
+            setCategory('')
+        }
+    }
+    console.log(category)
+    useEffect(() => {
+        dispatch(
+            query_products({
+                low: state.values[0],
+                high: state.values[1],
+                category,
+                rating,
+                sortPrice,
+                pageNumber
+            })
+        )
+    }, [state.values[0], state.values[1], category, rating, pageNumber, sortPrice])
+    return (
     <div>
       <Headers />
         <section className='bg-[url("http://localhost:3000/images/banner/shop.jpg")] h-[220px] mt-6 bg-cover bg-no-repeat relative bg-left'>
@@ -57,18 +82,18 @@ const Shops = () => {
                         <h2 className='text-xl font-bold mb-3 text-slate-600'>Category</h2>
                         <div className='py-2'>
                             {
-                                category.map((c, i) => <div className='flex justify-start items-center gap-2 py-1' key={i}>
-                                    <input  type="checkbox" id={c} />
-                                    <label className='text-slate-600 block cursor-pointer' htmlFor={c}>{c}</label>
+                                categories.map((c, i) => <div className='flex justify-start items-center gap-2 py-1' key={i}>
+                                    <input checked={category === c.name ? true : false} onChange={(e) => queryCategory(e, c.name)} type="checkbox" id={c.name} />
+                                    <label className='text-slate-600 block cursor-pointer' htmlFor={c.name}>{c.name}</label>
                                 </div>)
                             }
                         </div>
                         <div className='py-2 flex flex-col gap-5'>
                             <h2 className='text-xl font-bold mb-3 text-slate-600'>Price</h2>
                             <Range
-                                 step={5}
-                                 min={10}
-                                 max={1000}
+                                 step={10}
+                                 min={priceRange.low}
+                                 max={priceRange.high}
                                  values={state.values}
                                  onChange={(values) => setState({values})}
                                  renderTrack={({ props, children }) => (
@@ -123,7 +148,7 @@ const Shops = () => {
                                         <span><CiStar /></span>
                                         <span><CiStar /></span>
                                     </div>
-                                    <div className='text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer'>
+                                    <div onClick={() => setRating(0)} className='text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer'>
                                         <span><CiStar /></span>
                                         <span><CiStar /></span>
                                         <span><CiStar /></span>
@@ -133,7 +158,7 @@ const Shops = () => {
                                 </div>
                             </div>
                             <div className='py-5 flex flex-col gap-4 md:hidden'>
-                                <Products title="Latest Products"  />
+                                {/* <Products title="Latest Products"  /> */}
                             </div>
                         </div>
                         <div className='w-9/12 md-lg:w-8/12 md:w-full'>
@@ -141,7 +166,7 @@ const Shops = () => {
                                 <div className='py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border'>
                                     <h2 className='text-lg font-medium text-slate-600'>15 Products</h2>
                                     <div className='flex justify-center items-center gap-3'>
-                                        <select className='p-1 border outline-0 text-slate-600 font-semibold' name="" id="">
+                                        <select onChange={(e) => setSortPrice(e.target.value)} className='p-1 border outline-0 text-slate-600 font-semibold' name="" id="">
                                             <option value="">Sort By</option>
                                             <option value="low-to-high">Low to High Price</option>
                                             <option value="high-to-low">High to Low Price</option>
@@ -157,7 +182,7 @@ const Shops = () => {
                                     </div>
                                 </div>
                                 <div className='pb-8'>
-                                    <ShopProducts styles={styles} />
+                                    <ShopProducts products={products} styles={styles} />
                                 </div>
                             </div>
                             {

@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { IoIosMail } from "react-icons/io";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { FaHeadphonesAlt,FaFacebookSquare,FaTwitterSquare,FaGithubSquare,FaLinkedin,FaUserAlt,FaUserLock,FaListUl,FaHeart,FaShoppingCart } from "react-icons/fa";
+import { useSelector, useDispatch } from 'react-redux'
 const Headers = () => {
+    const {categories} = useSelector(state => state.home)
     const iconStyle = { fontSize: '20px' };
     const user = true
     const { pathname } = useLocation()
@@ -13,15 +15,6 @@ const Headers = () => {
     const [ setCategory] = useState('')
     const wishlist = 4
     const cart_product_count = 6
-    const category = [
-        "T-Shirts",
-        "Jeans",
-        "Dresses",
-        "Jackets",
-        "Shoes",
-        "Hats",
-        "Suits"
-    ]
   return (
     <div className='w-full bg-white'>
         <div className='header-top bg-[#eeeeee] md-lg:hidden'>
@@ -201,10 +194,11 @@ const Headers = () => {
                         <div className={`${categoryShow ? 'h-0' : 'h-[400px]'} overflow-hidden transition-all md-lg:relative duration-500 absolute z-[99999] bg-white w-full border-x`}>
                             <ul className='py-2 text-slate-600 font-medium h-full overflow-auto'>
                                 {
-                                    category.map((c, i) => {
+                                    categories.map((c, i) => {
                                         return (
                                             <li key={i} className='flex justify-start items-center gap-2 px-[24px] py-[6px]'>
-                                                <Link className='text-sm block'>{c}</Link>
+                                                <img src={c.image} className='w-[30px] h-[30px] rounded-full overflow-hidden' alt={c.name} />
+                                                <Link to={`/products?category=${c.name}`} className='text-sm block'>{c.name}</Link>
                                             </li>
                                         )
                                     })
@@ -221,7 +215,7 @@ const Headers = () => {
                                     <select onChange={(e) => setCategory(e.target.value)} className='w-[150px] text-slate-600 font-semibold bg-transparent px-2 h-full outline-0 border-none' name="" id="">
                                         <option value="">Select category</option>
                                         {
-                                            category.map((c, i) => <option key={i} value={c}>{c}</option>)
+                                            categories.map((c, i) => <option key={i} value={c}>{c.name}</option>)
                                         }
                                     </select>
                                 </div>
