@@ -6,20 +6,36 @@ import Footer from '../components/Footer'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { get_cart_products,messageClear } from '../store/reducers/cartReducer'
 const Cart = () => { 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
-    const cart_products =  [1,2,3]
-    const outOfStockProducts  = [1,2]
+    const { userInfo } = useSelector(state => state.auth)
+    const { cart_products,successMessage,price, buy_product_item, shipping_fee, outOfStock_products} = useSelector(state => state.cart)
     const redirect = () => {
         navigate('/shipping',{
             state: {
-                products: [],
-                price: 400,
-                shipping_fee: 30,
-                items: 4
+                products: cart_products,
+                price: price,
+                shipping_fee: shipping_fee,
+                items: buy_product_item
             }
         })
     }
+    
+    useEffect(() => {
+        dispatch(get_cart_products(userInfo.id))
+    }, [])
+
+    useEffect(() => {
+        if (successMessage) {
+            toast.success(successMessage)
+            dispatch(messageClear())
+            dispatch(get_cart_products(userInfo.id))
+
+        }
+    }, [successMessage])
+    const productsLength = cart_products.length > 0 ? cart_products.reduce((acc, curr) => acc + curr.products.length, 0) : 0;
   return (
     <div>
        <Headers/>
@@ -40,35 +56,35 @@ const Cart = () => {
         <section className='bg-[#eeeeee]'>
             <div className='w-[85%] lg:w-[90%] md:w-[90%] sm:w-[90] mx-auto py-16'>
                 {
-                    cart_products.length > 0 || outOfStockProducts.length > 0 ? <div className='flex flex-wrap'>
+                    cart_products.length > 0 || outOfStock_products.length > 0 ? <div className='flex flex-wrap'>
                         <div className='w-[67%] md-lg:w-full'>
                             <div className='pr-3 md-lg:pr-0'>
                                 <div className='flex flex-col gap-3'>
                                     <div className='bg-white p-4'>
-                                        <h2 className='text-md text-green-500 font-semibold'>Stock Products {cart_products.length - outOfStockProducts.length}</h2>
+                                        <h2 className='text-md text-green-500 font-semibold'>Stock Products {productsLength}</h2>
                                     </div>
                                     {
                                         cart_products.map((p,i)=><div className='flex bg-white p-4 flex-col gap-2'>
                                         <div className='flex justify-start items-center'>
-                                            <h2 className='text-md text-slate-600'>Clothing Shop</h2>
+                                            <h2 className='text-md text-slate-600'>{p.shopName}</h2>
                                         </div>
                                         {
-                                            [1,2].map((p,i)=><div>
+                                            p.products.map((pt,i)=><div>
                                             <div className='w-full flex flex-wrap'>
                                                 <div className='flex sm:w-full gap-2 w-7/12'>
                                                     <div className='flex gap-2 justify-start items-center'>
-                                                        <img className='w-[80px] h-[80px]' src={`http://localhost:3000/images/product/${i+1}.jpg`} alt="product image" />
+                                                        <img className='w-[80px] h-[80px]' src={pt.productInfo.images[0]} alt="product image" />
                                                         <div className='pr-4 text-slate-600'>
-                                                            <h2 className='text-md'>Ao Thun Trang Nam Cao Cap</h2>
-                                                            <span className='text-sm'>Brand : Nike</span>
+                                                            <h2 className='text-md'>{pt.productInfo.name}</h2>
+                                                            <span className='text-sm'>Brand : {pt.productInfo.brand}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between w-5/12 sm:w-full sm:mt-3'>
                                                     <div className='pl-4 sm:pl-0'>
-                                                        <h2 className='text-lg text-orange-500'>${300 - Math.floor((300 * 10) / 100)} </h2>
-                                                        <p className='line-through'>$300</p>
-                                                        <p>-10%</p>
+                                                        <h2 className='text-lg text-orange-500'>${pt.productInfo.price - Math.floor((pt.productInfo.price * pt.productInfo.discount) / 100)} </h2>
+                                                        <p className='line-through'>${pt.productInfo.price}</p>
+                                                        <p>-{pt.productInfo.discount}%</p>
                                                     </div>
                                                     <div className='flex gap-2 flex-col'>
                                                         <div className='flex bg-slate-200 h-[30px] justify-center items-center text-xl'>
@@ -86,27 +102,27 @@ const Cart = () => {
                                     }
                                 
                                 {
-                                    outOfStockProducts.length > 0 && <div className='flex flex-col gap-3'>
+                                    outOfStock_products.length > 0 && <div className='flex flex-col gap-3'>
                                         <div className='bg-white p-4'>
-                                            <h2 className='text-md text-red-500 font-semibold'>Out of Stock  {outOfStockProducts.length}</h2>
+                                            <h2 className='text-md text-red-500 font-semibold'>Out of Stock  {outOfStock_products.length}</h2>
                                         </div>
                                         <div className='bg-white p-4'>
                                             {
-                                                outOfStockProducts.map((p, i) => <div key={i} className='w-full flex flex-wrap'>
+                                                outOfStock_products.map((p, i) => <div key={i} className='w-full flex flex-wrap'>
                                                     <div className='flex sm:w-full gap-2 w-7/12'>
                                                         <div className='flex gap-2 justify-start items-center'>
-                                                            <img className='w-[80px] h-[80px]' src={`http://localhost:3000/images/product/${i+1}.jpg`} alt="product image" />
+                                                            <img className='w-[80px] h-[80px]' src={p.products[0].images[0]} alt="product image" />
                                                             <div className='pr-4 text-slate-600'>
-                                                                <h2 className='text-md'>Ao Khoac Nam Nike</h2>
-                                                                <span className='text-sm'>Brand : Nike</span>
+                                                                <h2 className='text-md'>{p.products[0].name}</h2>
+                                                                <span className='text-sm'>Brand : {p.products[0].brand}</span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className='flex justify-between w-5/12 sm:w-full sm:mt-3'>
                                                         <div className='pl-4 sm:pl-0'>
-                                                            <h2 className='text-lg text-orange-500'>${400 - Math.floor((400 * 5) / 100)} </h2>
-                                                            <p className='line-through'>$400</p>
-                                                            <p>-5%</p>
+                                                            <h2 className='text-lg text-orange-500'>${p.products[0].price - Math.floor((p.products[0].price * p.products[0].discount) / 100)} </h2>
+                                                            <p className='line-through'>{p.products[0].price}</p>
+                                                            <p>-{p.products[0].discount}%</p>
                                                         </div>
                                                         <div className='flex gap-2 flex-col'>
                                                             <div className='flex bg-slate-200 h-[30px] justify-center items-center text-xl'>
@@ -131,12 +147,12 @@ const Cart = () => {
                                         cart_products.length > 0 && <div className='bg-white p-3 text-slate-600 flex flex-col gap-3'>
                                             <h2 className='text-xl font-bold'>Order Summary</h2>
                                             <div className='flex justify-between items-center'>
-                                                <span>3 Item</span>
-                                                <span>$800</span>
+                                                <span>{buy_product_item} Item</span>
+                                                <span>${price}</span>
                                             </div>
                                             <div className='flex justify-between items-center'>
                                                 <span>Shipping Fee</span>
-                                                <span>$10</span>
+                                                <span>${shipping_fee}</span>
                                             </div>
                                             <div className='flex gap-2'>
                                                 <input className='w-full px-3 py-2 border border-slate-200 outline-0 focus:border-green-500 rounded-sm' type="text" placeholder='Input Voucher Coupon' />
@@ -144,9 +160,9 @@ const Cart = () => {
                                             </div>
                                             <div className='flex justify-between items-center'>
                                                 <span>Total</span>
-                                                <span className='text-lg text-orange-500'>$810</span>
+                                                <span className='text-lg text-orange-500'>${price + shipping_fee}</span>
                                             </div>
-                                            <button onClick={redirect} className='px-5 py-[6px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-orange-500 text-sm text-white uppercase'>Proceed to checkout 4</button>
+                                            <button onClick={redirect} className='px-5 py-[6px] rounded-sm hover:shadow-orange-500/20 hover:shadow-lg bg-orange-500 text-sm text-white uppercase'>Proceed to checkout {buy_product_item}</button>
                                         </div>
                                     }
                                 </div>

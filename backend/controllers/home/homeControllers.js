@@ -84,7 +84,7 @@ class homeControllers {
         }
     }
     query_products = async (req, res) => {
-        const parPage = 12
+        const parPage = 9
         req.query.parPage = parPage
         try {
             const products = await productModel.find({}).sort({

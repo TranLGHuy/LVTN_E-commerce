@@ -5,7 +5,35 @@ import { Link, useNavigate } from 'react-router-dom'
 import Ratings from '../Ratings'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
+import { add_to_cart, messageClear} from '../../store/reducers/cartReducer'
 const ShopProducts = ({styles,products}) => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { userInfo } = useSelector(state => state.auth)
+    const { successMessage, errorMessage } = useSelector(state => state.cart)
+
+    const add_cart = (id) => {
+        
+        if (userInfo) {
+            dispatch(add_to_cart({
+                userId: userInfo.id,
+                quantity: 1,
+                productId: id
+            }))
+        } else {
+            navigate('/login')
+        }
+    }
+    useEffect(() => {
+        if (successMessage) {
+            toast.success(successMessage)
+            dispatch(messageClear())
+        }
+        if (errorMessage) {
+            toast.error(errorMessage)
+            dispatch(messageClear())
+        }
+    }, [errorMessage, successMessage])
   return (
     <div className={`w-full grid ${styles === 'grid' ? 'grid-cols-3 md-lg:grid-cols-2 md:grid-cols-2' : 'grid-cols-1 md-lg:grid-cols-2 md:grid-cols-2'} gap-3`}>
         {
@@ -15,7 +43,7 @@ const ShopProducts = ({styles,products}) => {
                     <ul className='flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3'>
                         <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaHeart /></li>
                         <Link  to='/product/details/ao-thun' className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all' ><FaEye /></Link>
-                        <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaCartArrowDown /></li>
+                        <li onClick={() => add_cart(p._id)} className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaCartArrowDown /></li>
                     </ul>
                 </div>
                 <div className='flex justify-start items-start flex-col gap-1'>

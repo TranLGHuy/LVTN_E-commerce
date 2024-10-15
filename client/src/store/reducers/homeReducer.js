@@ -51,7 +51,7 @@ export const homeReducer = createSlice({
         categories: [],
         products: [],
         totalProduct: 0,
-        parPage: 4,
+        parPage: 0,
         latest_product: [],
         topRated_product: [],
         discount_product: [],

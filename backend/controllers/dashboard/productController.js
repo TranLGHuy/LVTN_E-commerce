@@ -14,12 +14,13 @@ class productController {
             let description = String(field.description[0]).trim();
             let brand = String(field.brand[0]).trim();
             let { stock, price, discount } = field;
+            let shopName = String(field.shopName[0]).trim();
             const { images } = files;
 
             const slug = name.split(' ').join('-');
 
             // Kiểm tra xem tất cả dữ liệu cần thiết có hợp lệ không
-            if (!name || !category || !description || !brand || !stock || !price || !discount || !images || images.length === 0) {
+            if (!name || !category || !description || !brand || !stock || !price || !discount || !shopName || !images || images.length === 0) {
                 return responseReturn(res, 400, { error: 'All fields are required, including at least one image.' });
             }
 
@@ -45,6 +46,7 @@ class productController {
                     name,
                     slug,
                     category,
+                    shopName,
                     description,
                     stock: parseInt(stock), // Chuyển đổi stock sang số nguyên
                     price: parseInt(price),  // Chuyển đổi price sang số nguyên

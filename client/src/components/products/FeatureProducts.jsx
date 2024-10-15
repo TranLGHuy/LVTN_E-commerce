@@ -4,7 +4,48 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import Ratings from '../Ratings'
+import { add_to_cart,messageClear } from '../../store/reducers/cartReducer'
 const FeatureProducts = ({products}) => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    
+    const { userInfo } = useSelector(state => state.auth)
+    const { successMessage, errorMessage } = useSelector(state => state.cart)
+
+    const add_cart = (id) => {
+        if (userInfo) {
+            dispatch(add_to_cart({
+                userId: userInfo.id,
+                quantity: 1,
+                productId: id
+            }))
+        } else {
+            navigate('/login')
+        }
+    }
+    useEffect(() => {
+        if (successMessage) {
+            toast.success(successMessage)
+            dispatch(messageClear())
+        }
+        if (errorMessage) {
+            toast.error(errorMessage)
+            dispatch(messageClear())
+        }
+    }, [errorMessage, successMessage])
+
+    // const add_wishlist = (pro) => {
+    //     dispatch(add_to_wishlist({
+    //         userId: userInfo.id,
+    //         productId: pro._id,
+    //         name: pro.name,
+    //         price: pro.price,
+    //         image: pro.images[0],
+    //         discount: pro.discount,
+    //         rating: pro.rating,
+    //         slug: pro.slug
+    //     }))
+    // }
   return (
     <div className='w-[85%] flex flex-wrap mx-auto'>
         <div className='w-full'>
@@ -15,7 +56,7 @@ const FeatureProducts = ({products}) => {
         </div>
         <div className='w-full grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6'>
             {
-            products.map((p,i)=><div className='border group transition-all duration-500 hover:shadow-md hover:-mt-3'>
+            products.map((p,i)=><div key={i} className='border group transition-all duration-500 hover:shadow-md hover:-mt-3'>
                 <div className='relative overflow-hidden'>
                     {
                         p.discount ? <div className='flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2'>{p.discount}%</div> : ""
@@ -24,7 +65,7 @@ const FeatureProducts = ({products}) => {
                     <ul className='flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3'>
                         <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaHeart /></li>
                         <Link to='/product/details/ao-thun' className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all' ><FaEye /></Link>
-                        <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaCartArrowDown /></li>
+                        <li onClick={() => add_cart(p._id)} className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaCartArrowDown /></li>
                     </ul>
                 </div>
                 <div className='py-3 text-slate-600 px-2'>

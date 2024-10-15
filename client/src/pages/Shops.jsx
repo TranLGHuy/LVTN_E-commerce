@@ -15,15 +15,15 @@ import { price_range_product, query_products } from '../store/reducers/homeReduc
 import { useDispatch, useSelector } from 'react-redux'
 
 const Shops = () => {
-    const {products,totalProduct, latest_product,categories,priceRange } = useSelector(state => state.home)
+    const {products,totalProduct, latest_product,categories,priceRange,parPage } = useSelector(state => state.home)
    
     const dispatch = useDispatch()
    
     const [pageNumber, setPageNumber] = useState(1)
-    const [perPage, setPerPage] = useState(3)
+    // const [perPage, setPerPage] = useState(12)
     const [rating, setRating] = useState('')
     const [filter, setFilter] = useState(true)
-    const [state, setState] = useState({values : [50,100]})
+    const [state, setState] = useState({ values: [priceRange.low, priceRange.high] })
     const [styles, setStyles] = useState('grid')
     const [category, setCategory] = useState('')
     const [sortPrice, setSortPrice] = useState('')
@@ -55,6 +55,17 @@ const Shops = () => {
             })
         )
     }, [state.values[0], state.values[1], category, rating, pageNumber, sortPrice])
+    const resetRating = () => {
+        setRating('')
+        dispatch(query_products({
+            low: state.values[0],
+            high: state.values[1],
+            category,
+            rating: '',
+            sortPrice,
+            pageNumber
+        }))
+    }
     return (
     <div>
       <Headers />
@@ -148,7 +159,7 @@ const Shops = () => {
                                         <span><CiStar /></span>
                                         <span><CiStar /></span>
                                     </div>
-                                    <div onClick={() => setRating(0)} className='text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer'>
+                                    <div onClick={resetRating} className='text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer'>
                                         <span><CiStar /></span>
                                         <span><CiStar /></span>
                                         <span><CiStar /></span>
@@ -158,13 +169,13 @@ const Shops = () => {
                                 </div>
                             </div>
                             <div className='py-5 flex flex-col gap-4 md:hidden'>
-                                {/* <Products title="Latest Products"  /> */}
+                                <Products title="Latest Products" products={latest_product} />
                             </div>
                         </div>
                         <div className='w-9/12 md-lg:w-8/12 md:w-full'>
                             <div className='pl-8 md:pl-0'>
                                 <div className='py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border'>
-                                    <h2 className='text-lg font-medium text-slate-600'>15 Products</h2>
+                                    <h2 className='text-lg font-medium text-slate-600'>{totalProduct} Products</h2>
                                     <div className='flex justify-center items-center gap-3'>
                                         <select onChange={(e) => setSortPrice(e.target.value)} className='p-1 border outline-0 text-slate-600 font-semibold' name="" id="">
                                             <option value="">Sort By</option>
@@ -186,7 +197,7 @@ const Shops = () => {
                                 </div>
                             </div>
                             {
-                             <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber} totalItem={20} perPage={perPage} showItem={Math.floor(20 / 3)} />
+                                totalProduct > parPage && <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber} totalItem={totalProduct} parPage={parPage} showItem={Math.floor(totalProduct / parPage)} />
                             }
                         </div>
                 </div>
