@@ -42,12 +42,10 @@ class cartController {
                     }
                 }
             ]);
-
             let buy_product_item = 0;
             let calculatePrice = 0;
             let cart_product_count = 0;
             const outOfStockProduct = cart_products.filter(p => p.products[0].stock < p.quantity);
-            
             for (let i = 0; i < outOfStockProduct.length; i++) {
                 cart_product_count += outOfStockProduct[i].quantity;
             }
@@ -99,39 +97,39 @@ class cartController {
         }
     };
 
-    // delete_cart_product = async (req, res) => {
-    //     const { cart_id } = req.params;
-    //     try {
-    //         await cartModel.findByIdAndDelete(cart_id);
-    //         responseReturn(res, 200, { message: 'success' });
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // };
+    delete_cart_product = async (req, res) => {
+        const { cart_id } = req.params;
+        try {
+            await cartModel.findByIdAndDelete(cart_id);
+            responseReturn(res, 200, { message: 'Delete success' });
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
 
-    // quantity_inc = async (req, res) => {
-    //     const { cart_id } = req.params;
-    //     try {
-    //         const product = await cartModel.findById(cart_id);
-    //         const { quantity } = product;
-    //         await cartModel.findByIdAndUpdate(cart_id, { quantity: quantity + 1 });
-    //         responseReturn(res, 200, { message: 'success' });
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // };
+    quantity_inc = async (req, res) => {
+        const { cart_id } = req.params;
+        try {
+            const product = await cartModel.findById(cart_id);
+            const { quantity } = product;
+            await cartModel.findByIdAndUpdate(cart_id, { quantity: quantity + 1 });
+            responseReturn(res, 200, { message: 'success' });
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
 
-    // quantity_dec = async (req, res) => {
-    //     const { cart_id } = req.params;
-    //     try {
-    //         const product = await cartModel.findById(cart_id);
-    //         const { quantity } = product;
-    //         await cartModel.findByIdAndUpdate(cart_id, { quantity: quantity - 1 });
-    //         responseReturn(res, 200, { message: 'success' });
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // };
+    quantity_dec = async (req, res) => {
+        const { cart_id } = req.params;
+        try {
+            const product = await cartModel.findById(cart_id);
+            const { quantity } = product;
+            await cartModel.findByIdAndUpdate(cart_id, { quantity: quantity - 1 });
+            responseReturn(res, 200, { message: 'success' });
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
 
     // add_wishlist = async (req, res) => {
     //     const { slug } = req.body;

@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { get_cart_products,messageClear } from '../store/reducers/cartReducer'
+import { get_cart_products,messageClear,delete_cart_product,quantity_inc, quantity_dec } from '../store/reducers/cartReducer'
 const Cart = () => { 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -36,7 +36,20 @@ const Cart = () => {
         }
     }, [successMessage])
     const productsLength = cart_products.length > 0 ? cart_products.reduce((acc, curr) => acc + curr.products.length, 0) : 0;
-  return (
+    const inc = (quantity, stock, cart_id) => {
+        const temp = quantity + 1;
+        if (temp <= stock) {
+            dispatch(quantity_inc(cart_id))
+        }
+    }
+
+    const dec = (quantity, cart_id) => {
+        const temp = quantity - 1;
+        if (temp !== 0) {
+            dispatch(quantity_dec(cart_id))
+        }
+    }
+    return (
     <div>
        <Headers/>
        <section className='bg-[url("http://localhost:3000/images/banner/cart.jpg")] h-[220px] mt-6 bg-cover bg-no-repeat relative bg-left'>
@@ -88,11 +101,11 @@ const Cart = () => {
                                                     </div>
                                                     <div className='flex gap-2 flex-col'>
                                                         <div className='flex bg-slate-200 h-[30px] justify-center items-center text-xl'>
-                                                            <div className='px-3 cursor-pointer'>-</div>
-                                                            <div className='px-3'>3</div>
-                                                            <div className='px-3 cursor-pointer'>+</div>
+                                                            <div onClick={() => dec(pt.quantity, pt._id)} className='px-3 cursor-pointer'>-</div>
+                                                            <div className='px-3'>{pt.quantity}</div>
+                                                            <div onClick={() => inc(pt.quantity, pt.productInfo.stock, pt._id)} className='px-3 cursor-pointer'>+</div>
                                                         </div>
-                                                        <button  className='px-5 py-[3px] bg-red-500 text-white'>Delete</button>
+                                                        <button onClick={() => dispatch(delete_cart_product(pt._id))} className='px-5 py-[3px] bg-red-500 text-white'>Delete</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,11 +139,11 @@ const Cart = () => {
                                                         </div>
                                                         <div className='flex gap-2 flex-col'>
                                                             <div className='flex bg-slate-200 h-[30px] justify-center items-center text-xl'>
-                                                                <div  className='px-3 cursor-pointer'>-</div>
-                                                                <div className='px-3'>4</div>
-                                                                <div  className='px-3 cursor-pointer'>+</div>
+                                                                <div onClick={() => dec(p.quantity, p._id)} className='px-3 cursor-pointer'>-</div>
+                                                                <div className='px-3'>{p.quantity}</div>
+                                                                <div onClick={() => dec(p.quantity, p.products[0].stock, p._id)} className='px-3 cursor-pointer'>+</div>
                                                             </div>
-                                                            <button className='px-5 py-[3px] bg-red-500 text-white'>Delete</button>
+                                                            <button onClick={() => dispatch(delete_cart_product(p._id))} className='px-5 py-[3px] bg-red-500 text-white'>Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>)

@@ -90,7 +90,7 @@ const Register = () => {
                         </div>
                 </div>
                 <div className='w-full h-full py-4 pr-4'>
-                    <img className='w-full h-[85%]' src="http://localhost:3000/images/login.jpg" alt="" />
+                    <img className='w-full h-[85%]' src="http://localhost:3000/images/2.gif" alt="" />
                 </div>
                 </div>
             </div>

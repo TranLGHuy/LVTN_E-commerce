@@ -12,6 +12,15 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import CategoryShop from './pages/CategoryShop';
 import SearchProducts from './pages/SearchProducts';
+import Payment from './pages/Payment';
+import Dashboard from './pages/Dashboard';
+import ProtectUser from './utils/ProtectUser';
+import Index from './components/dashboard/Index';
+import Orders from './components/dashboard/Orders';
+import Wishlist from './components/dashboard/Wishlist';
+import ChangePassword from './components/dashboard/ChangePassword';
+import Chat from './components/dashboard/Chat';
+import Order from './components/dashboard/Order';
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -29,7 +38,18 @@ function App() {
       <Route path='/products/search?' element={<SearchProducts />} />
       <Route path='/cart' element={<Cart />} />
       <Route path='/shipping' element={<Shipping />} />
+      <Route path='/payment' element={<Payment />} />
       <Route path='/product/details/:slug' element={<Details />} />
+      <Route path='/dashboard' element={<ProtectUser />} > 
+        <Route path='' element={<Dashboard />}> 
+            <Route path='' element={<Index />} />
+            <Route path='my-orders' element={<Orders />} />
+            <Route path='my-wishlist' element={<Wishlist />} />
+            <Route path='change-password' element={<ChangePassword />} />
+            <Route path='chat' element={<Chat />} />
+            <Route path='order/details/:orderId' element={<Order />} />
+        </Route>
+      </Route>
     </Routes>
     
     </BrowserRouter>

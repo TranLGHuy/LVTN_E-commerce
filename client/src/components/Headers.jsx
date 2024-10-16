@@ -4,7 +4,9 @@ import { IoIosMail } from "react-icons/io";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { FaHeadphonesAlt,FaFacebookSquare,FaTwitterSquare,FaGithubSquare,FaLinkedin,FaUserAlt,FaUserLock,FaListUl,FaHeart,FaShoppingCart } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux'
+import { get_cart_products } from '../store/reducers/cartReducer'
 const Headers = () => {
+    const dispatch = useDispatch()
     const {categories} = useSelector(state => state.home)
     const {userInfo} = useSelector(state => state.auth)
     const { cart_product_count} = useSelector(state => state.cart)
@@ -26,6 +28,12 @@ const Headers = () => {
             navigate(`/login`)
         }
     }
+    useEffect(() => {
+        if (userInfo) {
+            dispatch(get_cart_products(userInfo.id))
+            // dispatch(get_wishlist_products(userInfo.id))
+        }
+    }, [userInfo])
   return (
     <div className='w-full bg-white'>
         <div className='header-top bg-[#eeeeee] md-lg:hidden'>
@@ -112,11 +120,11 @@ const Headers = () => {
                                 <div onClick={redirect_cart_page} className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
                                     <span className='text-xl text-orange-500'><FaShoppingCart /></span>
                                     {
-                                        cart_product_count !== 0 && <div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
-                                            {
-                                                cart_product_count
-                                            }
-                                        </div>
+                                        cart_product_count !== 0 &&( <div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
+                                            
+                                                {cart_product_count}
+                                            
+                                        </div>)
                                     }
                                 </div>
                                 </div>
