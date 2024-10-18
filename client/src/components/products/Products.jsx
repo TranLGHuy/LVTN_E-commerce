@@ -6,11 +6,7 @@ import { Link,useParams } from 'react-router-dom'
 import { get_product } from '../../store/reducers/homeReducer'
 import { useDispatch, useSelector } from 'react-redux'
 const Products = ({title,products}) => {
-    const dispatch = useDispatch();
-    const { slug } = useParams();
-    useEffect(() => {
-        dispatch(get_product(slug));
-    }, [slug]);
+
     const responsive = {
         superLargeDesktop: {
             breakpoint: { max: 4000, min: 3000 },
@@ -61,7 +57,7 @@ const Products = ({title,products}) => {
                         return (
                             <div key={i} className='flex flex-col justify-start gap-2'>
                                 {
-                                    p.map((pl, j) => <Link key={j} className='flex justify-start items-start' to={`/product/details/${p.slug}`}>
+                                    p.map((pl, j) => <Link key={j} className='flex justify-start items-start' >
                                         <img className='w-[80px] h-[80px]' src={pl.images[0]} alt="images" />
                                         <div className='px-3 flex justify-start items-start gap-1 flex-col text-slate-600'>
                                             <h2 className='text-[13px]'>{pl.name?.slice(0, 40)}</h2>

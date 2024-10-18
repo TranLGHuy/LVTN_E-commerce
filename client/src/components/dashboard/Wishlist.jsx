@@ -5,7 +5,7 @@ import { FaEye } from 'react-icons/fa'
 import { Link, } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
-import {add_to_cart, get_wishlist_products,remove_wishlist, messageClear } from '../../store/reducers/cartReducer'
+import { get_wishlist_products,remove_wishlist, messageClear } from '../../store/reducers/cartReducer'
 
 const Wishlist = () => {
     const dispatch = useDispatch()
@@ -24,13 +24,6 @@ const Wishlist = () => {
             dispatch(messageClear())
         }
     }, [errorMessage, successMessage])
-    // const add_cart = (id) =>{
-    //     dispatch(add_to_cart({
-    //         userId: userInfo.id,
-    //         quantity: 1,
-    //         productId: id
-    //     }))
-    // }
     
   return (
     <div className='w-full grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6'>

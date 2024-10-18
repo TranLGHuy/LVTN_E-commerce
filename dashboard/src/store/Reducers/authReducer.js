@@ -51,7 +51,6 @@ export const seller_register = createAsyncThunk(
     'auth/seller_register',
     async (info, { rejectWithValue, fulfillWithValue }) => {
         try {
-            console.log(info)
             const { data } = await api.post('/seller-register', info, { withCredentials: true })
             localStorage.setItem('accessToken', data.token)
             return fulfillWithValue(data)
@@ -124,7 +123,7 @@ export const authReducer =  createSlice({
             state.successMessage = ""
         },
         setUserInfo: (state, action) => {
-            state.userInfo = action.payload; // Cập nhật thông tin người dùng
+            state.userInfo = action.payload; 
         },
     },
     extraReducers: (builder) => {
@@ -140,10 +139,23 @@ export const authReducer =  createSlice({
             state.successMessage = payload.message;
             state.token = payload.token;
             state.role = returnRole(payload.token);
-            state.userInfo = payload.userInfo; // Cập nhật thông tin người dùng
+            state.userInfo = payload.userInfo; 
+        });
+        
+        builder.addCase(seller_register.pending, (state) => {
+            state.loader = true; // Set loader to true
+        })
+        builder.addCase(seller_register.rejected, (state, action) => {
+            state.loader = false; // Set loader to false
+            state.errorMessage = action.payload.error; // Store the error message
+        })
+        builder.addCase(seller_register.fulfilled, (state, action) => {
+            state.loader = false; // Set loader to false
+            state.successMessage = action.payload.message; // Store the success message
+            state.token = action.payload.token; // Store the token
+            state.role = returnRole(action.payload.token); 
         });
     
-        // Tương tự cho seller_login
         builder.addCase(seller_login.pending, (state) => {
             state.loader = true;
         });
@@ -156,11 +168,11 @@ export const authReducer =  createSlice({
             state.successMessage = payload.message;
             state.token = payload.token;
             state.role = returnRole(payload.token);
-            state.userInfo = payload.userInfo; // Cập nhật thông tin người dùng
+            state.userInfo = payload.userInfo; 
         });
         builder.addCase(get_user_info.fulfilled, (state, { payload }) => {
             state.loader = false;
-            state.userInfo = payload.userInfo; // Cập nhật thông tin người dùng
+            state.userInfo = payload.userInfo; 
              state.role = payload.userInfo.role; 
         });
         builder.addCase(profile_image_upload.pending, (state) => {
