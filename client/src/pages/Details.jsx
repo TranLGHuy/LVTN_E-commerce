@@ -20,12 +20,12 @@ const Details = () => {
     const navigate = useNavigate();
     const { slug } = useParams();
     const dispatch = useDispatch();
-    const { product, relatedProducts, moreProducts } = useSelector(state => state.home);
+    const { product, relatedProducts, moreProducts,totalReview  } = useSelector(state => state.home);
     const { userInfo } = useSelector(state => state.auth);
     const { errorMessage, successMessage } = useSelector(state => state.cart);
     const [image, setImage] = useState('');
     const [state, setState] = useState('reviews');
-    const stock =4
+    const stock = 1
     const responsive = {
         superLargeDesktop: {
             breakpoint: { max: 4000, min: 3000 },
@@ -141,7 +141,7 @@ const Details = () => {
                 <div className='absolute left-0 top-0 w-full h-full bg-[#2422228a]'>
                     <div className='w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto'>
                         <div className='flex flex-col justify-center gap-1 items-center h-full w-full text-white'>
-                            <h2 className='text-3xl font-bold'>ChickCyc.Shop</h2>
+                            <h2 className='text-3xl font-bold'>ChicCycle.Shop</h2>
                         </div>
                     </div>
                 </div>
@@ -193,7 +193,7 @@ const Details = () => {
                                 <div className='flex text-xl'>
                                     <Ratings ratings={product.rating} />
                                 </div>
-                                <span className='text-green-500'>(20 reviews)</span>
+                                <span className='text-green-500'>Total Reviews: {totalReview} </span>
                             </div>
                             <div className='text-2xl text-red-500 font-bold flex gap-3'>
                                 {
@@ -273,7 +273,7 @@ const Details = () => {
                                 </div>
                                 <div>
                                     {
-                                        state === 'reviews' ? <Reviews /> : <p className='py-5 text-slate-600'>{product.description}</p>
+                                        state === 'reviews' ? <Reviews product={product} /> : <p className='py-5 text-slate-600'>{product.description}</p>
                                     }
                                 </div>
                             </div>

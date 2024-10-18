@@ -12,6 +12,7 @@ export const place_order = createAsyncThunk(
                 shippingInfo,
                 userId,
                 items,
+                delivery_status: 'pending'
             });
             navigate('/payment', {
                 state: {

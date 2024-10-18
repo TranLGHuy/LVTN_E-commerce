@@ -1,7 +1,7 @@
 const categoryModel = require('../../models/categoryModel')
 const productModel = require('../../models/productModel')
 const queryProducts = require('../../utiles/queryProduct')
-// const reviewModel = require('../../models/reviewModel')
+const reviewModel = require('../../models/reviewModel')
 const moment = require('moment')
 const {mongo: {ObjectId}} = require('mongoose')
 const {responseReturn} = require('../../utiles/response')
@@ -129,5 +129,55 @@ class homeControllers {
             console.log(error.message)
         }
     }
+    submit_review = async (req, res) => {
+        const { name, rating, review, productId } = req.body;
+        try {
+            await reviewModel.create({
+                productId,
+                name,
+                rating,
+                review,
+                date: moment(Date.now()).format('LL')
+            });
+    
+            const reviews = await reviewModel.find({ productId });
+            const totalRating = reviews.reduce((sum, rev) => sum + rev.rating, 0);
+            const productRating = reviews.length ? (totalRating / reviews.length).toFixed(1) : 0;
+    
+            await productModel.findByIdAndUpdate(productId, { rating: productRating });
+            responseReturn(res, 201, { message: "Review Success" });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    get_reviews = async (req, res) => {
+        const { productId } = req.params;
+        let pageNo = parseInt(req.query.pageNo);
+        const limit = 5;
+        const skipPage = limit * (pageNo - 1);
+    
+        try {
+            const getRating = await reviewModel.aggregate([
+                { $match: { productId: new ObjectId(productId), rating: { $not: { $size: 0 } } } },
+                { $unwind: "$rating" },
+                { $group: { _id: "$rating", count: { $sum: 1 } } }
+            ]);
+    
+            const rating_review = Array.from({ length: 5 }, (_, i) => ({ rating: 5 - i, sum: 0 }));
+            getRating.forEach(({ _id, count }) => {
+                const index = rating_review.findIndex(r => r.rating === _id);
+                if (index !== -1) rating_review[index].sum = count;
+            });
+    
+            const reviews = await reviewModel.find({ productId }).skip(skipPage).limit(limit).sort({ createdAt: -1 });
+            const totalReview = await reviewModel.countDocuments({ productId });
+    
+            responseReturn(res, 200, { reviews, totalReview, rating_review });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
 }
 module.exports = new homeControllers()

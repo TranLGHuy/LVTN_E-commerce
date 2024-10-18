@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home';
 import Shops from './pages/Shops';
+import AboutUs from './pages/AboutUs';
 import Cart from './pages/Cart';
 import Details from './pages/Details';
 import Register from './pages/Register';
@@ -35,6 +36,7 @@ function App() {
       <Route path='/login' element={<Login />} />
       <Route path='/' element={<Home/>} />
       <Route path='/shops' element={<Shops />} />
+      <Route path='/aboutUs' element={<AboutUs />} />
       <Route path='/products?' element={<CategoryShop />} />
       <Route path='/products/search?' element={<SearchProducts />} />
       <Route path='/cart' element={<Cart />} />

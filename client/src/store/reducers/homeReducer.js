@@ -60,6 +60,30 @@ export const query_products = createAsyncThunk(
         }
     }
 )
+
+export const customer_review = createAsyncThunk(
+    'review/customer_review',
+    async (info, { fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/home/customer/submit-review', info);
+            return fulfillWithValue(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+);
+export const get_reviews = createAsyncThunk(
+    'review/get_reviews',
+    async ({ productId, pageNumber }, { fulfillWithValue }) => {
+        try {
+            const { data } = await api.get(`/home/customer/get-reviews/${productId}?pageNo=${pageNumber}`);
+            return fulfillWithValue(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+);
+
 export const homeReducer = createSlice({
     name: 'home',
     initialState: {
@@ -115,14 +139,14 @@ export const homeReducer = createSlice({
                 state.totalProduct = payload.totalProduct
                 state.parPage = payload.parPage
             })
-            // .addCase(customer_review.fulfilled, (state, { payload }) => {
-            //     state.successMessage = payload.message
-            // })
-            // .addCase(get_reviews.fulfilled, (state, { payload }) => {
-            //     state.reviews = payload.reviews
-            //     state.totalReview = payload.totalReview
-            //     state.rating_review = payload.rating_review
-            // })
+            .addCase(customer_review.fulfilled, (state, { payload }) => {
+                state.successMessage = payload.message
+            })
+            .addCase(get_reviews.fulfilled, (state, { payload }) => {
+                state.reviews = payload.reviews
+                state.totalReview = payload.totalReview
+                state.rating_review = payload.rating_review
+            })
             // .addCase(get_banners.fulfilled, (state, { payload }) => {
             //     state.banners = payload.banners
             // });
