@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import CategoryShop from './pages/CategoryShop';
 import SearchProducts from './pages/SearchProducts';
 import Payment from './pages/Payment';
+import OrderSuccess from './pages/OrderSuccess';
 import Dashboard from './pages/Dashboard';
 import ProtectUser from './utils/ProtectUser';
 import Index from './components/dashboard/Index';
@@ -39,6 +40,7 @@ function App() {
       <Route path='/cart' element={<Cart />} />
       <Route path='/shipping' element={<Shipping />} />
       <Route path='/payment' element={<Payment />} />
+      <Route path="/order-success" element={<OrderSuccess />} /> 
       <Route path='/product/details/:slug' element={<Details />} />
       <Route path='/dashboard' element={<ProtectUser />} > 
         <Route path='' element={<Dashboard />}> 

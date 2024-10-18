@@ -58,6 +58,32 @@ class homeControllers {
             console.log(error.message)
         }
     }
+    get_product = async (req, res) => {
+    const { slug } = req.params;
+    try {
+        const product = await productModel.findOne({ slug });
+        const relatedProducts = await productModel.find({
+            $and: [
+                { _id: { $ne: product.id } },
+                { category: { $eq: product.category } }
+            ]
+        }).limit(20);
+        const moreProducts = await productModel.find({
+            $and: [
+                { _id: { $ne: product.id } },
+                { sellerId: { $eq: product.sellerId } }
+            ]
+        }).limit(3);
+        responseReturn(res, 200, {
+            product,
+            relatedProducts,
+            moreProducts
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
     price_range_product = async (req, res) => {
         try {
             const priceRange = {

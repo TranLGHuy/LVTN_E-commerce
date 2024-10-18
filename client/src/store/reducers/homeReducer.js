@@ -23,6 +23,21 @@ export const get_products = createAsyncThunk(
         }
     }
 )
+
+export const get_product = createAsyncThunk(
+    'product/get_product',
+    async (slug, { fulfillWithValue, rejectWithValue }) => {
+        try {
+            const { data } = await api.get(`/home/get-product/${slug}`);
+            console.log(data);
+            return fulfillWithValue(data);
+        } catch (error) {
+            console.log(error.response);
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 export const price_range_product = createAsyncThunk(
     'product/price_range_product',
     async (_, {fulfillWithValue}) => {
@@ -59,14 +74,14 @@ export const homeReducer = createSlice({
             low: 0,
             high: 100
         },
-        // product: {},
-        // relatedProducts: [],
-        // moreProducts: [],
-        // successMessage: '',
-        // errorMessage: '',
-        // totalReview: 0,
-        // rating_review: [],
-        // reviews: [],
+        product: {},
+        relatedProducts: [],
+        moreProducts: [],
+        successMessage: '',
+        errorMessage: '',
+        totalReview: 0,
+        rating_review: [],
+        reviews: [],
         // banners: []
     },
     reducers: {
@@ -86,11 +101,11 @@ export const homeReducer = createSlice({
                 state.topRated_product = payload.topRated_product
                 state.discount_product = payload.discount_product
             })
-            // .addCase(get_product.fulfilled, (state, { payload }) => {
-            //     state.product = payload.product
-            //     state.relatedProducts = payload.relatedProducts
-            //     state.moreProducts = payload.moreProducts
-            // })
+            .addCase(get_product.fulfilled, (state, { payload }) => {
+                state.product = payload.product
+                state.relatedProducts = payload.relatedProducts
+                state.moreProducts = payload.moreProducts
+            })
             .addCase(price_range_product.fulfilled, (state, { payload }) => {
                 state.latest_product = payload.latest_product
                 state.priceRange = payload.priceRange

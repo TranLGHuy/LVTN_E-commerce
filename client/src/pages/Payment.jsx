@@ -1,12 +1,21 @@
 import React from 'react';
 import Headers from '../components/Headers';
 import Footer from '../components/Footer';
-import { useLocation } from 'react-router-dom';
+import { useLocation ,useNavigate } from 'react-router-dom';
 import PayPal from '../components/Paypal';
 
 const Payment = () => {
-    const { state: { price, items } } = useLocation();
-
+    const { state: { price, items ,orderId } } = useLocation();
+    const navigate = useNavigate();
+    const handleCashOnDelivery = () => {
+        navigate('/order-success', {
+            state: {
+                orderId: orderId,
+                totalAmount: price,
+                items,
+            },
+        });
+    };
     return (
         <div>
             <Headers />
@@ -36,7 +45,9 @@ const Payment = () => {
                                         <span>Total Amount</span>
                                         <span className='text-lg text-orange-500'>${price}</span>
                                     </div>
+                                    <button onClick={handleCashOnDelivery} className=' h-[50px] w-auto mt-3 px-5 py-[6px] rounded-sm bg-green-500 text-md font-bold text-white uppercase hover:shadow-green-500/20 hover:shadow-lg'>Cash on delivery</button>
                                     <PayPal price={price} items={items}/>
+                                    
                                 </div>
                             </div>
                         </div>

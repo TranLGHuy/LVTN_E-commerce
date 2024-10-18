@@ -7,8 +7,8 @@ router.delete('/home/product/delete-cart-product/:cart_id', cartController.delet
 router.put('/home/product/quantity-inc/:cart_id', cartController.quantity_inc);
 router.put('/home/product/quantity-dec/:cart_id', cartController.quantity_dec);
 
-// router.post('/home/product/add-to-wishlist', cartController.add_wishlist);
-// router.get('/home/product/get-wishlist-products/:userId', cartController.get_wishlist);
-// router.delete('/home/product/delete-wishlist-product/:wishlistId', cartController.delete_wishlist);
+router.post('/home/product/add-to-wishlist', cartController.add_wishlist);
+router.get('/home/product/get-wishlist-products/:userId', cartController.get_wishlist);
+router.delete('/home/product/delete-wishlist-product/:wishlistId', cartController.delete_wishlist);
 
 module.exports = router;

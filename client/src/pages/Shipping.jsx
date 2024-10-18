@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect } from 'react'
 import Headers from '../components/Headers'
 import Footer from '../components/Footer'
 import { useLocation, Link, useNavigate } from 'react-router-dom'
@@ -27,11 +27,18 @@ const Shipping = () => {
             [e.target.name]: e.target.value
         })
     }
+    useEffect(() => {
+        const storedInfo = JSON.parse(localStorage.getItem('shippingInfo'));
+        if (storedInfo) {
+            setState(storedInfo);
+        }
+    }, []);
     const save = (e) => {
         e.preventDefault()
         const { name, address, phone, province, city } = state;
         if (name && address && phone  && province && city) {
             setRes(true)
+            localStorage.setItem('shippingInfo', JSON.stringify(state));
         }
     }
     const placeOrder = () => {
@@ -112,7 +119,7 @@ const Shipping = () => {
                                             <span className='text-slate-600 text-sm'>{state.address} {state.province} {state.city}</span>
                                             <span onClick={() => setRes(false)} className='text-indigo-500 cursor-pointer'> change</span>
                                         </p>
-                                        <p className='text-slate-600 text-sm'>Email to huyb2012210@gmail.com</p>
+                                        <p className='text-slate-600 text-sm'>Phone Number : {state.phone}</p>
                                     </div>
                                 }   
                             </div>

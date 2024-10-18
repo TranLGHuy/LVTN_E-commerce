@@ -4,19 +4,18 @@ import { IoIosMail } from "react-icons/io";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { FaHeadphonesAlt,FaFacebookSquare,FaTwitterSquare,FaGithubSquare,FaLinkedin,FaUserAlt,FaUserLock,FaListUl,FaHeart,FaShoppingCart } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux'
-import { get_cart_products } from '../store/reducers/cartReducer'
+import { get_cart_products,get_wishlist_products  } from '../store/reducers/cartReducer'
 const Headers = () => {
     const dispatch = useDispatch()
     const {categories} = useSelector(state => state.home)
     const {userInfo} = useSelector(state => state.auth)
-    const { cart_product_count} = useSelector(state => state.cart)
     const iconStyle = { fontSize: '20px' };
     const { pathname } = useLocation()
     const [showSidebar, setShowSidebar] = useState(true);
     const [categoryShow, setCategoryShow] = useState(true)
     const [searchValue, setSearchValue] = useState('')
     const [category,setCategory] = useState('')
-    const wishlist = 4
+    const { cart_product_count, wishlist_count } = useSelector(state => state.cart)
     const navigate = useNavigate()
     const search = () => {
         navigate(`/products/search?category=${category}&&value=${searchValue}`)
@@ -31,7 +30,7 @@ const Headers = () => {
     useEffect(() => {
         if (userInfo) {
             dispatch(get_cart_products(userInfo.id))
-            // dispatch(get_wishlist_products(userInfo.id))
+            dispatch(get_wishlist_products(userInfo.id))
         }
     }, [userInfo])
   return (
@@ -111,18 +110,19 @@ const Headers = () => {
                             </ul>
                             <div className='flex md-lg:hidden justify-center items-center gap-5'>
                                 <div className='flex justify-center gap-5'>
-                                    <div className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
+                                    <div onClick={()=>navigate(userInfo ? '/dashboard/my-wishlist' : '/login')} className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
                                     <span className='text-xl text-red-500'><FaHeart /></span>
-                                    <div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
-                                        {wishlist}
-                                    </div>
+                                    {
+                                        wishlist_count !== 0 && (<div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
+                                            {wishlist_count}
+                                        </div>)
+                                    }
                                 </div>
                                 <div onClick={redirect_cart_page} className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
                                     <span className='text-xl text-orange-500'><FaShoppingCart /></span>
                                     {
                                         cart_product_count !== 0 &&( <div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
-                                            
-                                                {cart_product_count}
+                                            {cart_product_count}
                                             
                                         </div>)
                                     }
