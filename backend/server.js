@@ -48,26 +48,30 @@ const addSeller = (sellerId, socketId, userInfo) => {
 const findCustomer = (customerId) => {
     return allCustomer.find(c => c.customerId === customerId)
 }
-// const findSeller = (sellerId) => {
-//     return allSeller.find(c => c.sellerId === sellerId)
-// }
-
+const findSeller = (sellerId) => {
+    return allSeller.find(c => c.sellerId === sellerId)
+}
+const remove = (socketId) => {
+    allCustomer = allCustomer.filter(c => c.socketId !== socketId)
+    allSeller = allSeller.filter(c => c.socketId !== socketId)
+}
 io.on('connection', (soc) => {
     console.log('socket server is connected...')
     soc.on('add_user', (customerId, userInfo) => {
         addUser(customerId, soc.id, userInfo)
-        // io.emit('activeSeller', allSeller)
-        // io.emit('activeCustomer', allCustomer)
+        io.emit('activeSeller', allSeller)
+        io.emit('activeCustomer', allCustomer)
     })
     soc.on('add_seller', (sellerId, userInfo) => {
         addSeller(sellerId, soc.id, userInfo)
-        // io.emit('activeSeller', allSeller)
-        // io.emit('activeCustomer', allCustomer)
+        io.emit('activeSeller', allSeller)
+        io.emit('activeCustomer', allCustomer)
         // io.emit('activeAdmin', { status: true })
 
     })
     soc.on('send_seller_message', (msg) => {
         const customer = findCustomer(msg.receiverId)
+
         if (customer !== undefined) {
             soc.to(customer.socketId).emit('seller_message', msg)
         }
@@ -78,6 +82,15 @@ io.on('connection', (soc) => {
         if (seller !== undefined) {
             soc.to(seller.socketId).emit('customer_message', msg)
         }
+    })
+    soc.on('disconnect', () => {
+        console.log('user disconnect')
+        remove(soc.id)
+        // removeAdmin(soc.id)
+        // io.emit('activeAdmin', { status: false })
+        io.emit('activeSeller', allSeller)
+        io.emit('activeCustomer', allCustomer)
+
     })
 })
 app.use(bodyParser.json())

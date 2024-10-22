@@ -4,6 +4,7 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 import { socket } from '../utils/utils'
 import { useSelector,useDispatch } from 'react-redux'
+import {updateCustomer,updateSellers,activeStatus_update} from '../store/Reducers/chatReducer'
 const MainLayout = () => {
   const dispatch = useDispatch()
   const { userInfo } = useSelector(state => state.auth)
@@ -16,6 +17,17 @@ const MainLayout = () => {
       socket.emit('add_admin', userInfo)
     }
   }, [userInfo])
+  useEffect(()=>{
+    socket.on('activeCustomer',(customers)=>{
+      dispatch(updateCustomer(customers))
+    })
+    socket.on('activeSeller',(sellers)=>{
+      dispatch(updateSellers(sellers))
+    })
+    socket.on('activeAdmin',(data)=>{
+      dispatch(activeStatus_update(data))
+    })
+  },[])
   return (
     <div className='bg-[#36336a] w-full min-h-screen'>
         <Header showSidebar={showSidebar} setShowSidebar={setShowSidebar} />

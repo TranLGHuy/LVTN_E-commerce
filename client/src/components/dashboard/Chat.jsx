@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import { add_friend, send_message, updateMessage, messageClear } from '../../store/reducers/chatReducer'
 import toast from 'react-hot-toast'
+import { BsEmojiSmile } from 'react-icons/bs'
+
 const socket = io('http://localhost:5000')
 
 const Chat = () => {
@@ -19,7 +21,16 @@ const Chat = () => {
     const [activeSeller, setActiveSeller] = useState([])
     const { fd_messages, currentFd, my_friends, successMessage } = useSelector(state => state.chat)
     const [show, setShow] = useState(false)
-    const scrollRef = useRef()
+    // const scrollRef = useRef()
+    useEffect(() => {
+        socket.emit('add_user', userInfo.id, userInfo)
+    }, [])
+    useEffect(() => {
+        dispatch(add_friend({
+            sellerId: sellerId || "",
+            userId: userInfo.id
+        }))
+    }, [sellerId])
     const send = () => {
         if (text) {
             dispatch(send_message({
@@ -31,27 +42,23 @@ const Chat = () => {
             setText('')
         }
     }
+
     useEffect(() => {
-        socket.emit('add_user', userInfo.id, userInfo)
-    }, [])
-    useEffect(() => {
-        dispatch(add_friend({
-            sellerId: sellerId || "",
-            userId: userInfo.id
-        }))
-    }, [sellerId])
-    useEffect(() => {
-        
         socket.on('seller_message', msg => {
-            console.log(msg)
             setReceiverMessage(msg)
         })
-        // socket.on('activeSeller', (sellers) => {
-        //     setActiveSeller(sellers)
-        // })
+        socket.on('activeSeller', (sellers) => {
+            setActiveSeller(sellers)
+        })
     }, [])
-    
     useEffect(() => {
+        if (successMessage) {
+            socket.emit('send_customer_message', fd_messages[fd_messages.length - 1])
+            dispatch(messageClear())
+        }
+    }, [successMessage])
+    useEffect(() => {
+        console.log(receiverMessage)
         if (receiverMessage) {
             if (sellerId === receiverMessage.senderId && userInfo.id === receiverMessage.receiverId) {
                 dispatch(updateMessage(receiverMessage))
@@ -84,7 +91,7 @@ const Chat = () => {
                         my_friends.map((f, i) => <Link to={`/dashboard/chat/${f.fdId}`} key={i} className={`flex gap-2 justify-start items-center pl-2 py-[5px]`} >
                         <div className='w-[30px] h-[30px] rounded-full relative'>
                             {
-                                <div className='w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0'></div>
+                                activeSeller.some(c => c.sellerId === f.fdId) && <div className='w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0'></div>
                             }
                             <img src="http://localhost:3000/images/seller.jpg" alt="" />
                         </div>
@@ -99,7 +106,10 @@ const Chat = () => {
                     <div className='flex justify-between items-center text-slate-600 text-xl h-[50px]'>
                         <div className='flex gap-2'>
                             <div className='w-[30px] h-[30px] rounded-full relative'>
-                                <div className='w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0'></div>
+                                {
+                                    activeSeller.some(c => c.sellerId === currentFd.fdId) && <div className='w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0'></div>
+                                }
+                                
                                 <img src="http://localhost:3000/images/seller.jpg" alt="" />
                             </div>
                             <span>{currentFd.name}</span>
@@ -153,6 +163,7 @@ const Chat = () => {
                     </div>
                 </div>
             </div>: <div onClick={()=>setShow(true)} className='w-full flex justify-center items-center text-lg ont-bold text-slate-600 h-[400px]'>
+                        <span><BsEmojiSmile /></span>
                         <span>select seller</span>
                     </div>
                 }
