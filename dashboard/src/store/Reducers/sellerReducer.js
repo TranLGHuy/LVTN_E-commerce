@@ -62,6 +62,18 @@ export const get_deactive_sellers = createAsyncThunk(
         }
     }
 )
+export const delete_seller = createAsyncThunk(
+    'seller/delete_seller',
+    async (sellerId, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.delete(`/delete-seller/${sellerId}`, { withCredentials: true });
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
 
 // export const create_stripe_connect_account = createAsyncThunk(
 //     'seller/create_stripe_connect_account',
@@ -124,6 +136,10 @@ export const sellerReducer = createSlice({
             .addCase(get_deactive_sellers.fulfilled, (state, { payload }) => {
                 state.sellers = payload.sellers;
                 state.totalSeller = payload.totalSeller;
+            })
+            .addCase(delete_seller.fulfilled, (state, { payload }) => {
+                state.sellers = state.sellers.filter(seller => seller._id !== payload.sellerId);
+                state.successMessage = payload.message;
             });
             // Uncomment these lines if you need to handle pending and rejected states
             // .addCase(active_stripe_connect_account.pending, (state) => {

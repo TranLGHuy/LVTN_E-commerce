@@ -9,5 +9,5 @@ router.get('/get-deactive-sellers',authMiddleware,sellerController.get_deactive_
 
 router.get('/get-seller/:sellerId',authMiddleware,sellerController.get_seller)
 router.post('/seller-status-update',authMiddleware,sellerController.seller_status_update)
-
+router.delete('/delete-seller/:sellerId', authMiddleware, sellerController.delete_seller);
 module.exports = router

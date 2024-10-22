@@ -3,7 +3,7 @@ import { FaEye, FaTrash } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import Pagination from '../Pagination'
 import { useDispatch, useSelector } from 'react-redux'
-import { get_active_sellers } from '../../store/Reducers/sellerReducer'
+import { get_active_sellers,delete_seller } from '../../store/Reducers/sellerReducer'
 
 const Sellers = () => {
 
@@ -23,6 +23,19 @@ const Sellers = () => {
         }
         dispatch(get_active_sellers(obj))
     }, [searchValue, currentPage, parPage])
+    const handleDelete = (sellerId) => {
+        if (window.confirm('Are you sure you want to delete this seller?')) {
+            dispatch(delete_seller(sellerId))
+                .unwrap()
+                .then(() => {
+
+                    dispatch(get_active_sellers({ parPage, page: currentPage, searchValue }));
+                })
+                .catch((error) => {
+                    console.error('Failed to delete seller:', error);
+                });
+        }
+    };
     return (
         <div className='px-2 lg:px-7 pt-5'>
             <div className='w-full p-4  bg-[#283046] rounded-md'>
@@ -77,7 +90,9 @@ const Sellers = () => {
                                     <td scope='row' className='py-1 px-4 font-medium whitespace-nowrap'>
                                         <div className='flex justify-start items-center gap-4'>
                                             <Link to={`/admin/dashboard/seller/details/${d._id}`} className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye /></Link>
-                                            <div className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'><FaTrash /></div>
+                                            <div className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50' onClick={() => handleDelete(d._id)}>
+                                                <FaTrash />
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>)

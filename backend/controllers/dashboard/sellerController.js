@@ -1,6 +1,6 @@
 const sellerModel = require('../../models/seller')
 const { responseReturn } = require('../../utiles/response')
-
+const Seller = require('../../models/seller');
 class sellerController {
     
     get_seller_request = async (req, res) => {
@@ -124,7 +124,15 @@ class sellerController {
             responseReturn(res, 500, { error: 'Internal server error' });
         }
     };
- 
+    delete_seller = async (req, res) => {
+        try {
+            const { sellerId } = req.params;
+            await Seller.findByIdAndDelete(sellerId); // Xóa seller theo ID
+            res.status(200).json({ message: 'Seller deleted successfully' });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    };
 }
 
 module.exports = new sellerController()
