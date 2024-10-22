@@ -44,24 +44,26 @@ export const categoryReducer = createSlice({
             state.successMessage = ""
         }
     },
-    extraReducers: {
-        [categoryAdd.pending]: (state, _) => {
-            state.loader = true
-        },
-        [categoryAdd.rejected]: (state, { payload }) => {
-            state.loader = false
-            state.errorMessage = payload.error
-        },
-        [categoryAdd.fulfilled]: (state, { payload }) => {
-            state.loader = false
-            state.successMessage = payload.message
-            state.categories = [...state.categories, payload.category]
-        },
-        [get_category.fulfilled]: (state, { payload }) => {
-            state.totalCategory = payload.totalCategory
-            state.categories = payload.categories
-        },
-    }
+    extraReducers: (builder) => {
+        builder
+            .addCase(categoryAdd.pending, (state) => {
+                state.loader = true;
+            })
+            .addCase(categoryAdd.rejected, (state, { payload }) => {
+                state.loader = false;
+                state.errorMessage = payload.error;
+            })
+            .addCase(categoryAdd.fulfilled, (state, { payload }) => {
+                state.loader = false;
+                state.successMessage = payload.message;
+                state.categories.push(payload.category);
+            })
+            .addCase(get_category.fulfilled, (state, { payload }) => {
+                state.totalCategory = payload.totalCategory;
+                state.categories = payload.categories;
+            });
+    },
+    
 
 })
 export const { messageClear } = categoryReducer.actions

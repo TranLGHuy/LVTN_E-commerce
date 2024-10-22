@@ -22,6 +22,7 @@ const io = socket(server, {
     }
 })
 
+
 var allCustomer = []
 var allSeller = []
 
@@ -35,6 +36,8 @@ const addUser = (customerId, socketId, userInfo) => {
         })
     }
 }
+
+
 const addSeller = (sellerId, socketId, userInfo) => {
     const checkSeller = allSeller.some(u => u.sellerId === sellerId)
     if (!checkSeller) {
@@ -45,18 +48,31 @@ const addSeller = (sellerId, socketId, userInfo) => {
         })
     }
 }
+
+
 const findCustomer = (customerId) => {
     return allCustomer.find(c => c.customerId === customerId)
 }
 const findSeller = (sellerId) => {
     return allSeller.find(c => c.sellerId === sellerId)
 }
+
 const remove = (socketId) => {
     allCustomer = allCustomer.filter(c => c.socketId !== socketId)
     allSeller = allSeller.filter(c => c.socketId !== socketId)
 }
+
+let admin = {}
+
+const removeAdmin = (socketId) => {
+    if (admin.socketId === socketId) {
+        admin = {}
+    }
+}
+
 io.on('connection', (soc) => {
     console.log('socket server is connected...')
+
     soc.on('add_user', (customerId, userInfo) => {
         addUser(customerId, soc.id, userInfo)
         io.emit('activeSeller', allSeller)
@@ -66,12 +82,32 @@ io.on('connection', (soc) => {
         addSeller(sellerId, soc.id, userInfo)
         io.emit('activeSeller', allSeller)
         io.emit('activeCustomer', allCustomer)
-        // io.emit('activeAdmin', { status: true })
+        io.emit('activeAdmin', { status: true })
 
     })
+
+    // soc.on('add_admin', (adminInfo) => {
+    //     delete adminInfo.email
+    //     admin = adminInfo
+    //     admin.socketId = soc.id
+    //     io.emit('activeSeller', allSeller)
+    //     io.emit('activeAdmin', { status: true })
+
+    // })
+    soc.on('add_admin', (adminInfo) => {
+        if (adminInfo) {
+            delete adminInfo.email;
+            admin = adminInfo;
+            admin.socketId = soc.id;
+            io.emit('activeSeller', allSeller);
+            io.emit('activeAdmin', { status: true });
+        } else {
+            console.error('adminInfo is null or undefined');
+        }
+    });
+    
     soc.on('send_seller_message', (msg) => {
         const customer = findCustomer(msg.receiverId)
-
         if (customer !== undefined) {
             soc.to(customer.socketId).emit('seller_message', msg)
         }
@@ -83,11 +119,28 @@ io.on('connection', (soc) => {
             soc.to(seller.socketId).emit('customer_message', msg)
         }
     })
+
+    soc.on('send_message_admin_to_seller', msg => {
+        const seller = findSeller(msg.receiverId)
+        if (seller !== undefined) {
+            soc.to(seller.socketId).emit('received_admin_message', msg)
+        }
+    })
+
+
+    soc.on('send_message_seller_to_admin', msg => {
+
+        if (admin.socketId) {
+            soc.to(admin.socketId).emit('received_seller_message', msg)
+        }
+    })
+
+
     soc.on('disconnect', () => {
         console.log('user disconnect')
         remove(soc.id)
-        // removeAdmin(soc.id)
-        // io.emit('activeAdmin', { status: false })
+        removeAdmin(soc.id)
+        io.emit('activeAdmin', { status: false })
         io.emit('activeSeller', allSeller)
         io.emit('activeCustomer', allCustomer)
 

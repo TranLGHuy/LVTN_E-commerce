@@ -50,9 +50,6 @@ const SellerToCustomer = () => {
         socket.on('customer_message', msg => {
             setReceiverMessage(msg)
         })
-        // socket.on('activeSeller', (sellers) => {
-        //     setActiveSeller(sellers)
-        // })
     }, [])
 
     useEffect(() => {

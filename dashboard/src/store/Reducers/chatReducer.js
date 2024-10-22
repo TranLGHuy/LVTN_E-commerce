@@ -38,60 +38,56 @@ export const send_message = createAsyncThunk(
 )
 
 
-// export const get_sellers = createAsyncThunk(
-//     'chat/get_sellers',
-//     async (_, { rejectWithValue, fulfillWithValue }) => {
-//         try {
-//             const { data } = await api.get(`/chat/admin/get-sellers`, { withCredentials: true })
-//             console.log(data)
-//             return fulfillWithValue(data)
-//         } catch (error) {
-//             return rejectWithValue(error.response.data)
-//         }
-//     }
-// )
+export const get_sellers = createAsyncThunk(
+    'chat/get_sellers',
+    async (_, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.get(`/chat/admin/get-sellers`, { withCredentials: true })
+            console.log(data)
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
 
 
-// export const send_message_seller_admin = createAsyncThunk(
-//     'chat/send_message_seller_admin',
-//     async (info, { rejectWithValue, fulfillWithValue }) => {
-//         try {
-//             const { data } = await api.post(`/chat/message-send-seller-admin`, info, { withCredentials: true })
-//             return fulfillWithValue(data)
-//         } catch (error) {
-//             return rejectWithValue(error.response.data)
-//         }
-//     }
-// )
+export const send_message_seller_admin = createAsyncThunk(
+    'chat/send_message_seller_admin',
+    async (info, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post(`/chat/message-send-seller-admin`, info, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
 
 
-// export const get_admin_message = createAsyncThunk(
-//     'chat/get_admin_message',
-//     async (receiverId, { rejectWithValue, fulfillWithValue }) => {
-//         try {
-//             const { data } = await api.get(`/chat/get-admin-messages/${receiverId}`, { withCredentials: true })
-//             return fulfillWithValue(data)
-//         } catch (error) {
-//             return rejectWithValue(error.response.data)
-//         }
-//     }
-// )
+export const get_admin_message = createAsyncThunk(
+    'chat/get_admin_message',
+    async (receiverId, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.get(`/chat/get-admin-messages/${receiverId}`, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
 
-// export const get_seller_message = createAsyncThunk(
-//     'chat/get_seller_message',
-//     async (receiverId, { rejectWithValue, fulfillWithValue }) => {
-//         try {
-//             const { data } = await api.get(`/chat/get-seller-messages`, { withCredentials: true })
-//             return fulfillWithValue(data)
-//         } catch (error) {
-//             return rejectWithValue(error.response.data)
-//         }
-//     }
-// )
-
-
-
-
+export const get_seller_message = createAsyncThunk(
+    'chat/get_seller_message',
+    async (receiverId, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.get(`/chat/get-seller-messages`, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
 export const chatReducer = createSlice({
     name: 'seller',
     initialState: {
@@ -155,20 +151,20 @@ export const chatReducer = createSlice({
                 state.messages.push(payload.message);
                 state.successMessage = 'Message sent successfully';
             })
-            // .addCase(get_sellers.fulfilled, (state, { payload }) => {
-            //     state.sellers = payload.sellers;
-            // })
-            // .addCase(send_message_seller_admin.fulfilled, (state, { payload }) => {
-            //     state.seller_admin_message.push(payload.message); // Use push for better performance
-            //     state.successMessage = 'Message sent successfully';
-            // })
-            // .addCase(get_admin_message.fulfilled, (state, { payload }) => {
-            //     state.seller_admin_message = payload.messages;
-            //     state.currentSeller = payload.currentSeller;
-            // })
-            // .addCase(get_seller_message.fulfilled, (state, { payload }) => {
-            //     state.seller_admin_message = payload.messages;
-            // });
+            .addCase(get_sellers.fulfilled, (state, { payload }) => {
+                state.sellers = payload.sellers;
+            })
+            .addCase(send_message_seller_admin.fulfilled, (state, { payload }) => {
+                state.seller_admin_message.push(payload.message); // Use push for better performance
+                state.successMessage = 'Message sent successfully';
+            })
+            .addCase(get_admin_message.fulfilled, (state, { payload }) => {
+                state.seller_admin_message = payload.messages;
+                state.currentSeller = payload.currentSeller;
+            })
+            .addCase(get_seller_message.fulfilled, (state, { payload }) => {
+                state.seller_admin_message = payload.messages;
+            });
     },
 
 })

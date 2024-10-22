@@ -52,7 +52,7 @@ export const get_active_sellers = createAsyncThunk(
 
 
 export const get_deactive_sellers = createAsyncThunk(
-    'seller/get_active_sellers',
+    'seller/get_deactive_sellers',
     async ({ parPage, page, searchValue }, { rejectWithValue, fulfillWithValue }) => {
         try {
             const { data } = await api.get(`/get-deactive-sellers?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`, { withCredentials: true })
@@ -104,38 +104,41 @@ export const sellerReducer = createSlice({
             state.successMessage = ""
         }
     },
-    extraReducers: {
-        [get_seller_request.fulfilled]: (state, { payload }) => {
-            state.sellers = payload.sellers
-            state.totalSeller = payload.totalSeller
-        },
-        [get_seller.fulfilled]: (state, { payload }) => {
-            state.seller = payload.seller
-        },
-        [seller_status_update.fulfilled]: (state, { payload }) => {
-            state.seller = payload.seller
-            state.successMessage = payload.message
-        },
-        [get_active_sellers.fulfilled]: (state, { payload }) => {
-            state.sellers = payload.sellers
-            state.totalSeller = payload.totalSeller
-        },
-        [get_deactive_sellers.fulfilled]: (state, { payload }) => {
-            state.sellers = payload.sellers
-            state.totalSeller = payload.totalSeller
-        },
-        // [active_stripe_connect_account.pending]: (state, { payload }) => {
-        //     state.loader = true
-        // },
-        // [active_stripe_connect_account.rejected]: (state, { payload }) => {
-        //     state.loader = false
-        //     state.errorMessage = payload.message
-        // },
-        // [active_stripe_connect_account.fulfilled]: (state, { payload }) => {
-        //     state.loader = false
-        //     state.successMessage = payload.message
-        // },
-    }
+    extraReducers: (builder) => {
+        builder
+            .addCase(get_seller_request.fulfilled, (state, { payload }) => {
+                state.sellers = payload.sellers;
+                state.totalSeller = payload.totalSeller;
+            })
+            .addCase(get_seller.fulfilled, (state, { payload }) => {
+                state.seller = payload.seller;
+            })
+            .addCase(seller_status_update.fulfilled, (state, { payload }) => {
+                state.seller = payload.seller;
+                state.successMessage = payload.message;
+            })
+            .addCase(get_active_sellers.fulfilled, (state, { payload }) => {
+                state.sellers = payload.sellers;
+                state.totalSeller = payload.totalSeller;
+            })
+            .addCase(get_deactive_sellers.fulfilled, (state, { payload }) => {
+                state.sellers = payload.sellers;
+                state.totalSeller = payload.totalSeller;
+            });
+            // Uncomment these lines if you need to handle pending and rejected states
+            // .addCase(active_stripe_connect_account.pending, (state) => {
+            //     state.loader = true;
+            // })
+            // .addCase(active_stripe_connect_account.rejected, (state, { payload }) => {
+            //     state.loader = false;
+            //     state.errorMessage = payload.message;
+            // })
+            // .addCase(active_stripe_connect_account.fulfilled, (state, { payload }) => {
+            //     state.loader = false;
+            //     state.successMessage = payload.message;
+            // });
+    },
+    
 
 })
 export const { messageClear } = sellerReducer.actions
