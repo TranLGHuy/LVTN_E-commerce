@@ -1,76 +1,88 @@
 import { FaImage } from "react-icons/fa";
 import { FadeLoader } from 'react-spinners'
 import { FaEdit } from "react-icons/fa";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { PropagateLoader } from 'react-spinners'
 import toast from 'react-hot-toast'
 import { useSelector, useDispatch } from 'react-redux'
 import { overrideStyle } from '../../utils/utils'
 import { profile_image_upload, messageClear, profile_info_add } from '../../store/Reducers/authReducer'
 import { create_stripe_connect_account } from '../../store/Reducers/sellerReducer'
+import Webcam from 'react-webcam';
+import Modal from 'react-modal';
+
 const Profile = () => {
+    const [showWebcam, setShowWebcam] = useState(false);
+    const webcamRef = useRef(null);
     const [state, setState] = useState({
         city: '',
         address: '',
         shopName: '',
         phoneNumber: ''
-    })
-    const dispatch = useDispatch()
-    const { userInfo, loader, successMessage } = useSelector(state => state.auth)
-
-    const status = 'active'
+    });
+    const dispatch = useDispatch();
+    const { userInfo, loader, successMessage } = useSelector(state => state.auth);
+    
     const add_image = (e) => {
         if (e.target.files.length > 0) {
-            const formData = new FormData()
-            formData.append('image', e.target.files[0])
-            dispatch(profile_image_upload(formData))
+            const formData = new FormData();
+            formData.append('image', e.target.files[0]);
+            dispatch(profile_image_upload(formData));
         }
-    }
+    };
+
     useEffect(() => {
         if (successMessage) {
-            toast.success(successMessage)
-            messageClear()
+            toast.success(successMessage);
+            messageClear();
         }
-    }, [successMessage])
+    }, [successMessage]);
+
     const add = (e) => {
-        e.preventDefault()
-        dispatch(profile_info_add(state))
-    }
+        e.preventDefault();
+        dispatch(profile_info_add(state));
+    };
+
     const inputHandle = (e) => {
         setState({
             ...state,
             [e.target.name]: e.target.value
-        })
-    }
+        });
+    };
+
+    const captureFace = () => {
+        const imageSrc = webcamRef.current.getScreenshot(); // Get the screenshot from the webcam
+        console.log(imageSrc); // You can process this imageSrc further as needed
+        setShowWebcam(false); // Hide the webcam after capturing
+    };
+
     return (
         <div className='px-2 lg:px-7 py-5'>
             <div className='w-full flex flex-wrap'>
                 <div className='w-full md:w-6/12'>
-                    <div className='w-full p-4  bg-[#283046] rounded-md text-[#d0d2d6]'>
+                    <div className='w-full p-4 bg-[#283046] rounded-md text-[#d0d2d6]'>
                         <div className='flex justify-center items-center py-3'>
-                            {
-                                userInfo?.image ? <label htmlFor="img" className='h-[210px] w-[300px] relative p-3 cursor-pointer overflow-hidden'>
-                                    <img src={userInfo.image}alt=''/>
-                                    {
-                                        loader && <div className='bg-slate-600 absolute left-0 top-0 w-full h-full opacity-70 flex justify-center items-center z-20'>
-                                        <span>
-                                            <FadeLoader />
-                                        </span>
-                                    </div>
+                            {userInfo?.image ? 
+                                <label htmlFor="img" className='h-[210px] w-[300px] relative p-3 cursor-pointer overflow-hidden'>
+                                    <img src={userInfo.image} alt='' />
+                                    {loader && 
+                                        <div className='bg-slate-600 absolute left-0 top-0 w-full h-full opacity-70 flex justify-center items-center z-20'>
+                                            <span><FadeLoader /></span>
+                                        </div>
                                     }
-                                </label> : <label htmlFor="img" className='flex justify-center items-center flex-col h-[210px] w-[300px] cursor-pointer border border-dashed hover:border-indigo-500 border-[#d0d2d6] relative'>
+                                </label> 
+                                : 
+                                <label htmlFor="img" className='flex justify-center items-center flex-col h-[210px] w-[300px] cursor-pointer border border-dashed hover:border-indigo-500 border-[#d0d2d6] relative'>
                                     <span><FaImage /></span>
                                     <span>Select Image</span>
-                                    {
-                                        loader && <div className='bg-slate-600 absolute left-0 top-0 w-full h-full opacity-70 flex justify-center items-center z-20'>
-                                            <span>
-                                                <FadeLoader/>
-                                            </span>
+                                    {loader && 
+                                        <div className='bg-slate-600 absolute left-0 top-0 w-full h-full opacity-70 flex justify-center items-center z-20'>
+                                            <span><FadeLoader/></span>
                                         </div>
                                     }
                                 </label>
                             }
-                            <input onChange={add_image} type="file" className='hidden' id='img' />   
+                            <input onChange={add_image} type="file" className='hidden' id='img' />
                         </div>
                         <div className='px-0 md:px-5 py-2'>
                             <div className='flex justify-between text-sm flex-col gap-2 p-4 bg-slate-800 rounded-md relative'>
@@ -95,9 +107,8 @@ const Profile = () => {
                                     <span>Payment Account : </span>
                                     <p>
                                         {
-                                            status ==='active' ? <span className='bg-red-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded '>{userInfo.payment} </span>
-                                            : <span className='bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded'>
-                                                Click Active
+                                            userInfo.payment === 'active' ? <span className='bg-red-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded '>{userInfo.payment}</span> : <span onClick={() => dispatch(create_stripe_connect_account())} className='bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded '>
+                                                click active
                                             </span>
                                         }
                                     </p>
@@ -148,13 +159,22 @@ const Profile = () => {
                                     <span>City: </span>
                                     <span>{userInfo.shopInfo?.city}</span>
                                 </div>
+                                <div className='flex justify-between items-center'>
+                                    <input type="file" id="idCard" accept="image/*" className='hidden' />
+                                    <label htmlFor="idCard" className='bg-blue-500 text-white rounded-md px-4 py-2 cursor-pointer hover:bg-blue-600'>
+                                        Upload ID Card
+                                    </label>
+                                    <button onClick={() => setShowWebcam(true)} className='bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600'>
+                                        Open Webcam
+                                    </button>
+                                </div>
                             </div>
                             }
                         </div>
                     </div>
                 </div>
                 <div className='w-full md:w-6/12'>
-                <div className='w-full pl-0 md:pl-7 mt-6 md:mt-0  '>
+                    <div className='w-full pl-0 md:pl-7 mt-6 md:mt-0'>
                         <div className='bg-[#283046] rounded-md text-[#d0d2d6] p-4'>
                             <h1 className='text-[#d0d2d6] text-lg mb-3 font-semibold'>Change Password</h1>
                             <form>
@@ -168,16 +188,48 @@ const Profile = () => {
                                 </div>
                                 <div className='flex flex-col w-full gap-1'>
                                     <label htmlFor="n_password">New Password</label>
-                                    <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="password" placeholder='new password' name='new-password' id='new-password' autoComplete="new-password"  />
+                                    <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="password" placeholder='new password' name='new-password' id='new-password' autoComplete="new-password" />
                                 </div>
-                                <button className='bg-blue-500 hover:shadow-blue-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 mt-5 '>Submit</button>
+                                <button className='bg-blue-500 hover:shadow-blue-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 mt-5'>Submit</button>
                             </form>
                         </div>
                     </div>
                 </div>
+                <Modal 
+                    isOpen={showWebcam} 
+                    onRequestClose={() => setShowWebcam(false)} 
+                    className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-70"
+                    overlayClassName="fixed inset-0"
+                >
+                    <div className="bg-gray-800 p-5 rounded-lg shadow-lg">
+                        <h2 className="text-white text-lg mb-4">Capture Your Face</h2>
+                        <div className="webcam-container flex flex-col items-center">
+                            <Webcam 
+                                audio={false} 
+                                ref={webcamRef} 
+                                screenshotFormat="image/jpeg" 
+                                width={500} 
+                            />
+                            <div className="mt-4 flex gap-4">
+                                <button 
+                                    onClick={captureFace} 
+                                    className='bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600'
+                                >
+                                    Capture Face
+                                </button>
+                                <button 
+                                    onClick={() => setShowWebcam(false)} 
+                                    className='bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600'
+                                >
+                                    Close Webcam
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         </div>
-  )
+    );
 }
 
-export default Profile
+export default Profile;

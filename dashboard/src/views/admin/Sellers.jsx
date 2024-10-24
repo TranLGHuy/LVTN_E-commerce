@@ -57,7 +57,7 @@ const Sellers = () => {
                                 <th scope='col' className='py-3 px-4'>Shop Name</th>
                                 <th scope='col' className='py-3 px-4'>Payment Status</th>
                                 <th scope='col' className='py-3 px-4'>Email</th>
-                                <th scope='col' className='py-3 px-4'>Devision</th>
+                                <th scope='col' className='py-3 px-4'>Division</th>
                                 <th scope='col' className='py-3 px-4'>District</th>
                                 <th scope='col' className='py-3 px-4'>Action</th>
                             </tr>
@@ -89,7 +89,7 @@ const Sellers = () => {
                                     </td>
                                     <td scope='row' className='py-1 px-4 font-medium whitespace-nowrap'>
                                         <div className='flex justify-start items-center gap-4'>
-                                            <Link to={`/admin/dashboard/seller/details/${d._id}`} className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye /></Link>
+                                        <Link to={`/admin/dashboard/sellers/details/${d._id}`} className='p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'><FaEye/></Link>
                                             <div className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50' onClick={() => handleDelete(d._id)}>
                                                 <FaTrash />
                                             </div>

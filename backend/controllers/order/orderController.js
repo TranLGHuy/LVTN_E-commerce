@@ -1,14 +1,14 @@
 const authOrderModel = require('../../models/authOrder')
 const customerOrder = require('../../models/customerOrder')
 const cartModel = require('../../models/cartModel')
-// const myShopWallet = require('../../models/myShopWallet')
-// const sellerWallet = require('../../models/sellerWallet')
+const myShopWallet = require('../../models/myShopWallet')
+const sellerWallet = require('../../models/sellerWallet')
 
 const { ObjectId } = require('mongodb');
 
 const { responseReturn } = require('../../utiles/response')
-
 const moment = require('moment')
+const stripe = require('stripe')(process.env.stripe_key)
 
 class orderController {
 
@@ -184,195 +184,194 @@ class orderController {
         }
     }
 
-    // get_admin_orders = async (req, res) => {
-    //     let { page, parPage, searchValue } = req.query
-    //     page = parseInt(page)
-    //     parPage = parseInt(parPage)
+    get_admin_orders = async (req, res) => {
+        let { page, parPage, searchValue } = req.query
+        page = parseInt(page)
+        parPage = parseInt(parPage)
 
-    //     const skipPage = parPage * (page - 1)
+        const skipPage = parPage * (page - 1)
 
-    //     try {
-    //         if (searchValue) {
+        try {
+            if (searchValue) {
 
-    //         } else {
-    //             const orders = await customerOrder.aggregate([
-    //                 {
-    //                     $lookup: {
-    //                         from: 'authororders',
-    //                         localField: "_id",
-    //                         foreignField: 'orderId',
-    //                         as: 'suborder'
-    //                     }
-    //                 }
-    //             ]).skip(skipPage).limit(parPage).sort({ createdAt: -1 })
+            } else {
+                const orders = await customerOrder.aggregate([
+                    {
+                        $lookup: {
+                            from: 'authorizers',
+                            localField: "_id",
+                            foreignField: 'orderId',
+                            as: 'suborder'
+                        }
+                    }
+                ]).skip(skipPage).limit(parPage).sort({ createdAt: -1 })
 
-    //             const totalOrder = await customerOrder.aggregate([
-    //                 {
-    //                     $lookup: {
-    //                         from: 'authororders',
-    //                         localField: "_id",
-    //                         foreignField: 'orderId',
-    //                         as: 'suborder'
-    //                     }
-    //                 }
-    //             ])
+                const totalOrder = await customerOrder.aggregate([
+                    {
+                        $lookup: {
+                            from: 'authorizers',
+                            localField: "_id",
+                            foreignField: 'orderId',
+                            as: 'suborder'
+                        }
+                    }
+                ])
 
-    //             responseReturn(res, 200, { orders, totalOrder: totalOrder.length })
-    //         }
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
+                responseReturn(res, 200, { orders, totalOrder: totalOrder.length })
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
-    // get_admin_order = async (req, res) => {
+    get_admin_order = async (req, res) => {
 
-    //     const { orderId } = req.params
+        const { orderId } = req.params
 
-    //     try {
-    //         const order = await customerOrder.aggregate([
-    //             {
-    //                 $match: { _id: new ObjectId(orderId) }
-    //             }, {
-    //                 $lookup: {
-    //                     from: 'authororders',
-    //                     localField: '_id',
-    //                     foreignField: 'orderId',
-    //                     as: 'suborder'
-    //                 }
-    //             }
-    //         ])
-    //         responseReturn(res, 200, { order: order[0] })
-    //     } catch (error) {
-    //         console.log('get admin order ' + error.message)
-    //     }
-    // }
+        try {
+            const order = await customerOrder.aggregate([
+                {
+                    $match: { _id: new ObjectId(orderId) }
+                }, {
+                    $lookup: {
+                        from: 'authorizers',
+                        localField: '_id',
+                        foreignField: 'orderId'
+                    }
+                }
+            ])
+            responseReturn(res, 200, { order: order[0] })
+        } catch (error) {
+            console.log('get admin order ' + error.message)
+        }
+    }
 
-    // admin_order_status_update = async (req, res) => {
-    //     const { orderId } = req.params
-    //     const { status } = req.body
+    admin_order_status_update = async (req, res) => {
+        const { orderId } = req.params
+        const { status } = req.body
 
-    //     try {
-    //         await customerOrder.findByIdAndUpdate(orderId, {
-    //             delivery_status: status
-    //         })
-    //         responseReturn(res, 200, { message: 'order status change success' })
-    //     } catch (error) {
-    //         console.log('get admin order status error ' + error.message)
-    //         responseReturn(res, 500, { message: 'internal server error' })
-    //     }
-    // }
+        try {
+            await customerOrder.findByIdAndUpdate(orderId, {
+                delivery_status: status
+            })
+            responseReturn(res, 200, { message: 'order status change success' })
+        } catch (error) {
+            console.log('get admin order status error ' + error.message)
+            responseReturn(res, 500, { message: 'internal server error' })
+        }
+    }
 
-    // get_seller_orders = async (req, res) => {
+    get_seller_orders = async (req, res) => {
 
-    //     const { sellerId } = req.params
-    //     let { page, parPage, searchValue } = req.query
-    //     page = parseInt(page)
-    //     parPage = parseInt(parPage)
+        const { sellerId } = req.params
+        let { page, parPage, searchValue } = req.query
+        page = parseInt(page)
+        parPage = parseInt(parPage)
 
-    //     const skipPage = parPage * (page - 1)
+        const skipPage = parPage * (page - 1)
 
 
-    //     try {
-    //         if (searchValue) {
+        try {
+            if (searchValue) {
 
-    //         } else {
-    //             const orders = await authOrderModel.find({
-    //                 sellerId,
-    //             }).skip(skipPage).limit(parPage).sort({ createdAt: -1 })
-    //             const totalOrder = await authOrderModel.find({
-    //                 sellerId,
-    //             }).countDocuments()
-    //             responseReturn(res, 200, { orders, totalOrder })
-    //         }
-    //     } catch (error) {
-    //         console.log('get seller order error ' + error.message)
-    //         responseReturn(res, 500, { message: 'internal server error' })
-    //     }
-    // }
+            } else {
+                const orders = await authOrderModel.find({
+                    sellerId,
+                }).skip(skipPage).limit(parPage).sort({ createdAt: -1 })
+                const totalOrder = await authOrderModel.find({
+                    sellerId,
+                }).countDocuments()
+                responseReturn(res, 200, { orders, totalOrder })
+            }
+        } catch (error) {
+            console.log('get seller order error ' + error.message)
+            responseReturn(res, 500, { message: 'internal server error' })
+        }
+    }
 
-    // get_seller_order = async (req, res) => {
+    get_seller_order = async (req, res) => {
 
-    //     const { orderId } = req.params
+        const { orderId } = req.params
 
-    //     try {
-    //         const order = await authOrderModel.findById(orderId)
+        try {
+            const order = await authOrderModel.findById(orderId)
+            console.log(order)
+            responseReturn(res, 200, { order })
+        } catch (error) {
+            console.log('get seller order ' + error.message)
+        }
+    }
 
-    //         responseReturn(res, 200, { order })
-    //     } catch (error) {
-    //         console.log('get admin order ' + error.message)
-    //     }
-    // }
+    seller_order_status_update = async (req, res) => {
+        const { orderId } = req.params
+        const { status } = req.body
 
-    // seller_order_status_update = async (req, res) => {
-    //     const { orderId } = req.params
-    //     const { status } = req.body
+        try {
+            await authOrderModel.findByIdAndUpdate(orderId, {
+                delivery_status: status
+            })
+            responseReturn(res, 200, { message: 'order status change success' })
+        } catch (error) {
+            console.log('get admin order status error ' + error.message)
+            responseReturn(res, 500, { message: 'internal server error' })
+        }
+    }
 
-    //     try {
-    //         await authOrderModel.findByIdAndUpdate(orderId, {
-    //             delivery_status: status
-    //         })
-    //         responseReturn(res, 200, { message: 'order status change success' })
-    //     } catch (error) {
-    //         console.log('get admin order status error ' + error.message)
-    //         responseReturn(res, 500, { message: 'internal server error' })
-    //     }
-    // }
+    create_payment = async (req, res) => {
+        const { price } = req.body
 
-    // create_payment = async (req, res) => {
-    //     const { price } = req.body
+        try {
+            const payment = await stripe.paymentIntents.create({
+                amount: price * 100,
+                currency: 'usd',
+                automatic_payment_methods: {
+                    enabled: true
+                }
+            })
+            responseReturn(res, 200, { clientSecret: payment.client_secret })
+        } catch (error) {
+            console.log( error.message)
+        }
+    }
 
-    //     try {
-    //         const payment = await stripe.paymentIntents.create({
-    //             amount: price * 100,
-    //             currency: 'usd',
-    //             automatic_payment_methods: {
-    //                 enabled: true
-    //             }
-    //         })
-    //         responseReturn(res, 200, { clientSecret: payment.client_secret })
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
+    order_confirm = async (req, res) => {
+        const { orderId } = req.params
+        try {
+            await customerOrder.findByIdAndUpdate(orderId, { payment_status: 'paid', delivery_status: 'pending' })
+            await authOrderModel.updateMany({ orderId: new ObjectId(orderId) }, {
+                payment_status: 'paid', delivery_status: 'pending'
+            })
+            const cuOrder = await customerOrder.findById(orderId)
 
-    // order_confirm = async (req, res) => {
-    //     const { orderId } = req.params
-    //     try {
-    //         await customerOrder.findByIdAndUpdate(orderId, { payment_status: 'paid', delivery_status: 'pending' })
-    //         await authOrderModel.updateMany({ orderId: new ObjectId(orderId) }, {
-    //             payment_status: 'paid', delivery_status: 'pending'
-    //         })
-    //         const cuOrder = await customerOrder.findById(orderId)
+            const auOrder = await authOrderModel.find({
+                orderId: new ObjectId(orderId)
+            })
 
-    //         const auOrder = await authOrderModel.find({
-    //             orderId: new ObjectId(orderId)
-    //         })
+            const time = moment(Date.now()).format('l')
 
-    //         const time = moment(Date.now()).format('l')
+            const splitTime = time.split('/')
 
-    //         const splitTime = time.split('/')
+            await myShopWallet.create({
+                amount: cuOrder.price,
+                month: splitTime[0],
+                year: splitTime[2],
+            })
 
-    //         await myShopWallet.create({
-    //             amount: cuOrder.price,
-    //             manth: splitTime[0],
-    //             year: splitTime[2],
-    //         })
+            for (let i = 0; i < auOrder.length; i++) {
+                await sellerWallet.create({
+                    sellerId: auOrder[i].sellerId.toString(),
+                    amount: auOrder[i].price,
+                    month: splitTime[0],
+                    year: splitTime[2],
+                })
+            }
 
-    //         for (let i = 0; i < auOrder.length; i++) {
-    //             await sellerWallet.create({
-    //                 sellerId: auOrder[i].sellerId.toString(),
-    //                 amount: auOrder[i].price,
-    //                 manth: splitTime[0],
-    //                 year: splitTime[2],
-    //             })
-    //         }
+            responseReturn(res, 200, { message: 'success' })
 
-    //         responseReturn(res, 200, { message: 'success' })
-
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 }
 
 module.exports = new orderController()
