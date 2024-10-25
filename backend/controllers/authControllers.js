@@ -60,11 +60,36 @@ class authControllers {
     }
 
     seller_register = async (req, res) => {
-        const { email, name, password } = req.body
+        const { email, name, password } = req.body;
+    
+        // Kiểm tra tên không được rỗng
+        if (!name || name.trim().length === 0) {
+            return responseReturn(res, 400, { error: 'Name is required' });
+        }
+    
+        // Kiểm tra định dạng email hợp lệ
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            return responseReturn(res, 400, { error: 'Invalid email format' });
+        }
+    
+        // Kiểm tra độ dài mật khẩu
+        if (!password || password.length < 6) {
+            return responseReturn(res, 400, { error: 'Password must be at least 6 characters long' });
+        }
+    
+        // Kiểm tra mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+        if (!passwordRegex.test(password)) {
+            return responseReturn(res, 400, { 
+                error: 'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+            });
+        }
+    
         try {
-            const getUser = await sellerModel.findOne({ email })
+            const getUser = await sellerModel.findOne({ email });
             if (getUser) {
-                responseReturn(res, 404, { error: 'Email already exit' })
+                return responseReturn(res, 404, { error: 'Email already exists' });
             } else {
                 const seller = await sellerModel.create({
                     name,
@@ -72,21 +97,22 @@ class authControllers {
                     password: await bcrypt.hash(password, 10),
                     method: 'manually',
                     shopInfo: {}
-                })
+                });
                 await sellerCustomerModel.create({
                     myId: seller.id
-                })
-                const token = await createToken({ id: seller.id, role: seller.role })
+                });
+                const token = await createToken({ id: seller.id, role: seller.role });
                 res.cookie('accessToken', token, {
                     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-                })
-                responseReturn(res, 201, { token, message: 'register success' })
+                });
+                responseReturn(res, 201, { token, message: 'Register success' });
             }
         } catch (error) {
-            console.error(error)
-            responseReturn(res, 500, { error: 'Internal server error' })
+            console.error(error);
+            responseReturn(res, 500, { error: 'Internal server error' });
         }
     }
+    
 
     getUser = async (req, res) => {
         const { id, role } = req;

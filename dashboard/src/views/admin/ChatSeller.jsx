@@ -138,7 +138,7 @@ const ChatSeller = () => {
                                                             <span>{m.message}</span>
                                                         </div>
                                                         <div>
-                                                            <img className='w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]' src={userInfo.image ? userInfo.image : adminImage} alt="" />
+                                                            <img className='w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]' src={adminImage} alt="" />
                                                         </div>
                                                     </div>
                                                 </div>

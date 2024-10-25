@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { FaHeadphonesAlt,FaFacebookSquare,FaTwitterSquare,FaGithubSquare,FaLinkedin,FaUserAlt,FaUserLock,FaListUl,FaHeart,FaShoppingCart } from "react-icons/fa";
+import { FaHeadphonesAlt,FaFacebookSquare,FaTwitterSquare,FaGithubSquare,FaLinkedin,FaHeart,FaShoppingCart } from "react-icons/fa";
 
 const Footer = () => {
 
-    // const { card_product_count, wishlist_count } = useSelector(state => state.card)
-    // const navigate = useNavigate()
-    // const { userInfo } = useSelector(state => state.auth)
+    const { cart_product_count, wishlist_count } = useSelector(state => state.cart)
+    const navigate = useNavigate()
+    const { userInfo } = useSelector(state => state.auth)
     
 
     return (
@@ -95,20 +95,20 @@ const Footer = () => {
                 <span>Copyright ©2024 All rights reserved | made by <a className='text-blue-500 underline' href="">@Tran Lu Gia Huy</a></span>
             </div>
 
-            {/* <div className='hidden fixed md-lg:block w-[50px] bottom-3 h-[110px] right-2 bg-white rounded-full p-2'>
+            <div className='hidden fixed md-lg:block w-[50px] bottom-3 h-[110px] right-2 bg-white rounded-full p-2'>
                 <div className='w-full h-full flex gap-3 flex-col justify-center items-center'>
                     <div onClick={()=>navigate(userInfo ? '/card' : '/login')} className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
-                        <span className='text-xl text-orange-500'><AiFillShopping /></span>
+                        <span className='text-xl text-orange-500'><FaShoppingCart /></span>
                         {
-                            card_product_count !== 0 && <div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
+                            cart_product_count !== 0 && <div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
                                 {
-                                    card_product_count
+                                    cart_product_count
                                 }
                             </div>
                         }
                     </div>
                     <div onClick={() => navigate(userInfo ? '/dashboard/my-wishlist' : '/login')} className='relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]'>
-                        <span className='text-xl text-red-500'><AiFillHeart /></span>
+                        <span className='text-xl text-red-500'><FaHeart /></span>
                         {
                             wishlist_count !== 0 && <div className='w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]'>
                                 {wishlist_count}
@@ -116,7 +116,7 @@ const Footer = () => {
                         }
                     </div>
                 </div>
-            </div> */}
+            </div>
         </footer>
     )
 }

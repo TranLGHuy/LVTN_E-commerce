@@ -27,7 +27,17 @@ export const customer_login = createAsyncThunk(
     }
 )
 
-
+export const change_password = createAsyncThunk(
+    'auth/change_password',
+    async (info, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/customer/change-password', info);
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
 const decodeToken = (token) => {
     if (token) {
         const userInfo = jwtDecode(token)
@@ -50,9 +60,9 @@ export const authReducer = createSlice({
             state.errorMessage = ''
             state.successMessage = ''
         },
-        // user_reset: (state, _) => {
-        //    state.userInfo = ""
-        // }
+        user_reset: (state, _) => {
+           state.userInfo = ""
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -81,6 +91,17 @@ export const authReducer = createSlice({
                 state.successMessage = payload.message;
                 state.loader = false;
                 state.userInfo = userInfo;
+            })
+            .addCase(change_password.pending, (state) => {
+                state.loader = true;
+            })
+            .addCase(change_password.rejected, (state, { payload }) => {
+                state.errorMessage = payload.error;
+                state.loader = false;
+            })
+            .addCase(change_password.fulfilled, (state, { payload }) => {
+                state.successMessage = payload.message;
+                state.loader = false;
             });
     }
     

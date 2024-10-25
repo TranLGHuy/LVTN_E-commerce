@@ -122,10 +122,10 @@ export const cartReducer = createSlice({
             state.errorMessage = ''
             state.successMessage = ''
         },
-        // reset_count: (state, _) => {
-        //     state.cart_product_count = 0
-        //     state.wishlist_count = 0
-        // }
+        reset_count: (state, _) => {
+            state.cart_product_count = 0
+            state.wishlist_count = 0
+        }
     },
     extraReducers: (builder) => {
         builder

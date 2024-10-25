@@ -4,9 +4,9 @@ import productReducer from './Reducers/productReducer'
 import sellerReducer from './Reducers/sellerReducer'
 import chatReducer from './Reducers/chatReducer'
 import OrderReducer from './Reducers/OrderReducer'
-// import PaymentReducer from './Reducers/PaymentReducer'
-// import dashboardIndexReducer from './Reducers/dashboardIndexReducer'
-// import bannerReducer from './Reducers/bannerReducer'
+import PaymentReducer from './Reducers/PaymentReducer'
+import dashboardIndexReducer from './Reducers/dashboardIndexReducer'
+import bannerReducer from './Reducers/bannerReducer'
 const rootReducer = {
     auth: authReducer,
     category: categoryReducer,
@@ -14,8 +14,8 @@ const rootReducer = {
     seller: sellerReducer,
     chat: chatReducer,
     order: OrderReducer,
-    // payment: PaymentReducer,
-    // dashboardIndex: dashboardIndexReducer,
-    // banner : bannerReducer
+    payment: PaymentReducer,
+    dashboardIndex: dashboardIndexReducer,
+    banner : bannerReducer
 }
 export default rootReducer
