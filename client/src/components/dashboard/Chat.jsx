@@ -125,7 +125,7 @@ const Chat = () => {
                                     if (currentFd?.fdId !== m.receiverId) {
                                         return (
                                             <div key={i} className='w-full flex gap-2 justify-start items-center text-[14px]'>
-                                                <img className='w-[30px] h-[30px] ' src="http://localhost:3000/images/login.jpg" alt="" />
+                                                <img className='w-[30px] h-[30px] ' src="http://localhost:3000/images/seller.jpg" alt="" />
                                                 <div className='p-2 bg-purple-500 text-white rounded-md'>
                                                     <span>{m.message}</span>
                                                 </div>

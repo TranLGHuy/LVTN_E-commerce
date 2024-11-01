@@ -10,5 +10,7 @@ router.post('/profile-image-upload',authMiddleware, authControllers.profile_imag
 router.post('/profile-info-add',authMiddleware, authControllers.profile_info_add)
 
 router.get('/logout',authMiddleware,authControllers.logout)
+router.post('/upload-id-card', authMiddleware, authControllers.upload_id_card);
+router.post('/upload-face-image', authMiddleware, authControllers.upload_face_image);
 
 module.exports = router

@@ -98,9 +98,9 @@ const Headers = () => {
                                 <li>
                                     <Link to='/shops' className={`p-2 block ${pathname === '/shop' ? 'text-[#7fad39]' : 'text-slate-600'}`}>Shop</Link>
                                 </li>
-                                <li>
+                                {/* <li>
                                     <Link  className={`p-2 block ${pathname === '/blog' ? 'text-[#7fad39]' : 'text-slate-600'}`}>Blog</Link>
-                                </li>
+                                </li> */}
                                 <li>
                                     <Link  to='/aboutUs' className={`p-2 block ${pathname === '/about' ? 'text-[#7fad39]' : 'text-slate-600'}`}>About</Link>
                                 </li>

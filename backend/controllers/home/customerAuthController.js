@@ -1,9 +1,32 @@
 const customerModel = require('../../models/customerModel')
 const { responseReturn } = require('../../utiles/response')
+const { generateOTP } = require('../../utiles/generateOTP')
 const { createToken } = require('../../utiles/tokenCreate')
 const sellerCustomerModel = require('../../models/chat/sellerCustomerModel')
+const Otp = require('../../models/OTP')
 const bcrypt = require('bcrypt')
+const nodemailer = require("nodemailer");
+
+
 class customerAuthController {
+    constructor() {
+        this.transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD,
+            },
+        });
+    }
+
+    sendMail = async (email, subject, body) => {
+        await this.transporter.sendMail({
+            from: process.env.EMAIL,
+            to: email,
+            subject: subject,
+            html: body
+        });
+    };
     customer_register = async (req, res) => {
         const { name, email, password } = req.body;
 
@@ -120,8 +143,73 @@ class customerAuthController {
             responseReturn(res, 500, { error: 'Internal server error' });
         }
     };
+    // verifyOtp = async (req, res) => {
+    //     try {
+    //         const { customerId, otp } = req.body;
+    //         const customer = await customerModel.findById(customerId);
+    //         if (!customer) {
+    //             return responseReturn(res, 404, { message: 'Customer not found for OTP verification' });
+    //         }
+
+    //         const existingOtp = await Otp.findOne({ user: customer._id });
+    //         if (!existingOtp) {
+    //             return responseReturn(res, 404, { message: 'OTP not found' });
+    //         }
+
+    //         if (existingOtp.expiresAt < new Date()) {
+    //             await Otp.findByIdAndDelete(existingOtp._id);
+    //             return responseReturn(res, 400, { message: 'OTP has expired' });
+    //         }
+
+    //         if (await bcrypt.compare(otp, existingOtp.otp)) {
+    //             await Otp.findByIdAndDelete(existingOtp._id);
+    //             customer.isVerified = true;
+    //             await customer.save();
+                
+    //             // Send email after successful verification
+    //             await sendMail(customer.email, 'Verification Successful', 'Your account has been verified successfully!');
+                
+    //             return responseReturn(res, 200, { message: 'Customer verified successfully' });
+    //         }
+
+    //         responseReturn(res, 400, { message: 'Invalid OTP' });
+    //     } catch (error) {
+    //         console.log(error);
+    //         responseReturn(res, 500, { message: 'Internal server error' });
+    //     }
+    // }
+
+    // resendOtp = async (req, res) => {
+    //     try {
+    //         const existingCustomer = await customerModel.findById(req.body.customer);
+    //         if (!existingCustomer) {
+    //             return res.status(404).json({ message: "Customer not found" });
+    //         }
+
+    //         await Otp.deleteMany({ user: existingCustomer._id });
+
+    //         const otp = generateOTP();
+    //         const hashedOtp = await bcrypt.hash(otp, 10);
+
+    //         const newOtp = new Otp({
+    //             user: existingCustomer._id,
+    //             otp: hashedOtp,
+    //             expiresAt: Date.now() + parseInt(process.env.OTP_EXPIRATION_TIME)
+    //         });
+    //         await newOtp.save();
+
+    //         await sendMail(existingCustomer.email, `OTP Verification for Your Account`, `Your OTP is: <b>${otp}</b>.`);
+
+    //         res.status(201).json({ message: "OTP sent" });
+    //     } catch (error) {
+    //         console.error(error);
+    //         res.status(500).json({ message: "Error while resending OTP, please try again later" });
+    //     }
+    // };
     
+
 
 }
 
 module.exports = new customerAuthController()
+

@@ -101,7 +101,7 @@ const OrderDetails = () => {
             </div>
           </div>
 
-          {/* Suborders */}
+          {/* Suborders
           <div className="mt-8">
             <h3 className="text-xl font-semibold text-gray-300 mb-4">Suborders</h3>
             <div className="space-y-6">
@@ -129,7 +129,7 @@ const OrderDetails = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

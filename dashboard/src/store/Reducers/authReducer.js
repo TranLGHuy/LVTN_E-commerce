@@ -58,6 +58,7 @@ export const seller_register = createAsyncThunk(
         }
     }
 )
+
 export const get_user_info = createAsyncThunk(
     'auth/get_user_info',
     async (_, { rejectWithValue, fulfillWithValue }) => {
@@ -106,6 +107,43 @@ const returnRole = (token) => {
         return ''
     }
 }
+export const upload_id_card = createAsyncThunk(
+    'auth/upload_id_card',
+    async (id_image, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/upload-id-card', id_image, { withCredentials: true });
+            return fulfillWithValue(data);
+        } catch (error) {
+            if (error.response) {
+                console.error('Error Response 1:', error.response.data);
+                return rejectWithValue(error.response.data);
+            } else {
+                console.error('Error Message:', error.message); 
+                return rejectWithValue({ message: 'Network Error' });
+            }
+        }
+    }
+);
+
+export const upload_face_image = createAsyncThunk(
+    'auth/upload_face_image',
+    async (face_image, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/upload-face-image', face_image, { withCredentials: true });
+            return fulfillWithValue(data);
+        } catch (error) {
+            if (error.response) {
+                console.error('Error Response:', error.response.data);
+                return rejectWithValue(error.response.data);
+            } else {
+                console.error('Error Message:', error.message);
+                return rejectWithValue({ message: 'Network Error' });
+            }
+        }
+    }
+);
+
+
 export const authReducer =  createSlice({
     name : 'auth',
     initialState: {
@@ -149,9 +187,9 @@ export const authReducer =  createSlice({
             state.errorMessage = action.payload.error; // Store the error message
         })
         builder.addCase(seller_register.fulfilled, (state, action) => {
-            state.loader = false; // Set loader to false
-            state.successMessage = action.payload.message; // Store the success message
-            state.token = action.payload.token; // Store the token
+            state.loader = false; 
+            state.successMessage = action.payload.message;
+            state.token = action.payload.token; 
             state.role = returnRole(action.payload.token); 
         });
     
@@ -179,15 +217,40 @@ export const authReducer =  createSlice({
         })
         builder.addCase(profile_image_upload.fulfilled, (state, { payload }) => {
             state.loader = false;
-            state.userInfo = payload.userInfo;
+            state.userInfo = {
+                ...state.userInfo,
+                profileImage: payload.userInfo.image,
+            };
             state.successMessage = payload.message;
-        })
+        });
         builder.addCase(profile_info_add.pending, (state) => {
             state.loader = true;
         })
         builder.addCase(profile_info_add.fulfilled, (state, { payload }) => {
             state.loader = false;
             state.userInfo = payload.userInfo;
+            state.successMessage = payload.message;
+        });
+        builder.addCase(upload_id_card.pending, (state) => {
+            state.loader = true;
+        });
+        builder.addCase(upload_id_card.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.userInfo = {
+                ...state.userInfo,
+                idCardImage: payload.userInfo.idCardImage,
+            };
+            state.successMessage = payload.message;
+        })
+        builder.addCase(upload_face_image.pending, (state) => {
+            state.loader = true;
+        });
+        builder.addCase(upload_face_image.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.userInfo = {
+                ...state.userInfo,
+                faceImage: payload.userInfo.faceImage,
+            };
             state.successMessage = payload.message;
         });
     }

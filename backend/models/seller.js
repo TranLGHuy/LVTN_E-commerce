@@ -42,6 +42,15 @@ const sellerSchema = new Schema({
         type: Object,
         default: {}
     },
+    idCardImage :{
+        type: String,
+        default: ''
+    },
+    faceImage :{
+        type: String,
+        default: ''
+    },
+
 }, { timestamps: true })
 
 

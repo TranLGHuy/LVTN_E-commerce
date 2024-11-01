@@ -1,19 +1,22 @@
+
 import { FaImage } from "react-icons/fa";
-import { FadeLoader } from 'react-spinners'
+import { FadeLoader } from 'react-spinners';
 import { FaEdit } from "react-icons/fa";
-import React, { useEffect, useState, useRef } from 'react'
-import { PropagateLoader } from 'react-spinners'
-import toast from 'react-hot-toast'
-import { useSelector, useDispatch } from 'react-redux'
-import { overrideStyle } from '../../utils/utils'
-import { profile_image_upload, messageClear, profile_info_add } from '../../store/Reducers/authReducer'
-import { create_stripe_connect_account } from '../../store/Reducers/sellerReducer'
-import Webcam from 'react-webcam';
-import Modal from 'react-modal';
+import React, { useEffect, useState } from 'react';
+import { PropagateLoader } from 'react-spinners';
+import toast from 'react-hot-toast';
+import { useSelector, useDispatch } from 'react-redux';
+import { overrideStyle } from '../../utils/utils';
+import { profile_image_upload, messageClear, profile_info_add } from '../../store/Reducers/authReducer';
+import { create_stripe_connect_account } from '../../store/Reducers/sellerReducer';
+import UploadIdCardModal from '../components/UploadCardModal';
+import CaptureFaceImageModal from '../components/CaptureFaceImageModal';
 
 const Profile = () => {
-    const [showWebcam, setShowWebcam] = useState(false);
-    const webcamRef = useRef(null);
+    const [isIdCardModalOpen, setIsIdCardModalOpen] = useState(false);
+    const [isFaceImageModalOpen, setIsFaceImageModalOpen] = useState(false);
+    
+    const [isEditing, setIsEditing] = useState(false);
     const [state, setState] = useState({
         city: '',
         address: '',
@@ -22,7 +25,7 @@ const Profile = () => {
     });
     const dispatch = useDispatch();
     const { userInfo, loader, successMessage } = useSelector(state => state.auth);
-    
+
     const add_image = (e) => {
         if (e.target.files.length > 0) {
             const formData = new FormData();
@@ -41,6 +44,7 @@ const Profile = () => {
     const add = (e) => {
         e.preventDefault();
         dispatch(profile_info_add(state));
+        setIsEditing(false);
     };
 
     const inputHandle = (e) => {
@@ -50,12 +54,15 @@ const Profile = () => {
         });
     };
 
-    const captureFace = () => {
-        const imageSrc = webcamRef.current.getScreenshot(); // Get the screenshot from the webcam
-        console.log(imageSrc); // You can process this imageSrc further as needed
-        setShowWebcam(false); // Hide the webcam after capturing
+    const handleEditClick = () => {
+        setState({
+            city: userInfo.shopInfo?.city || '',
+            address: userInfo.shopInfo?.address || '',
+            shopName: userInfo.shopInfo?.shopName || '',
+            phoneNumber: userInfo.shopInfo?.phoneNumber || ''
+        });
+        setIsEditing(true);
     };
-
     return (
         <div className='px-2 lg:px-7 py-5'>
             <div className='w-full flex flex-wrap'>
@@ -86,7 +93,6 @@ const Profile = () => {
                         </div>
                         <div className='px-0 md:px-5 py-2'>
                             <div className='flex justify-between text-sm flex-col gap-2 p-4 bg-slate-800 rounded-md relative'>
-                                <span className='p-[6px] bg-blue-500 rounded hover:shadow-lg hover:shadow-blue-500/50 absolute right-2 top-2 cursor-pointer'><FaEdit/></span>
                                 <div className='flex gap-2'>
                                     <span>Name : </span>
                                     <span>{userInfo.name}</span>
@@ -107,19 +113,55 @@ const Profile = () => {
                                     <span>Payment Account : </span>
                                     <p>
                                         {
-                                            userInfo.payment === 'active' ? <span className='bg-red-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded '>{userInfo.payment}</span> : <span onClick={() => dispatch(create_stripe_connect_account())} className='bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded '>
-                                                click active
-                                            </span>
+                                            userInfo.payment === 'active' ? 
+                                                <span className='bg-red-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded '>{userInfo.payment}</span> : 
+                                                <span onClick={() => dispatch(create_stripe_connect_account())} className='bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded '>
+                                                    click active
+                                                </span>
                                         }
                                     </p>
                                 </div>
+                                <div>
+                                <div className='flex gap-2'>
+                                    <span>ID Card Status: </span>
+                                    <p>
+                                        {userInfo?.idCardImage ? 
+                                            <span className='bg-green-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded'>Verified</span> : 
+                                            <span onClick={() => setIsIdCardModalOpen(true)} className='bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded'>Not available</span>
+                                        }
+                                    </p>
+                                </div>
+                                <UploadIdCardModal 
+                                    isOpen={isIdCardModalOpen} 
+                                    onRequestClose={() => setIsIdCardModalOpen(false)} 
+                                    onUpload={() => setIsIdCardModalOpen(false)} 
+                                />
+                            </div>
+                            <div>
+                                <div className='flex gap-2'>
+                                    <span>Face Image: </span>
+                                    <p>
+                                        {userInfo?.faceImage ? 
+                                            <span className='bg-green-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded'>Verified</span> : 
+                                            <span onClick={() => setIsFaceImageModalOpen(true)} className='bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded'>Not available</span>
+                                        }
+                                    </p>
+                                </div>
+                                <CaptureFaceImageModal
+                                    isOpen={isFaceImageModalOpen} 
+                                    onRequestClose={() => setIsFaceImageModalOpen(false)} 
+                                    onUpload={() => setIsFaceImageModalOpen(false)} 
+                                />
+                            </div>
+
                             </div>
                         </div>
                         <div className='px-0 md:px-5 py-2'>
                             {
-                                !userInfo?.shopInfo ? <form onSubmit={add}>
+                                !userInfo?.shopInfo ? 
+                                <form onSubmit={add}>
                                     <div className='flex flex-col w-full gap-1 mb-3'>
-                                        <label  htmlFor="ShopName">Shop Name</label>
+                                        <label htmlFor="ShopName">Shop Name</label>
                                         <input value={state.shopName} onChange={inputHandle} className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="text" placeholder='Shop name' name='shopName' id='shopName' />
                                     </div>
                                     <div className='flex flex-col w-full gap-1 mb-3'>
@@ -135,101 +177,91 @@ const Profile = () => {
                                         <input value={state.city} onChange={inputHandle} className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="text" placeholder='City' name='city' id='city' required />
                                     </div>
                                     <div className='flex'>
-                                    <button disabled={loader ? true : false} className='bg-blue-500 w-[190px] hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3'>
-                                        {
-                                            loader ? <PropagateLoader color='#fff' cssOverride={overrideStyle} /> : 'Update Info'
-                                        }
-                                    </button>
+                                        <button disabled={loader ? true : false} className='bg-blue-500 w-[190px] hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3'>
+                                            {
+                                                loader ? <PropagateLoader color='#fff' cssOverride={overrideStyle} /> : 'Update Info'
+                                            }
+                                        </button>
                                     </div>
-                                </form> : <div className='flex justify-between text-sm flex-col gap-2 p-4 bg-slate-800 rounded-md relative'>
-                                <span className='p-[6px] bg-blue-500 rounded hover:shadow-lg hover:shadow-blue-500/50 absolute right-2 top-2 cursor-pointer'><FaEdit/></span>
-                                <div className='flex gap-2'>
-                                    <span>Shop name : </span>
-                                    <span>{userInfo.shopInfo?.shopName}</span>
-                                </div>
-                                <div className='flex gap-2'>
-                                    <span>Phone Number : </span>
-                                    <span>{userInfo.shopInfo?.phoneNumber}</span>
-                                </div>
-                                <div className='flex gap-2'>
-                                    <span>Address </span>
-                                    <span>{userInfo.shopInfo?.address}</span>
-                                </div>
-                                <div className='flex gap-2'>
-                                    <span>City: </span>
-                                    <span>{userInfo.shopInfo?.city}</span>
-                                </div>
-                                <div className='flex justify-between items-center'>
-                                    <input type="file" id="idCard" accept="image/*" className='hidden' />
-                                    <label htmlFor="idCard" className='bg-blue-500 text-white rounded-md px-4 py-2 cursor-pointer hover:bg-blue-600'>
-                                        Upload ID Card
-                                    </label>
-                                    <button onClick={() => setShowWebcam(true)} className='bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600'>
-                                        Open Webcam
-                                    </button>
-                                </div>
-                            </div>
+                                </form> : 
+                                <>
+                                    {!isEditing ? (
+                                        <div className='flex justify-between text-sm flex-col gap-2 p-4 bg-slate-800 rounded-md relative'>
+                                            <span className='p-[6px] bg-blue-500 rounded hover:shadow-lg hover:shadow-blue-500/50 absolute right-2 top-2 cursor-pointer' onClick={handleEditClick}><FaEdit/></span>
+                                            <div className='flex gap-2'>
+                                                <span>Shop Name : </span>
+                                                <span>{userInfo.shopInfo.shopName}</span>
+                                            </div>
+                                            <div className='flex gap-2'>
+                                                <span>Phone Number : </span>
+                                                <span>{userInfo.shopInfo.phoneNumber}</span>
+                                            </div>
+                                            <div className='flex gap-2'>
+                                                <span>Address : </span>
+                                                <span>{userInfo.shopInfo.address}</span>
+                                            </div>
+                                            <div className='flex gap-2'>
+                                                <span>City : </span>
+                                                <span>{userInfo.shopInfo.city}</span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <form onSubmit={add}>
+                                            <div className='flex flex-col w-full gap-1 mb-3'>
+                                                <label htmlFor="ShopName">Shop Name</label>
+                                                <input value={state.shopName} onChange={inputHandle} className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="text" placeholder='Shop name' name='shopName' id='shopName' />
+                                            </div>
+                                            <div className='flex flex-col w-full gap-1 mb-3'>
+                                                <label htmlFor="Phone">Phone Number</label>
+                                                <input value={state.phoneNumber} onChange={inputHandle} className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="tel" placeholder='Phone number' name='phoneNumber' id='phoneNumber' />
+                                            </div>
+                                            <div className='flex flex-col w-full gap-1 mb-3'>
+                                                <label htmlFor="Address">Address</label>
+                                                <input value={state.address} onChange={inputHandle} className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="text" placeholder='Address' name='address' id='address' required />
+                                            </div>
+                                            <div className='flex flex-col w-full gap-1 mb-3'>
+                                                <label htmlFor="City">City</label>
+                                                <input value={state.city} onChange={inputHandle} className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="text" placeholder='City' name='city' id='city' required />
+                                            </div>
+                                            <div className='flex'>
+                                                <button disabled={loader ? true : false} className='bg-blue-500 w-[190px] hover:shadow-blue-500/20 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3'>
+                                                    {
+                                                        loader ? <PropagateLoader color='#fff' cssOverride={overrideStyle} /> : 'Update Info'
+                                                    }
+                                                </button>
+                                            </div>
+                                        </form>
+                                    )}
+                                </>
                             }
                         </div>
                     </div>
                 </div>
                 <div className='w-full md:w-6/12'>
-                    <div className='w-full pl-0 md:pl-7 mt-6 md:mt-0'>
-                        <div className='bg-[#283046] rounded-md text-[#d0d2d6] p-4'>
-                            <h1 className='text-[#d0d2d6] text-lg mb-3 font-semibold'>Change Password</h1>
-                            <form>
-                                <div className='flex flex-col w-full gap-1 mb-3'>
-                                    <label htmlFor="email">Email</label>
-                                    <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="email" placeholder='email' name='email' id='email' autoComplete="email" />
-                                </div>
-                                <div className='flex flex-col w-full gap-1'>
-                                    <label htmlFor="o_password">Old Password</label>
-                                    <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="password" placeholder='old password' name='old-password' id='old-password' autoComplete="current-password"/>
-                                </div>
-                                <div className='flex flex-col w-full gap-1'>
-                                    <label htmlFor="n_password">New Password</label>
-                                    <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="password" placeholder='new password' name='new-password' id='new-password' autoComplete="new-password" />
-                                </div>
-                                <button className='bg-blue-500 hover:shadow-blue-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 mt-5'>Submit</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <Modal 
-                    isOpen={showWebcam} 
-                    onRequestClose={() => setShowWebcam(false)} 
-                    className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-70"
-                    overlayClassName="fixed inset-0"
-                >
-                    <div className="bg-gray-800 p-5 rounded-lg shadow-lg">
-                        <h2 className="text-white text-lg mb-4">Capture Your Face</h2>
-                        <div className="webcam-container flex flex-col items-center">
-                            <Webcam 
-                                audio={false} 
-                                ref={webcamRef} 
-                                screenshotFormat="image/jpeg" 
-                                width={500} 
-                            />
-                            <div className="mt-4 flex gap-4">
-                                <button 
-                                    onClick={captureFace} 
-                                    className='bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600'
-                                >
-                                    Capture Face
-                                </button>
-                                <button 
-                                    onClick={() => setShowWebcam(false)} 
-                                    className='bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600'
-                                >
-                                    Close Webcam
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </Modal>
+                     <div className='w-full pl-0 md:pl-7 mt-6 md:mt-0'>
+                         <div className='bg-[#283046] rounded-md text-[#d0d2d6] p-4'>
+                             <h1 className='text-[#d0d2d6] text-lg mb-3 font-semibold'>Change Password</h1>
+                             <form>
+                                 <div className='flex flex-col w-full gap-1 mb-3'>
+                                     <label htmlFor="email">Email</label>
+                                     <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="email" placeholder='email' name='email' id='email' autoComplete="email" />
+                                 </div>
+                                 <div className='flex flex-col w-full gap-1'>
+                                     <label htmlFor="o_password">Old Password</label>
+                                     <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="password" placeholder='old password' name='old-password' id='old-password' autoComplete="current-password"/>
+                                 </div>
+                                 <div className='flex flex-col w-full gap-1'>
+                                     <label htmlFor="n_password">New Password</label>
+                                     <input className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="password" placeholder='new password' name='new-password' id='new-password' autoComplete="new-password" />
+                                 </div>
+                                 <button className='bg-blue-500 hover:shadow-blue-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 mt-5'>Submit</button>
+                             </form>
+                         </div>
+                     </div>
+                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default Profile;

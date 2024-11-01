@@ -113,7 +113,6 @@ class authControllers {
         }
     }
     
-
     getUser = async (req, res) => {
         const { id, role } = req;
 
@@ -200,5 +199,96 @@ class authControllers {
             responseReturn(res, 500, { error: error.message });
         }
     };
+    upload_id_card = async (req, res) => {
+        const { id } = req;
+
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+                console.error('Form parsing error:', err);
+                return responseReturn(res, 500, { error: 'Error parsing form data' });
+            }
+
+            // In ra để xác nhận các tệp đã nhận
+            console.log('Files received:', files);
+
+            if (!files.id_image || !files.id_image[0].filepath) {
+                console.error('No ID card image file provided');
+                return responseReturn(res, 400, { error: 'No ID card image file provided' });
+            }
+
+            const image = files.id_image[0];
+
+            // Cấu hình Cloudinary
+            cloudinary.config({
+                cloud_name: process.env.cloud_name,
+                api_key: process.env.api_key,
+                api_secret: process.env.api_secret,
+                secure: true
+            });
+
+            try {
+                const result = await cloudinary.uploader.upload(image.filepath, { folder: 'id_cards' });
+
+                if (result) {
+                    await sellerModel.findByIdAndUpdate(id, { idCardImage: result.url });
+                    const updatedUserInfo = await sellerModel.findById(id);
+                    return responseReturn(res, 201, { message: 'ID card upload success', userInfo: updatedUserInfo });
+                } else {
+                    return responseReturn(res, 404, { error: 'ID card upload failed' });
+                }
+            } catch (error) {
+                console.error('Error uploading ID card image:', error);
+                return responseReturn(res, 500, { error: error.message });
+            }
+        })
+    }
+    upload_face_image = async (req, res) => {
+        const { id } = req;
+
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+                console.error('Form parsing error:', err);
+                return responseReturn(res, 500, { error: 'Error parsing form data' });
+            }
+
+            // In ra để xác nhận các tệp đã nhận
+            console.log('Files received:', files);
+
+            if (!files.face_image || !files.face_image[0].filepath) {
+                console.error('No face image provided');
+                return responseReturn(res, 400, { error: 'No face image provided' });
+            }
+
+            const image = files.face_image[0];
+
+            // Cấu hình Cloudinary
+            cloudinary.config({
+                cloud_name: process.env.cloud_name,
+                api_key: process.env.api_key,
+                api_secret: process.env.api_secret,
+                secure: true
+            });
+
+            try {
+                const result = await cloudinary.uploader.upload(image.filepath, { folder: 'face_image' });
+
+                if (result) {
+                    await sellerModel.findByIdAndUpdate(id, { faceImage: result.url });
+                    const updatedUserInfo = await sellerModel.findById(id);
+                    return responseReturn(res, 201, { message: 'face image upload success', userInfo: updatedUserInfo });
+                } else {
+                    return responseReturn(res, 404, { error: 'face image upload failed' });
+                }
+            } catch (error) {
+                console.error('Error uploading face image:', error);
+                return responseReturn(res, 500, { error: error.message });
+            }
+        })
+       
+    }
 }
+    
+
 module.exports = new authControllers()

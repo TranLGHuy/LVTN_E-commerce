@@ -38,6 +38,30 @@ export const change_password = createAsyncThunk(
         }
     }
 )
+
+// export const verifyOtp = createAsyncThunk(
+//     'auth/verify_otp',
+//     async (info, { rejectWithValue, fulfillWithValue }) => {
+//         try {
+//             const { data } = await api.post('/customer/verify-otp', info);
+//             return fulfillWithValue(data);
+//         } catch (error) {
+//             return rejectWithValue(error.response.data);
+//         }
+//     }
+// );
+// export const resendOtp = createAsyncThunk(
+//     'auth/resend_otp',
+//     async (info, { rejectWithValue, fulfillWithValue }) => {
+//         try {
+//             const { data } = await api.post('/customer/resend-otp', info);
+//             return fulfillWithValue(data);
+//         } catch (error) {
+//             return rejectWithValue(error.response.data);
+//         }
+//     }
+// );
+
 const decodeToken = (token) => {
     if (token) {
         const userInfo = jwtDecode(token)
@@ -102,7 +126,29 @@ export const authReducer = createSlice({
             .addCase(change_password.fulfilled, (state, { payload }) => {
                 state.successMessage = payload.message;
                 state.loader = false;
-            });
+            })
+            // .addCase(verifyOtp.pending, (state) => {
+            //     state.loader = true;
+            // })
+            // .addCase(verifyOtp.rejected, (state, { payload }) => {
+            //     state.errorMessage = payload.error;
+            //     state.loader = false;
+            // })
+            // .addCase(verifyOtp.fulfilled, (state, { payload }) => {
+            //     state.successMessage = payload.message;
+            //     state.loader = false;
+            // })
+            // .addCase(resendOtp.pending, (state) => {
+            //     state.loader = true;
+            // })
+            // .addCase(resendOtp.rejected, (state, { payload }) => {
+            //     state.errorMessage = payload.error;
+            //     state.loader = false;
+            // })
+            // .addCase(resendOtp.fulfilled, (state, { payload }) => {
+            //     state.successMessage = payload.message;
+            //     state.loader = false;
+            // });
     }
     
 })

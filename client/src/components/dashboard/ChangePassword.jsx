@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { change_password } from '../../store/reducers/authReducer';
+// import { change_password } from '../../store/reducers/authReducer';
 
 const ChangePassword = () => {
-  const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    email: '',
-    old_password: '',
-    new_password: ''
-  });
+  // const dispatch = useDispatch();
+  // const [formData, setFormData] = useState({
+  //   email: '',
+  //   old_password: '',
+  //   new_password: ''
+  // });
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
 
-  const handleSubmit = () => {
-    dispatch(change_password(formData));
-  };
+  // const handleSubmit = () => {
+  //   dispatch(change_password(formData));
+  // };
 
   return (
     <div className='p-4 bg-white'>
@@ -33,7 +33,7 @@ const ChangePassword = () => {
             name='email'
             placeholder='Enter your email'
             className='outline-none px-3 py-1 border rounded-md text-slate-600'
-            onChange={handleChange}
+            // onChange={handleChange}
           />
         </div>
         <div className='flex flex-col gap-1 mb-2'>
@@ -44,7 +44,7 @@ const ChangePassword = () => {
             name='old_password'
             placeholder='Old password'
             className='outline-none px-3 py-1 border rounded-md text-slate-600'
-            onChange={handleChange}
+            // onChange={handleChange}
           />
         </div>
         <div className='flex flex-col gap-1 mb-2'>
@@ -55,13 +55,13 @@ const ChangePassword = () => {
             name='new_password'
             placeholder='New password'
             className='outline-none px-3 py-1 border rounded-md text-slate-600'
-            onChange={handleChange}
+            // onChange={handleChange}
           />
         </div>
         <div>
           <button
             type="button"
-            onClick={handleSubmit}
+            // onClick={handleSubmit}
             className='px-8 py-2 bg-purple-500 shadow-lg hover:shadow-purple-500/30 text-white rounded-md'
           >
             Update

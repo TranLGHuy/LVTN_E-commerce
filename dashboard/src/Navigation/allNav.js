@@ -93,19 +93,12 @@ export const allNav = [
     },
     {
         id: 11,
-        title: 'All Banner',
+        title: 'FACE',
         icon: <RiProductHuntLine />,
         role: 'seller',
-        path: '/seller/dashboard/banners'
+        path: '/seller/dashboard/face'
     },
 
-    {
-        id: 12,
-        title: 'Add Banners',
-        icon: <MdOutlineDiscount/>,
-        role: 'seller',
-        path: '/seller/dashboard/add-banners'
-    },
     {
         id: 13,
         title: 'Orders',
