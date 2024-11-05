@@ -8,7 +8,6 @@ import torch
 from facenet_pytorch import MTCNN, InceptionResnetV1
 from pymongo import MongoClient
 import requests
-from bson.objectid import ObjectId  # Import ObjectId
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3001"}})
@@ -58,20 +57,14 @@ def verify_face():
     image = Image.open(io.BytesIO(image_data))
 
     # Lưu ảnh gửi lên
-    # image.save('camera_image.jpg')
-    # print("Saved camera image as 'camera_image.jpg'")
+    image.save('camera_image.jpg')
+    print("Saved camera image as 'camera_image.jpg'")
 
     # Lấy embedding từ hình ảnh được gửi
     camera_embedding = get_face_embedding(np.array(image))
 
     # Tìm seller trong MongoDB
-    try:
-        seller_info = collection.find_one({"_id": ObjectId(seller_id)})  # Chuyển đổi seller_id thành ObjectId
-    except Exception as e:
-        print(f"Error finding seller: {e}")
-        return jsonify({'success': False, 'message': 'Error retrieving seller from database.'}), 500
-
-    # print(f"Seller Info: {seller_info}")
+    seller_info = collection.find_one({"_id": seller_id})
 
     if seller_info and 'faceImage' in seller_info and seller_info['faceImage']:
         cloudinary_image_url = seller_info['faceImage']
@@ -79,8 +72,8 @@ def verify_face():
 
         try:
             saved_image = Image.open(io.BytesIO(requests.get(cloudinary_image_url).content)).convert('RGB')
-            # saved_image.save('faceImage.jpg')  # Lưu ảnh vào file
-            # print("Saved seller face image as 'faceImage.jpg'")
+            saved_image.save('faceImage.jpg')  # Lưu ảnh vào file
+            print("Saved seller face image as 'faceImage.jpg'")
         except Exception as e:
             print(f"Error loading or saving face image: {e}")
             return jsonify({'success': False, 'message': 'Error loading seller face image.'}), 500
@@ -98,6 +91,7 @@ def verify_face():
                 return jsonify({'success': False, 'message': 'Face verification failed'})
 
     return jsonify({'success': False, 'message': 'Seller not found or image not available.'})
+
 
 if __name__ == '__main__':
     app.run(port=5001)

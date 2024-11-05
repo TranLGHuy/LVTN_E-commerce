@@ -92,10 +92,5 @@ export const sellerRoutes = [
         role: 'seller',
         visibility: ['active', 'deactive', 'pending']
     },
-    {
-        path: '/seller/dashboard/face',
-        element: <Face />,
-        role: 'seller',
-        status: 'active'
-    },
+
 ]

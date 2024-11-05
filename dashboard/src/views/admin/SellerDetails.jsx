@@ -68,6 +68,23 @@ const SellerDetails = () => {
                                         <span>Payment Account : </span>
                                         <span>{seller?.payment}</span>
                                     </div>
+                                    <div className='flex gap-2'>
+                                        <span>ID card image:</span>
+                                        {seller?.idCardImage ? (
+                                            <span> (Đã cập nhật)</span>
+                                        ) : (
+                                            <span>(Chưa cập nhật)</span>
+                                        )}
+                                    </div>
+                                    <div className='flex gap-2'>
+                                        <span>Face image:</span>
+                                        {seller?.faceImage ? (
+                                            <span> (Đã cập nhật)</span>
+                                        ) : (
+                                            <span>(Chưa cập nhật)</span>
+                                        )}
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

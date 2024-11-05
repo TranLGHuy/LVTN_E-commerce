@@ -91,44 +91,37 @@ export const allNav = [
         role: 'seller',
         path: '/seller/dashboard/products'
     },
-    {
-        id: 11,
-        title: 'FACE',
-        icon: <RiProductHuntLine />,
-        role: 'seller',
-        path: '/seller/dashboard/face'
-    },
 
     {
-        id: 13,
+        id: 12,
         title: 'Orders',
         icon: <FaShoppingCart />,
         role: 'seller',
         path: '/seller/dashboard/orders'
     },
     {
-        id: 14,
+        id: 13,
         title: 'Payments',
         icon: <AiOutlineDollarCircle />,
         role: 'seller',
         path: '/seller/dashboard/payments'
     },
     {
-        id: 15,
+        id: 14,
         title: 'Chat Customer',
         icon: <IoChatboxEllipsesOutline />,
         role: 'seller',
         path: '/seller/dashboard/chat-customer'
     },
     {
-        id: 16,
+        id: 15,
         title: 'Chat Support',
         icon: <PiChatsBold />,
         role: 'seller',
         path: '/seller/dashboard/chat-support'
     },
     {
-        id: 17,
+        id: 16,
         title: 'Profile',
         icon: <CgProfile />,
         role: 'seller',

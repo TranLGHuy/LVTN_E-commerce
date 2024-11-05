@@ -60,9 +60,9 @@ const OrderDetails = () => {
 
           <div className="flex flex-wrap mt-6 gap-8">
             <div className="w-full md:w-1/3 bg-gray-900 p-4 rounded-md">
-                <h2 className="text-lg font-semibold text-gray-300">Deliver To:</h2>
+                <h2 className="text-lg font-semibold text-gray-300">Status</h2>
                 <p className="text-sm text-gray-400">
-                    {order?.shippingInfo}
+                    {order?.delivery_status}
                 </p>
                 {/* <p className="mt-2">
                     <span className="font-semibold text-gray-300">Phone: </span>

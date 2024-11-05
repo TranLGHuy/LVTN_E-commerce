@@ -93,20 +93,21 @@ export const profile_info_add = createAsyncThunk(
         }
     }
 )
-const returnRole = (token) => {
+const returnUserInfo = (token) => {
     if (token) {
-        const decodeToken = jwtDecode(token)
-        const expireTime = new Date(decodeToken.exp * 1000)
+        const decodeToken = jwtDecode(token);
+        const expireTime = new Date(decodeToken.exp * 1000);
         if (new Date() > expireTime) {
-            localStorage.removeItem('accessToken')
-            return ''
+            localStorage.removeItem('accessToken');
+            return { role: '', userId: '' }; // Nếu hết hạn, trả về rỗng
         } else {
-            return decodeToken.role
+            return { role: decodeToken.role, userId: decodeToken.id }; // Giả sử ID được lưu dưới thuộc tính 'id'
         }
     } else {
-        return ''
+        return { role: '', userId: '' }; // Không có token, trả về rỗng
     }
 }
+
 export const upload_id_card = createAsyncThunk(
     'auth/upload_id_card',
     async (id_image, { rejectWithValue, fulfillWithValue }) => {
@@ -151,9 +152,11 @@ export const authReducer =  createSlice({
         errorMessage: '',
         loader: false,
         userInfo: '',
-        role: returnRole(localStorage.getItem(`accessToken`)),
+        role: returnUserInfo(localStorage.getItem(`accessToken`)).role,
+        userId: returnUserInfo(localStorage.getItem(`accessToken`)).userId, 
         token: localStorage.getItem(`accessToken`)
     },
+    
     reducers : {
         messageClear: (state,_) => {
             state.errorMessage = ""
@@ -175,7 +178,7 @@ export const authReducer =  createSlice({
             state.loader = false;
             state.successMessage = payload.message;
             state.token = payload.token;
-            state.role = returnRole(payload.token);
+            state.role = returnUserInfo(payload.token);
             state.userInfo = payload.userInfo; 
         });
         
@@ -190,7 +193,7 @@ export const authReducer =  createSlice({
             state.loader = false; 
             state.successMessage = action.payload.message;
             state.token = action.payload.token; 
-            state.role = returnRole(action.payload.token); 
+            state.role = returnUserInfo(action.payload.token); 
         });
     
         builder.addCase(seller_login.pending, (state) => {
@@ -204,7 +207,7 @@ export const authReducer =  createSlice({
             state.loader = false;
             state.successMessage = payload.message;
             state.token = payload.token;
-            state.role = returnRole(payload.token);
+            state.role = returnUserInfo(payload.token);
             state.userInfo = payload.userInfo; 
         });
         builder.addCase(get_user_info.fulfilled, (state, { payload }) => {

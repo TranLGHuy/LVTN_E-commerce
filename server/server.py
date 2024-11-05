@@ -1,63 +1,105 @@
-import base64
-import io
+import json
 import numpy as np
+import requests
 from PIL import Image
-import torch
+import io
 from facenet_pytorch import MTCNN, InceptionResnetV1
-from flask import Flask, request, jsonify
-from flask_cors import CORS  # Import CORS
-
-# Khởi tạo Flask app
-app = Flask(__name__)
-CORS(app)  # Thêm dòng này để cho phép CORS
+import torch
+import cv2
+from pymongo import MongoClient
 
 # Thiết lập thiết bị
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+print('Running on device: {}'.format(device))
 
 # Khởi tạo MTCNN và InceptionResnetV1
 mtcnn = MTCNN(keep_all=True, device=device)
 resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
 
-# Hàm để giải mã hình ảnh từ chuỗi base64
-def decode_base64_and_get_image(base64_str):
-    base64_str = base64_str.split(',')[1]  # Loại bỏ phần header
-    image_data = base64.b64decode(base64_str)
-    return Image.open(io.BytesIO(image_data))
-
 # Hàm để lấy embedding từ gương mặt
 def get_face_embedding(image):
-    image = mtcnn(image)  # Phát hiện gương mặt và cắt xén
-    if image is not None:
-        embedding = resnet(image)  # Trích xuất nhúng
-        return embedding
+    if image is None:
+        return None
+    # Ensure the image is RGB
+    if image.shape[-1] == 4:
+        image = Image.fromarray(image).convert('RGB')
+        image = np.array(image)
+    
+    # Detect face and compute embedding
+    boxes, _ = mtcnn.detect(image)
+    if boxes is not None:
+        face = mtcnn(image)
+        if face is not None:
+            embedding = resnet(face)
+            return embedding
     return None
 
-# Hàm để so sánh nhúng
-def is_same_person(embedding1, embedding2, threshold=0.8):
-    distance = torch.dist(embedding1, embedding2).item()
-    return distance < threshold
+# Hàm tải hình ảnh từ URL
+def load_image_from_url(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        image = Image.open(io.BytesIO(response.content)).convert('RGB')
+        return np.array(image)
+    except Exception as e:
+        print(f"Error loading image from URL: {e}")
+        return None
 
-@app.route('/api/face/compare', methods=['POST'])
-def compare_faces():
-    data = request.json
-    if 'image1' not in data or 'image2' not in data:
-        return jsonify({"error": "Missing images"}), 400
+# Kết nối đến MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+db = client['ecommerce']
+collection = db['sellers']
 
-    # Giải mã hình ảnh từ base64
-    image1 = decode_base64_and_get_image(data['image1'])
-    image2 = decode_base64_and_get_image(data['image2'])
+# Khởi động camera
+cap = cv2.VideoCapture(0)
 
-    # Lấy embedding từ hai hình ảnh
-    embedding1 = get_face_embedding(image1)
-    embedding2 = get_face_embedding(image2)
+try:
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
 
-    if embedding1 is None or embedding2 is None:
-        return jsonify({"error": "Face not detected in one or both images"}), 400
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        camera_embedding = get_face_embedding(frame_rgb)
 
-    # So sánh nhúng
-    same_person = is_same_person(embedding1, embedding2)
+        # Lấy danh sách sellers từ MongoDB
+        sellers = collection.find()
+        matches_found = []
 
-    return jsonify({"same_person": same_person})
+        for seller_info in sellers:
+            # Kiểm tra nếu trường faceImage tồn tại
+            if 'faceImage' in seller_info and seller_info['faceImage']:
+                cloudinary_image_url = seller_info['faceImage']
+                saved_image = load_image_from_url(cloudinary_image_url)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+                # Lấy embedding từ hình ảnh gương mặt đã tải
+                saved_embedding = get_face_embedding(saved_image)
+
+                # So sánh nếu camera có gương mặt
+                if camera_embedding is not None and saved_embedding is not None:
+                    # Calculate Euclidean distance
+                    distance = torch.norm(saved_embedding - camera_embedding).item()
+
+                    # Xác định ngưỡng
+                    threshold = 0.7
+                    if distance < threshold:
+                        print(f"Match found for seller: {seller_info['email']}")
+                        matches_found.append(seller_info)
+
+        # Hiển thị kết quả
+        if matches_found:
+            for idx, match in enumerate(matches_found):
+                cv2.putText(frame, f"Match Found: {match['email']}", (10, 70 + 30 * idx),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        else:
+            cv2.putText(frame, "No Match", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+        # Hiển thị khung hình
+        cv2.imshow('Camera', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            print("Exiting program.")
+            break
+finally:
+    cap.release()
+    cv2.destroyAllWindows()
+    client.close() 
