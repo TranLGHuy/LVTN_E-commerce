@@ -63,6 +63,7 @@ const Profile = () => {
         });
         setIsEditing(true);
     };
+
     return (
         <div className='px-2 lg:px-7 py-5'>
             <div className='w-full flex flex-wrap'>
@@ -122,15 +123,22 @@ const Profile = () => {
                                     </p>
                                 </div>
                                 <div>
-                                <div className='flex gap-2'>
+                                <div className="flex gap-2">
                                     <span>ID Card Status: </span>
                                     <p>
-                                        {userInfo?.idCardImage ? 
-                                            <span className='bg-green-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded'>Verified</span> : 
-                                            <span onClick={() => setIsIdCardModalOpen(true)} className='bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded'>Not available</span>
-                                        }
+                                        {userInfo?.idCardImages && userInfo?.idCardImages.length > 0 ? (
+                                        <span className="bg-green-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded">Verified</span>
+                                        ) : (
+                                        <span
+                                            onClick={() => setIsIdCardModalOpen(true)}
+                                            className="bg-blue-500 text-white text-xs cursor-pointer font-normal ml-2 px-2 py-0.5 rounded"
+                                        >
+                                            Not available
+                                        </span>
+                                        )}
                                     </p>
                                 </div>
+
                                 <UploadIdCardModal 
                                     isOpen={isIdCardModalOpen} 
                                     onRequestClose={() => setIsIdCardModalOpen(false)} 

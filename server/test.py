@@ -8,7 +8,7 @@ import torch
 from facenet_pytorch import MTCNN, InceptionResnetV1
 from pymongo import MongoClient
 import requests
-from bson.objectid import ObjectId  # Import ObjectId
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3001"}})

@@ -5,8 +5,6 @@ import { FaMoneyBillTransfer,FaCartPlus } from "react-icons/fa6";
 import { LuUserX } from "react-icons/lu";
 import { BiLoaderCircle } from "react-icons/bi";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
-import { RiProductHuntLine } from "react-icons/ri";
-import { MdOutlineDiscount } from "react-icons/md";
 import { FaShoppingCart } from "react-icons/fa";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
@@ -55,6 +53,13 @@ export const allNav = [
         icon: <LuUserX/>,
         role: 'admin',
         path: '/admin/dashboard/deactive-sellers'
+    },
+    {
+        id: 6,
+        title : 'Report',
+        icon: <LuUserX/>,
+        role: 'admin',
+        path: '/admin/dashboard/report'
     },
     {
         id: 7,

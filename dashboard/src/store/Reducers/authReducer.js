@@ -27,24 +27,7 @@ export const seller_login = createAsyncThunk(
         }
     }
 )
-export const logout = createAsyncThunk(
-    'auth/logout',
-    async ({ navigate, role }, { rejectWithValue, fulfillWithValue }) => {
-        try {
-            const { data } = await api.get('/logout', { withCredentials: true })
-            localStorage.removeItem('accessToken')
-            if (role === 'admin') {
-                navigate('/admin/login')
-            } else {
-                navigate('/login')
-            }
 
-            return fulfillWithValue(data)
-        } catch (error) {
-            return rejectWithValue(error.response.data)
-        }
-    }
-)
 
 export const seller_register = createAsyncThunk(
     'auth/seller_register',
@@ -87,6 +70,24 @@ export const profile_info_add = createAsyncThunk(
     async (info, { rejectWithValue, fulfillWithValue }) => {
         try {
             const { data } = await api.post('/profile-info-add', info, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+export const logout = createAsyncThunk(
+    'auth/logout',
+    async ({ navigate, role }, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.get('/logout', { withCredentials: true })
+            localStorage.removeItem('accessToken')
+            if (role === 'admin') {
+                navigate('/admin/login')
+            } else {
+                navigate('/login')
+            }
+
             return fulfillWithValue(data)
         } catch (error) {
             return rejectWithValue(error.response.data)
@@ -241,10 +242,22 @@ export const authReducer =  createSlice({
             state.loader = false;
             state.userInfo = {
                 ...state.userInfo,
-                idCardImage: payload.userInfo.idCardImage,
+                idCardImages: state.userInfo.idCardImages
+                    ? {
+                          ...state.userInfo.idCardImages,
+                          front: payload.userInfo.idCardImages.front,
+                          back: payload.userInfo.idCardImages.back,
+                      }
+                    : {
+                          front: payload.userInfo.idCardImages.front,
+                          back: payload.userInfo.idCardImages.back,
+                      },
             };
             state.successMessage = payload.message;
-        })
+        });
+        
+        
+        
         builder.addCase(upload_face_image.pending, (state) => {
             state.loader = true;
         });

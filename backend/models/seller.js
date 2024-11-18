@@ -42,9 +42,9 @@ const sellerSchema = new Schema({
         type: Object,
         default: {}
     },
-    idCardImage :{
-        type: String,
-        default: ''
+    idCardImages: {
+        type: [String],
+        default: []   
     },
     faceImage :{
         type: String,

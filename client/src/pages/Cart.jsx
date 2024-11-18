@@ -88,7 +88,9 @@ const Cart = () => {
                                                     <div className='flex gap-2 justify-start items-center'>
                                                         <img className='w-[80px] h-[80px]' src={pt.productInfo.images[0]} alt="product image" />
                                                         <div className='pr-4 text-slate-600'>
-                                                            <h2 className='text-md'>{pt.productInfo.name}</h2>
+                                                            
+                                                            <Link  to={`/product/details/${pt.productInfo.slug}`} > <h2 className='text-md '>{pt.productInfo.name} </h2></Link>
+                                                            
                                                             <span className='text-sm'>Brand : {pt.productInfo.brand}</span>
                                                         </div>
                                                     </div>

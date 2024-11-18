@@ -127,8 +127,22 @@ class productController {
             console.log(error.message)
         }
     }
-
-
+    product_details_get = async (req, res) => {
+        try {
+            const productId = req.params.productId;
+            console.log(productId)
+            const product = await productModel.findById(productId); 
+            console.log(product)
+            if (!product) {
+                return res.status(404).json({ message: 'Product not found' });
+            }
+    
+            return res.status(200).json(product);
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    };
     product_image_update = async (req, res) => {
         const form = formidable({ multiples: true });
         form.parse(req, async (err, field, files) => {   

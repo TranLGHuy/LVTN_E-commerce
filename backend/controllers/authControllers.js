@@ -199,50 +199,58 @@ class authControllers {
             responseReturn(res, 500, { error: error.message });
         }
     };
+
     upload_id_card = async (req, res) => {
         const { id } = req;
-
-        const form = formidable({ multiples: false });
+    
+        const form = formidable({ multiples: true }); 
         form.parse(req, async (err, fields, files) => {
             if (err) {
                 console.error('Form parsing error:', err);
                 return responseReturn(res, 500, { error: 'Error parsing form data' });
             }
-
-            // In ra để xác nhận các tệp đã nhận
-            console.log('Files received:', files);
-
-            if (!files.id_image || !files.id_image[0].filepath) {
-                console.error('No ID card image file provided');
-                return responseReturn(res, 400, { error: 'No ID card image file provided' });
+            console.log('Parsed files:', files);
+    
+            if (!files.id_image || !Array.isArray(files.id_image) || files.id_image.length !== 2) {
+                return responseReturn(res, 400, { error: 'Two ID card images are required' });
             }
-
-            const image = files.id_image[0];
-
+    
+            const images = files.id_image; 
+    
             // Cấu hình Cloudinary
             cloudinary.config({
-                cloud_name: process.env.cloud_name,
+                cloud_name: process.env.cloud_name, 
                 api_key: process.env.api_key,
                 api_secret: process.env.api_secret,
                 secure: true
             });
-
+    
             try {
-                const result = await cloudinary.uploader.upload(image.filepath, { folder: 'id_cards' });
+                const uploadPromises = images.map(image =>
+                    cloudinary.uploader.upload(image.filepath, { folder: 'id_cards' })
+                );
+    
+                const uploadResults = await Promise.all(uploadPromises);
+                const uploadedUrls = uploadResults.map(result => result.url);
+                
+                await sellerModel.findByIdAndUpdate(id, { idCardImages: uploadedUrls });
+                const updatedUserInfo = await sellerModel.findById(id);
+    
 
-                if (result) {
-                    await sellerModel.findByIdAndUpdate(id, { idCardImage: result.url });
-                    const updatedUserInfo = await sellerModel.findById(id);
-                    return responseReturn(res, 201, { message: 'ID card upload success', userInfo: updatedUserInfo });
-                } else {
-                    return responseReturn(res, 404, { error: 'ID card upload failed' });
+                if (!updatedUserInfo.idCardImages || updatedUserInfo.idCardImages.length !== 2) {
+                    return responseReturn(res, 500, { error: 'Error updating ID card images' });
                 }
+    
+                return responseReturn(res, 201, { message: 'ID card upload success', userInfo: updatedUserInfo });
+    
             } catch (error) {
-                console.error('Error uploading ID card image:', error);
+                console.error('Error uploading ID card images:', error);
                 return responseReturn(res, 500, { error: error.message });
             }
-        })
-    }
+        });
+    };
+    
+    
     upload_face_image = async (req, res) => {
         const { id } = req;
 
