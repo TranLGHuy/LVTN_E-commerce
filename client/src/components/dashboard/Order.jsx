@@ -41,7 +41,7 @@ const Order = () => {
                                 <img className='w-20 h-20 object-cover rounded-md' src={p.images[0]} alt="product" />
                                 <div className='flex flex-col justify-between'>
                                     <div>
-                                        <Link to={`/product/${p._id}`} className='text-lg text-indigo-600 hover:underline'>{p.name}</Link>
+                                        <Link to={`/product/details/${p._id}`} className='text-lg text-indigo-600 hover:underline'>{p.name}</Link>
                                         <p className='text-sm text-gray-500'>Brand: {p.brand}</p>
                                         <p className='text-sm text-gray-500'>Quantity: {p.quantity}</p>
                                     </div>

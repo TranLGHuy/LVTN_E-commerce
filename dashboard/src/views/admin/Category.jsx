@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { PropagateLoader } from 'react-spinners'
@@ -10,7 +9,8 @@ import { BsImage } from 'react-icons/bs'
 import toast from 'react-hot-toast'
 import { useSelector, useDispatch } from 'react-redux'
 import Search from '../components/Search'
-import { categoryAdd, messageClear ,get_category} from '../../store/Reducers/categoryReducer'
+import { categoryAdd, messageClear, get_category, deleteCategory } from '../../store/Reducers/categoryReducer'
+
 const Category = () => {
     const dispatch = useDispatch()
     const { loader, successMessage, errorMessage, categories } = useSelector(state => state.category)
@@ -24,6 +24,10 @@ const Category = () => {
         image: ''
     })
 
+    // Modal and delete state
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [categoryToDelete, setCategoryToDelete] = useState(null)
+
     const imageHandle = (e) => {
         let files = e.target.files
         if (files.length > 0) {
@@ -34,27 +38,53 @@ const Category = () => {
             })
         }
     }
+
     const add_category = (e) => {
         e.preventDefault()
         dispatch(categoryAdd(state))
     }
 
+    const handleDelete = (categoryId) => {
+        setCategoryToDelete(categoryId)
+        setShowDeleteModal(true)
+    }
+
+    const confirmDelete = () => {
+        dispatch(deleteCategory(categoryToDelete)).then(() => {
+            dispatch(get_category({
+                parPage: parseInt(parPage),
+                page: parseInt(currentPage),
+                searchValue
+            }));
+        });
+        setShowDeleteModal(false);
+    };
+    
     useEffect(() => {
         if (errorMessage) {
-            toast.error(errorMessage)
-            dispatch(messageClear())
+            toast.error(errorMessage);
+            dispatch(messageClear());
         }
         if (successMessage) {
-            toast.success(successMessage)
-            dispatch(messageClear())
+            toast.success(successMessage);
+            dispatch(messageClear());
+    
+            // Reset state khi thêm mới hoặc xóa danh mục
             setState({
                 name: '',
                 image: ''
-            })
-            setImage('')
+            });
+            setImage('');
+            setCategoryToDelete(null);
+    
+            // Gọi lại API danh mục để cập nhật danh sách
+            dispatch(get_category({
+                parPage: parseInt(parPage),
+                page: parseInt(currentPage),
+                searchValue
+            }));
         }
-    }, [successMessage, errorMessage])
-
+    }, [successMessage, errorMessage]);
     useEffect(() => {
         const obj = {
             parPage: parseInt(parPage),
@@ -63,6 +93,7 @@ const Category = () => {
         }
         dispatch(get_category(obj))
     }, [searchValue, currentPage, parPage])
+
     return (
         <div className='px-2 lg:px-7 pt-5'>
             <div className='flex lg:hidden justify-between items-center mb-5 p-4 bg-[#283046] rounded-md'>
@@ -96,7 +127,9 @@ const Category = () => {
                                             <td scope='row' className='py-1 px-4 font-medium whitespace-nowrap'>
                                                 <div className='flex justify-start items-center gap-4'>
                                                     <Link className='p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50'><FaEdit /></Link>
-                                                    <Link className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'><FaTrash /></Link>
+                                                    <button onClick={() => handleDelete(d._id)} className='p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50'>
+                                                        <FaTrash />
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>)
@@ -115,6 +148,8 @@ const Category = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Add Category Modal */}
                 <div className={`w-[320px] lg:w-5/12 translate-x-100 lg:relative lg:right-0 fixed ${show ? 'right-0' : '-right-[340px]'} z-[9999] top-0 transition-all duration-500`}>
                     <div className='w-full pl-5'>
                         <div className='bg-[#283046] h-screen lg:h-auto px-3 py-2 lg:rounded-md text-[#d0d2d6]'>
@@ -128,15 +163,10 @@ const Category = () => {
                                     <input value={state.name} onChange={(e) => setState({ ...state, name: e.target.value })} className='px-4 py-2 focus:border-indigo-500 outline-none bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]' type="text" id='name' name='category_name' placeholder='category name' required />
                                 </div>
                                 <div>
-
                                     <label className='flex justify-center items-center flex-col h-[238px] cursor-pointer border border-dashed hover:border-indigo-500 w-full border-[#d0d2d6]' htmlFor="image">
                                         {
-                                            imageShow ? <img className='w-full h-full' src={imageShow} /> : <>
-                                                <span><BsImage /></span>
-                                                <span>select Image</span>
-                                            </>
+                                            imageShow ? <img className='w-full h-full' src={imageShow} /> : <><span><BsImage /></span><span>select Image</span></>
                                         }
-
                                     </label>
                                 </div>
                                 <input onChange={imageHandle} className='hidden' type="file" name='image' id='image' required />
@@ -152,6 +182,19 @@ const Category = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
+                    <div className="bg-white p-5 rounded-md text-center">
+                        <h2 className="mb-4 text-xl">Are you sure you want to delete this category?</h2>
+                        <div className="flex justify-center gap-4">
+                            <button onClick={confirmDelete} className="bg-red-500 text-white px-4 py-2 rounded-md">Yes, Delete</button>
+                            <button onClick={() => setShowDeleteModal(false)} className="bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

@@ -206,6 +206,24 @@ class productController {
             }
         });
     };
+    delete_product = async (req, res) => {
+        const { productId } = req.params;
+        try {
+            const product = await productModel.findById(productId);
+            if (!product) {
+                return responseReturn(res, 404, { error: 'Product not found' });
+            }
+
+            await productModel.findByIdAndDelete(productId);
+    
+            responseReturn(res, 200, { message: 'Product deleted successfully' });
+        } catch (error) {
+            console.error('Error deleting product:', error);
+            responseReturn(res, 500, { error: `Error deleting product: ${error.message}` });
+        }
+    };
+    
+    
     
 }
 

@@ -26,9 +26,6 @@ export const get_admin_dashboard_index_data = createAsyncThunk(
         }
     }
 )
-
-
-
 export const dashboardIndexReducer = createSlice({
     name: 'dashboardIndex',
     initialState: {
@@ -38,7 +35,13 @@ export const dashboardIndexReducer = createSlice({
         totalPendingOrder: 0,
         totalSeller: 0,
         recentOrders: [],
-        recentMessage: []
+        recentMessage: [],
+        dailyRevenueData: [],
+        revenueString: "",
+        ordersString: '',
+        ordersByMonth: {},
+        ordersByProvinceString: "", 
+        orderStatusString: '', 
     },
     reducers: {
         messageClear: (state, _) => {
@@ -62,7 +65,32 @@ export const dashboardIndexReducer = createSlice({
             state.totalSeller = payload.totalSeller
             state.recentOrders = payload.recentOrders
             state.recentMessage = payload.messages
-        }
+            state.dailyRevenueData = payload.revenueLast10Days
+            state.revenueString = payload.revenueString
+            if (payload.ordersString) {
+                const monthOrders = payload.ordersString
+                  .split(', ') // Tách chuỗi thành mảng từng tháng
+                  .reduce((acc, monthString) => {
+                    const [monthName, orderCount] = monthString.split(': ');
+                    const monthNumber = parseInt(monthName.replace('Tháng ', '').trim());
+                    const orders = parseInt(orderCount.replace(' đơn', '').trim());
+                    acc[monthNumber] = orders; 
+                    return acc;
+                  }, {});
+        
+                state.ordersByMonth = monthOrders;
+                console.log(monthOrders)
+            }
+            if (payload.ordersByProvinceString) {
+                state.ordersByProvinceString = payload.ordersByProvinceString;
+                console.log(payload.ordersByProvinceString); // Hiển thị chuỗi đơn hàng theo tỉnh thành
+            }
+            if (payload.orderStatusString) {
+                state.orderStatusString = payload.orderStatusString;  // Lưu trữ chuỗi trạng thái đơn hàng
+                console.log(payload.orderStatusString);  // In ra orderStatusString
+            }
+        },
+        
     }
 
 })

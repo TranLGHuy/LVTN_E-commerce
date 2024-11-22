@@ -100,36 +100,6 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
-
-          {/* Suborders
-          <div className="mt-8">
-            <h3 className="text-xl font-semibold text-gray-300 mb-4">Suborders</h3>
-            <div className="space-y-6">
-              {order?.suborder?.map((o, i) => (
-                <div key={i} className="bg-gray-900 p-4 rounded-md">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-gray-400">
-                      Seller {i + 1} order:
-                    </h2>
-                    <span className="text-gray-400">{o.delivery_status}</span>
-                  </div>
-
-                  {o.products?.map((p, i) => (
-                    <div key={i} className="flex gap-4 mt-4">
-                      <img className="w-[60px] h-[60px] object-cover" src={p.images[0]} alt="" />
-                      <div className="text-gray-400">
-                        <h2 className="font-semibold text-lg">{p.name}</h2>
-                        <p>
-                          <span>Brand: {p.brand}</span>
-                          <span className="ml-4">Quantity: {p.quantity}</span>
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

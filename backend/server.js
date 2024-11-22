@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const socket = require('socket.io')
+const { error } = require('console')
 
 const server = http.createServer(app)
 
@@ -71,20 +72,35 @@ const removeAdmin = (socketId) => {
 }
 
 io.on('connection', (soc) => {
-    console.log('socket server is connected...')
+    console.log(`User connected with socket ID: ${soc.id}`);
 
     soc.on('add_user', (customerId, userInfo) => {
-        addUser(customerId, soc.id, userInfo)
-        io.emit('activeSeller', allSeller)
-        io.emit('activeCustomer', allCustomer)
-    })
-    soc.on('add_seller', (sellerId, userInfo) => {
-        addSeller(sellerId, soc.id, userInfo)
-        io.emit('activeSeller', allSeller)
-        io.emit('activeCustomer', allCustomer)
-        io.emit('activeAdmin', { status: true })
+        console.log('Adding customer:', { customerId, userInfo });
+        addUser(customerId, soc.id, userInfo);
+        io.emit('activeSeller', allSeller);
+        io.emit('activeCustomer', allCustomer);
+    });
 
-    })
+    soc.on('disconnect', () => {
+        console.log(`User disconnected: ${soc.id}`);
+        remove(soc.id);
+        removeAdmin(soc.id);
+        io.emit('activeAdmin', { status: false });
+        io.emit('activeSeller', allSeller);
+        io.emit('activeCustomer', allCustomer);
+    });
+
+    const userExists = allCustomer.some(c => c.socketId === soc.id) || 
+    allSeller.some(s => s.socketId === soc.id) || 
+    (admin.socketId === soc.id);
+
+    if (userExists) {
+    console.log('Removing user with socket ID:', soc.id);
+    remove(soc.id);
+    removeAdmin(soc.id);
+    } else {
+    console.log('Socket ID not found:', soc.id);
+    }
 
     // soc.on('add_admin', (adminInfo) => {
     //     delete adminInfo.email
@@ -95,23 +111,39 @@ io.on('connection', (soc) => {
 
     // })
     soc.on('add_admin', (adminInfo) => {
-        if (adminInfo) {
-            delete adminInfo.email;
-            admin = adminInfo;
-            admin.socketId = soc.id;
-            io.emit('activeSeller', allSeller);
-            io.emit('activeAdmin', { status: true });
-        } else {
-            console.error('adminInfo is null or undefined');
+        try {
+            if (adminInfo) {
+                delete adminInfo.email;
+                admin = adminInfo;
+                admin.socketId = soc.id;
+                io.emit('activeSeller', allSeller);
+                io.emit('activeAdmin', { status: true });
+            } else {
+                throw new Error('adminInfo is undefined');
+            }
+        } catch (err) {
+            console.error('Error in add_admin event:', {
+                message: err.message,
+                stack: err.stack,
+            });
         }
     });
     
+    
     soc.on('send_seller_message', (msg) => {
-        const customer = findCustomer(msg.receiverId)
-        if (customer !== undefined) {
-            soc.to(customer.socketId).emit('seller_message', msg)
+        try {
+            const customer = findCustomer(msg.receiverId);
+            if (!customer) throw new Error(`Customer with ID ${msg.receiverId} not found`);
+            soc.to(customer.socketId).emit('seller_message', msg);
+        } catch (err) {
+            console.error(`[${new Date().toISOString()}] Error in send_seller_message:`, {
+                message: err.message,
+                stack: err.stack,
+                msg,
+            });
         }
-    })
+    });
+    
 
     soc.on('send_customer_message', (msg) => {
         const seller = findSeller(msg.receiverId)
@@ -149,7 +181,7 @@ io.on('connection', (soc) => {
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use('/api', require('./routes/chatRoutes'))
-// app.use('/api', require('./routes/bannerRoutes'))
+// app.use('/api', require('./routes/reportRoutes'))
 app.use('/api', require('./routes/dashboard/dashboardIndexRoutes'))
 app.use('/api', require('./routes/paymentRoutes'))
 app.use('/api',require('./routes/authRoutes'))
@@ -160,6 +192,7 @@ app.use('/api', require('./routes/home/cartRoutes'))
 app.use('/api', require('./routes/dashboard/sellerRoutes'))
 app.use('/api/home',require('./routes/home/homeRoutes'))
 app.use('/api', require('./routes/home/customerAuthRoutes'))
+
 app.get('/',(req,res) => res.send('Hello World!'))
 const port = process.env.PORT
 dbConnect()

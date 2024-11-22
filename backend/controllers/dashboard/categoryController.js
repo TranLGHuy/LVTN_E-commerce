@@ -67,8 +67,7 @@ class categoryController {
                 // Sử dụng `regex` để tìm kiếm từ khoá xuất hiện ở bất kỳ vị trí nào
                 query = { name: { $regex: searchValue, $options: 'i' } };
             }
-    
-            // Thực hiện truy vấn dựa trên các điều kiện đã xác định
+
             const categories = await categoryModel.find(query)
                 .skip(skipPage)
                 .limit(parseInt(parPage) || 0)
@@ -83,7 +82,22 @@ class categoryController {
             responseReturn(res, 500, { error: 'Internal server error' });
         }
     };
-    
+    delete_category = async (req, res) => {
+        const { categoryId } = req.params; 
+        try {
+            const category = await categoryModel.findOne({ _id: categoryId });
+            if (!category) {
+                return responseReturn(res, 404, { error: 'Category not found' });
+            }
+
+            await categoryModel.deleteOne({ _id: categoryId });
+
+            return responseReturn(res, 200, { message: 'Category deleted successfully' });
+        } catch (error) {
+            console.log(error.message);
+            responseReturn(res, 500, { error: 'Internal server error' });
+        }
+    };
 }
 
 module.exports = new categoryController();

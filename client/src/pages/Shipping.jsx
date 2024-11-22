@@ -6,6 +6,21 @@ import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { place_order } from '../store/reducers/orderReducer'
 
+const provinces = [
+    'Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ',
+    'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu',
+    'Bắc Ninh', 'Bến Tre', 'Bình Định', 'Bình Dương', 'Bình Phước',
+    'Bình Thuận', 'Cà Mau', 'Cao Bằng', 'Đắk Lắk', 'Đắk Nông',
+    'Điện Biên', 'Đồng Nai', 'Đồng Tháp', 'Gia Lai', 'Hà Giang',
+    'Hà Nam', 'Hà Tĩnh', 'Hải Dương', 'Hậu Giang', 'Hòa Bình',
+    'Hưng Yên', 'Khánh Hòa', 'Kiên Giang', 'Kon Tum', 'Lai Châu',
+    'Lâm Đồng', 'Lạng Sơn', 'Lào Cai', 'Long An', 'Nam Định',
+    'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên',
+    'Quảng Bình', 'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị',
+    'Sóc Trăng', 'Sơn La', 'Tây Ninh', 'Thái Bình', 'Thái Nguyên',
+    'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang', 'Trà Vinh', 'Tuyên Quang',
+    'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
+  ];
 const Shipping = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -17,10 +32,9 @@ const Shipping = () => {
         address: '',
         phone: '',
         province: '',
-        city: ""
+        district: ""
     })
 
-    console.log(state)
     const inputHandle = (e) => {
         setState({
             ...state,
@@ -35,8 +49,8 @@ const Shipping = () => {
     }, []);
     const save = (e) => {
         e.preventDefault()
-        const { name, address, phone, province, city } = state;
-        if (name && address && phone  && province && city) {
+        const { name, address, phone, province, district } = state;
+        if (name && address && phone  && province && district) {
             setRes(true)
             localStorage.setItem('shippingInfo', JSON.stringify(state));
         }
@@ -80,29 +94,34 @@ const Shipping = () => {
                                     <form onSubmit={save}>
                                         <div className='flex md:flex-col md:gap-2 w-full gap-5 text-slate-600'>
                                             <div className='flex flex-col gap-1 mb-2 w-full'>
-                                                <label htmlFor="name">Name</label>
+                                                <label htmlFor="name">Tên người nhận</label>
                                                 <input onChange={inputHandle} value={state.name} type="text" className='w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md' name='name' placeholder='name' id='name' />
                                             </div>
                                             <div className='flex flex-col gap-1 mb-2 w-full'>
-                                                <label htmlFor="address">Address</label>
+                                                <label htmlFor="address">Địa chỉ</label>
                                                 <input onChange={inputHandle} value={state.address} type="text" className='w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md' name='address' placeholder='house number/ street /area' id='address' />
                                             </div>
                                         </div>
                                         <div className='flex md:flex-col md:gap-2 w-full gap-5 text-slate-600'>
                                             <div className='flex flex-col gap-1 mb-2 w-full'>
-                                                <label htmlFor="phone">Phone</label>
+                                                <label htmlFor="phone">Số điện thoại</label>
                                                 <input onChange={inputHandle} value={state.phone} type="text" className='w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md' name='phone' placeholder='phone' id='phone' />
                                             </div>
                                             <div className='flex flex-col gap-1 mb-2 w-full'>
-                                                <label htmlFor="province">Province</label>
-                                                <input onChange={inputHandle} value={state.province} type="text" className='w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md' name='province' placeholder='province' id='province' />
+                                                <label htmlFor="province">Thành phố</label>
+                                                <select onChange={inputHandle} value={state.province} className='w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md' name='province' id='province'>
+                                                    <option value="" disabled>Select Province</option>
+                                                    {provinces.map((province, index) => (
+                                                    <option key={index} value={province}>{province}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
                                         <div className='flex md:flex-col md:gap-2 w-full gap-5 text-slate-600'>
                                             
                                             <div className='flex flex-col gap-1 mb-2 w-full'>
-                                                <label htmlFor="city">City</label>
-                                                <input onChange={inputHandle} value={state.city} type="text" className='w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md' name='city' placeholder='city' id='city' />
+                                                <label htmlFor="district">District</label>
+                                                <input onChange={inputHandle} value={state.district} type="text" className='w-full px-3 py-2 border border-slate-200 outline-none focus:border-indigo-500 rounded-md' name='district' placeholder='district' id='district' />
                                             </div>
                                             <div className='flex flex-col gap-1 mt-7 w-full'>
                                                 <button className='px-3 py-[6px] rounded-sm hover:shadow-indigo-500/20 hover:shadow-lg bg-indigo-500 text-white'>Save</button>
@@ -116,7 +135,7 @@ const Shipping = () => {
                                         <h2 className='text-slate-600 font-semibold pb-2'>Deliver to {state.name}</h2>
                                         <p>
                                             <span className='bg-blue-200 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded'>Home</span>
-                                            <span className='text-slate-600 text-sm'>{state.address} {state.province} {state.city}</span>
+                                            <span className='text-slate-600 text-sm'>{state.address} , {state.district} , {state.province} </span>
                                             <span onClick={() => setRes(false)} className='text-indigo-500 cursor-pointer'> change</span>
                                         </p>
                                         <p className='text-slate-600 text-sm'>Phone Number : {state.phone}</p>

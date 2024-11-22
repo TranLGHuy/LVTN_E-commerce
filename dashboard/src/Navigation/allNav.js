@@ -10,6 +10,7 @@ import { AiOutlineDollarCircle } from "react-icons/ai";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { PiChatsBold } from "react-icons/pi";
 import { CgProfile } from "react-icons/cg";
+import { TbReportAnalytics } from "react-icons/tb";
 export const allNav = [
     {
         id: 1,
@@ -57,7 +58,7 @@ export const allNav = [
     {
         id: 6,
         title : 'Report',
-        icon: <LuUserX/>,
+        icon: <TbReportAnalytics/>,
         role: 'admin',
         path: '/admin/dashboard/report'
     },
