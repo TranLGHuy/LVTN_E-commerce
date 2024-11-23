@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom'
 import { BsCurrencyDollar ,BsCart3} from "react-icons/bs";
 import { FaEye, FaUserFriends } from "react-icons/fa";
 import { FaProductHunt } from "react-icons/fa6";
-import Chart from "react-apexcharts";
+import { Line, Bar,Pie } from 'react-chartjs-2';
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import seller from '../../assets/seller.jpg'
 import { get_admin_dashboard_index_data } from '../../store/Reducers/dashboardIndexReducer'
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, BarElement,  Title, Tooltip, Legend);
 const AdminDashboard = () => {
   const { userInfo } = useSelector(state => state.auth)
   const { totalSale,
@@ -15,8 +18,9 @@ const AdminDashboard = () => {
       totalProduct,
       totalSeller,
       recentOrders,
-      recentMessage } = useSelector(state => state.dashboardIndex)
-
+      recentMessage ,
+      ordersByMonth} = useSelector(state => state.dashboardIndex)
+  const monthlyOrders = ordersByMonth || {};
 
   const dispatch = useDispatch()
 
@@ -24,68 +28,77 @@ const AdminDashboard = () => {
       dispatch(get_admin_dashboard_index_data())
   }, [])
 
-  const state = {
+  const getMonthlyOrders = (month) => {
+    return monthlyOrders && monthlyOrders[month] ? monthlyOrders[month] : 0;
+  };
+  
+  const barChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false, // Đảm bảo biểu đồ chiếm hết không gian
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          color: 'white',
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: 'white',
+        },
+        grid: {
+          color: '#707785',
+        },
     
-    series : [
-      {
-        name: "Orders",
-        data: [30,60,20,24,15,19,28,30,41]
+        type: 'category', 
+        labels: [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ], // Nhãn tháng
       },
-      {
-        name: "Revenue",
-        data: [15,30,20,50,15,22,28,35,60]
+      y: {
+        ticks: {
+          color: 'white',
+          font: {
+            weight: 'bold',
+          },
+          callback: (value) => `${value}`,
+        },
+        grid: {
+          color: '#707785',
+        },
+        suggestedMin: 0, // Đảm bảo trục Y bắt đầu từ 0
       },
+    },
+  };
+  
+  // Chart data cho bar chart
+  const barChartData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], // Nhãn tháng
+    datasets: [
       {
-        name: "Sellers",
-        data: [10,35,27,40,15,24,35,35,50]
+        label: 'Số Đơn Hàng Theo Tháng',
+        data: [
+          getMonthlyOrders(1),  // January
+          getMonthlyOrders(2),  // February
+          getMonthlyOrders(3),  // March
+          getMonthlyOrders(4),  // April
+          getMonthlyOrders(5),  // May
+          getMonthlyOrders(6),  // June
+          getMonthlyOrders(7),  // July
+          getMonthlyOrders(8),  // August
+          getMonthlyOrders(9),  // September
+          getMonthlyOrders(10), // October
+          getMonthlyOrders(11), // November
+          getMonthlyOrders(12), // December
+        ],
+        backgroundColor: 'yellow',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1,
       },
     ],
-    options: {
-      color:['#181ee8','#181ee8'],
-      plotOptions: {
-        radius : 30
-      },
-      chart : {
-        background : 'transparent',
-        foreColor : '#d0d2d6'
-      },
-      dataLabels : {
-        enabled : false
-      },
-      stroke : {
-        show : true,
-        curve : ['smooth', 'straight','stepline'],
-        lineCap: 'butt',
-        colors: '#f0f0f0',
-        width: .5,
-        dashArray: 0
-      },
-      xaxis : {
-        categories : ['Jan','Feb','Mar','Apl','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-      },
-      legend: {
-        position : 'top'
-      },
-      responsive : [
-        {
-          breakpoint : 565,
-          yaxis : {
-            categories : ['Jan','Feb','Mar','Apl','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-          },
-          options : {
-            plotOptions: {
-              bar: {
-                horizontal : true
-              }
-            },
-            chart : {
-              height : '550px'
-            }
-          }
-        }  
-      ]
-    }
-  }
+  };
   return (
     <div className='px-2 md:px-7 py-5'>
         <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7'>
@@ -128,15 +141,15 @@ const AdminDashboard = () => {
         </div>
         <div className='w-full flex flex-wrap mt-7'>
           <div className='w-full lg:w-7/12 lg:pr-3'>
-            <div className='w-full  bg-[#283046] p-4 rounded-md'>
-                  <Chart options={state.options} series={state.series} type='bar' height={350} />
+            <div className='w-full bg-[#283046] p-4 rounded-md h-[395px]'>
+              <Bar data={barChartData} options={barChartOptions} height={350} />
             </div>
           </div>
           <div className='w-full lg:w-5/12 lg: pl-4 mt-6 lg:mt-0'>
             <div className='w-full bg-[#283046] p-4 rounded-md text-[#d0d2d6]'>
               <div className='flex justify-between items-center'>
                   <h2 className='font-semibold text-lg text-[#d0d2d6] pd-3'>Recent seller message</h2>
-                  <Link className='font-semibold text-sm text-[#d0d2d6]'>View All</Link>
+                  <Link to={`/admin/dashboard/chat-seller`} className='font-semibold text-sm text-[#d0d2d6]'>View All</Link>
               </div>
               <div className='flex flex-col gap-2 pt-6 text-[#d0d2d6]'>
                 <ol className='relative border-1 border-slate-600 ml-4'>
@@ -167,7 +180,7 @@ const AdminDashboard = () => {
         <div className='w-full p-4 bg-[#283046] rounded-md mt-6'>
           <div className='flex justify-between items-center'>
             <h2 className='font-semibold text-lg text-[#d0d2d6] pd-3'>Recent Orders</h2>
-            <Link className='font-semibold text-sm text-[#d0d2d6]'>View All</Link>
+            <Link to={'/admin/dashboard/orders'} className='font-semibold text-sm text-[#d0d2d6]'>View All</Link>
           </div>
           <div className='relative overflow-x-auto'>
             <table className='w-full text-sm text-left text-[#d0d2d6]'>
@@ -191,8 +204,10 @@ const AdminDashboard = () => {
                           <td scope='row' className='py-3 px-4 font-medium whitespace-nowrap' >
                               <span className='bg-red-500 text-white text-md cursor-pointer font-normal ml-2 px-2 py-0.5 rounded '>{d.payment_status}</span>
                           </td>
-                          <td scope='row' className='py-3 px-4 font-medium whitespace-nowrap'>
-                              <Link to={`/admin/dashboard/order/details/${d._id}`}><FaEye/></Link>
+                          <td scope='row' className='py-3 px-4 font-medium whitespace-nowrap'> 
+                              <Link to={`/admin/dashboard/order/details/${d._id}`} className='p-[6px] w-[30px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50 flex justify-center items-center'>
+                                  <FaEye />
+                              </Link>
                           </td>
                       </tr>)
                   }

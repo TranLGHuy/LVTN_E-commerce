@@ -62,7 +62,7 @@ const PaymentRequest = () => {
         <h2 className='text-xl font-medium pb-5'>Withdrawal request</h2>
         <div className='w-full'>
           <div className='w-full overflow-x-auto'>
-            <div className='flex bg-[#161d31] uppercase text-xs min-w-[340px]'>
+            <div className='flex bg-[#161d31] uppercase text-ml font-bold min-w-[340px]'>
               <div className='w-[25%] p-2'>No</div>
               <div className='w-[25%] p-2'>Amount</div>
               <div className='w-[25%] p-2'>status</div>

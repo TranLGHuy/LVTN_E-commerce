@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Headers from '../components/Headers';
 import Footer from '../components/Footer';
 import Stripe from '../components/Stripe';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Payment = () => {
     const { state: { price, items, orderId } } = useLocation();
@@ -17,6 +17,7 @@ const Payment = () => {
             },
         });
     };
+
     return (
         <div>
             <Headers />
@@ -46,35 +47,21 @@ const Payment = () => {
                                 <div className='flex flex-wrap mt-4'>
                                     <div
                                         onClick={() => setPaymentMethod('stripe')}
-                                        className={`w-1/3 border-r cursor-pointer py-4 flex justify-center items-center ${paymentMethod === 'stripe' ? 'bg-blue-500 text-white' : 'bg-blue-100'}`}
+                                        className={`w-1/2 border-r cursor-pointer py-4 flex justify-center items-center ${paymentMethod === 'stripe' ? 'bg-blue-500 text-white' : 'bg-blue-100'}`}
                                     >
                                         <span className='font-semibold'>Stripe</span>
                                     </div>
                                     <div
-                                        onClick={() => {setPaymentMethod('cashOnDelivery')}
-                                        }
-                                        className={`w-1/3 border-r cursor-pointer py-4 flex justify-center items-center ${paymentMethod === 'cashOnDelivery' ? 'bg-blue-500 text-white' : 'bg-blue-100'}`}
+                                        onClick={() => { setPaymentMethod('cashOnDelivery') }}
+                                        className={`w-1/2 border-r cursor-pointer py-4 flex justify-center items-center ${paymentMethod === 'cashOnDelivery' ? 'bg-blue-500 text-white' : 'bg-blue-100'}`}
                                     >
-                                        <span  className='font-semibold'>Cash on Delivery</span>
-                                    </div>
-                                    <div
-                                        onClick={() => setPaymentMethod('paypal')}
-                                        className={`w-1/3 cursor-pointer py-4 flex justify-center items-center ${paymentMethod === 'paypal' ? 'bg-blue-500 text-white' : 'bg-blue-100'}`}
-                                    >
-                                        <span className='font-semibold'>PayPal</span>
+                                        <span className='font-semibold'>Cash on Delivery</span>
                                     </div>
                                 </div>
 
                                 {paymentMethod === 'stripe' && (
                                     <div className='mt-4'>
-                                    <Stripe orderId={orderId} price={price} />
-                                </div>
-                                )}
-                                {paymentMethod === 'paypal' && (
-                                    <div className='w-full mt-4'>
-                                        <button className='w-full px-4 py-3 rounded-md hover:bg-orange-500 bg-orange-400 text-white transition duration-200'>
-                                            Pay with PayPal
-                                        </button>
+                                        <Stripe orderId={orderId} price={price} />
                                     </div>
                                 )}
                                 {paymentMethod === 'cashOnDelivery' && (

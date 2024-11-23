@@ -199,7 +199,7 @@ module.exports.get_admin_dashboard_data = async (req, res) => {
             .map(order => `${order._id}: ${order.totalOrders} đơn`)
             .join(", ");
 
-        const orderStatusCounts = await authorOrder.aggregate([
+        const orderStatusCounts = await customerOrder.aggregate([
             {
                 $group: {
                     _id: "$delivery_status",

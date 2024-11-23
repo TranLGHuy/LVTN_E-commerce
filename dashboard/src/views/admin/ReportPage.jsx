@@ -5,8 +5,10 @@ import { FaUserFriends } from "react-icons/fa";
 import { FaProductHunt } from "react-icons/fa6";
 import { get_admin_dashboard_index_data } from '../../store/Reducers/dashboardIndexReducer';
 import { Line, Bar,Pie } from 'react-chartjs-2';
-import { ProgressBar } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { AiOutlineFileDone } from "react-icons/ai";
+import { RiProgress6Fill } from "react-icons/ri";
+import { MdPendingActions, MdWarehouse } from "react-icons/md";
+import { ImCancelCircle } from "react-icons/im"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
 
 // Register chart.js components
@@ -66,8 +68,6 @@ const ReportPage = () => {
       };
     });
 
-    // In kết quả sau khi tách ra
-    console.log(parsedData);
 
     return parsedData;
   };
@@ -202,7 +202,7 @@ const ReportPage = () => {
         grid: {
           color: 'rgba(0, 0, 0, 0.1)',
         },
-        // Điều chỉnh trục X để đảm bảo tất cả các tháng đều hiển thị
+    
         type: 'category', // Đảm bảo trục X là loại category để hiển thị tháng
         labels: [
           'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -287,7 +287,19 @@ const ReportPage = () => {
     maintainAspectRatio: false,
     backgroundColor: '#ffffff',
   };
-
+  {/*Progress*/}
+  const statusColors = {
+    placed: "#4CAF50", // Xanh lá
+    processing: "#2196F3", // Xanh dương
+    pending: "#FFC107", // Vàng
+    warehouse: "#FF5722", // Cam
+    cancelled: "#F44336", // Đỏ
+  };
+  const statusOrder = ["placed", "processing", "pending", "warehouse", "cancelled"];
+  const sortedOrderStatusData = orderStatusData.sort(
+    (a, b) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status)
+  );
+  const rowColors = ["bg-[#f9f9f9]", "bg-[#eaf2f8]", "bg-[#fef9e7]", "bg-[#f5eef8]", "bg-[#ebf5fb]"]
   return (
     <div>
       <div className='px-2 md:px-7 py-5'>
@@ -345,32 +357,59 @@ const ReportPage = () => {
         </div>
         <div className="w-full flex flex-wrap mt-7">
           <div className="w-full lg:w-6/12 lg:pr-3 mb-4 lg:mb-0">
-            <div className="w-full bg-[#ffffff] p-4 rounded-md h-[350px]">
+            <div className="w-full bg-[#ffffff] p-4 flex items-center justify-center rounded-md h-[403px]">
               <Pie data={pieChartData} options={pieChartOptions} height={350} />
             </div>
           </div>
           <div className="w-full lg:w-6/12 lg:pl-3">
-            <div className="w-full bg-white p-6 rounded-lg shadow-lg ">
-              <h4 className="font-semibold text-xl text-gray-800 mb-6">Order Status Overview</h4>
-              <div className="space-y-6 ">
-                {orderStatusData.length > 0 ? (
-                  orderStatusData.map((status, index) => (
-                    <div key={index} className="flex flex-col space-y-2 ">
-                      {/* Display status and count */}
-                      <div className="flex justify-between items-center text-sm font-medium text-gray-800">
-                        <span className="capitalize">{status.status}</span>
-                        <span className="text-gray-500">{status.count}</span>
+            <div className="w-full bg-white p-6 rounded-lg shadow-lg">
+              <h4 className="font-semibold text-xl text-gray-800 mb-6">Danh sách trạng thái đơn hàng</h4>
+              <div className="space-y-4">
+                {sortedOrderStatusData.length > 0 ? (
+                  sortedOrderStatusData.map((status, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center space-x-4 p-3 rounded-lg hover:bg-opacity-80 ${rowColors[index % rowColors.length]}`}
+                      title={`Status: ${status.status}, Count: ${status.count}`}
+                    >
+                      {/* Icon + Status */}
+                      <div className="flex items-center space-x-2 min-w-[150px]">
+                        <span
+                          className="w-6 h-6 rounded-full flex items-center justify-center"
+                          style={{ backgroundColor: statusColors[status.status] }}
+                        >
+                          {status.status === "placed" && (
+                            <AiOutlineFileDone className="text-white w-4 h-4" />
+                          )}
+                          {status.status === "processing" && (
+                            <RiProgress6Fill className="text-white w-4 h-4" />
+                          )}
+                          {status.status === "pending" && (
+                            <MdPendingActions className="text-white w-4 h-4" />
+                          )}
+                          {status.status === "warehouse" && (
+                            <MdWarehouse className="text-white w-4 h-4" />
+                          )}
+                          {status.status === "cancelled" && (
+                            <ImCancelCircle className="text-white w-4 h-4" />
+                          )}
+                        </span>
+                        <span className="capitalize font-medium text-gray-800">{status.status}</span>
                       </div>
 
                       {/* ProgressBar */}
-                      <div className="w-full bg-[#f3f4f6] rounded-full overflow-hidden h-[12px]">
+                      <div className="flex-1 bg-[#f3f4f6] rounded-full overflow-hidden h-[12px]">
                         <div
-                          className="h-[350px] bg-[#4CAF50]"
+                          className="h-full"
                           style={{
-                            width: `${(status.count / Math.max(...orderStatusData.map(item => item.count))) * 100}%`
+                            width: `${(status.count / Math.max(...orderStatusData.map(item => item.count))) * 100}%`,
+                            backgroundColor: statusColors[status.status],
                           }}
                         ></div>
                       </div>
+
+                      {/* Count */}
+                      <span className="text-sm font-medium text-gray-500">{status.count}</span>
                     </div>
                   ))
                 ) : (
@@ -379,6 +418,8 @@ const ReportPage = () => {
               </div>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>
