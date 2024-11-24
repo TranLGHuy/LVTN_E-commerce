@@ -14,12 +14,12 @@ class orderController {
             const order = await customerOrder.findById(id)
             if (order.payment_status === 'unpaid') {
                 await customerOrder.findByIdAndUpdate(id, {
-                    delivery_status: 'cancelled'
+                    delivery_status: 'pending'
                 })
                 await authOrderModel.updateMany({
                     orderId: id
                 }, {
-                    delivery_status: "cancelled"
+                    delivery_status: "pending"
                 })
             }
             return true
