@@ -27,26 +27,33 @@ const Login = () => {
     })
   }
 
-  const submit = (e) => {
-    e.preventDefault()
-    dispatch(seller_login(state))
-  }
+  const [hasLoggedIn, setHasLoggedIn] = useState(false); 
 
   useEffect(() => {
-    if (token) {
-      toast.success("Login successful")
-      navigate('/')
+    if (token && !hasLoggedIn) { 
+      setHasLoggedIn(true);
+      setTimeout(() => {
+        navigate('/'); // Điều hướng sau một khoảng thời gian ngắn
+      }, 100); // Thời gian trì hoãn 100ms
     }
-    if (successMessage) {
-      toast.success(successMessage)
-      dispatch(messageClear())
+  
+    if (successMessage && !hasLoggedIn) {
+      toast.success(successMessage);
+      dispatch(messageClear());
     }
+  
     if (errorMessage) {
-      toast.error(errorMessage)
-      dispatch(messageClear())
+      toast.error(errorMessage);
+      dispatch(messageClear());
     }
-  }, [token, successMessage, errorMessage, dispatch, navigate])
-
+  }, [token, successMessage, errorMessage, dispatch, navigate, hasLoggedIn]);
+  
+  
+  const submit = (e) => {
+    e.preventDefault();
+    dispatch(seller_login(state)); 
+    dispatch(messageClear()); 
+  };
   return (
     <div className='min-w-screen min-h-screen bg-[#f8d7da] flex justify-center items-center'>
       <div className='w-[350px] text-[#f0f9ff] p-2'>

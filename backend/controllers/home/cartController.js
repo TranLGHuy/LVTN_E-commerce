@@ -38,27 +38,35 @@ class cartController {
                         as: 'products'
                     }
                 },
-                
             ]);
+            
             let buy_product_item = 0;
             let calculatePrice = 0;
             let cart_product_count = 0;
-            const outOfStockProduct = cart_products.filter(p => p.products[0].stock < p.quantity);
+    
+            // Kiểm tra và lọc sản phẩm hết hàng
+            const outOfStockProduct = cart_products.filter(p => p.products[0] && p.products[0].stock < p.quantity);
             for (let i = 0; i < outOfStockProduct.length; i++) {
                 cart_product_count += outOfStockProduct[i].quantity;
             }
-            const stockProduct = cart_products.filter(p => p.products[0].stock >= p.quantity);
+    
+            // Kiểm tra và xử lý sản phẩm còn hàng
+            const stockProduct = cart_products.filter(p => p.products[0] && p.products[0].stock >= p.quantity);
             for (let i = 0; i < stockProduct.length; i++) {
                 const { quantity } = stockProduct[i];
                 cart_product_count += quantity;
                 buy_product_item += quantity;
-                const { price, discount } = stockProduct[i].products[0];
-                if (discount !== 0) {
-                    calculatePrice += quantity * (price - Math.floor((price * discount) / 100));
-                } else {
-                    calculatePrice += quantity * price;
+                const product = stockProduct[i].products[0];
+                if (product) {
+                    const { price, discount } = product;
+                    if (discount !== 0) {
+                        calculatePrice += quantity * (price - Math.floor((price * discount) / 100));
+                    } else {
+                        calculatePrice += quantity * price;
+                    }
                 }
             }
+    
             let p = [];
             let unique = [...new Set(stockProduct.map(p => p.products[0].sellerId.toString()))];
             for (let i = 0; i < unique.length; i++) {
@@ -82,6 +90,7 @@ class cartController {
                     }
                 }
             }
+    
             responseReturn(res, 200, {
                 cart_products: p,
                 price: calculatePrice,
@@ -94,6 +103,7 @@ class cartController {
             console.log(error.message);
         }
     };
+    
     
     delete_cart_product = async (req, res) => {
         const { cart_id } = req.params;

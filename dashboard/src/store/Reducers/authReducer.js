@@ -80,20 +80,21 @@ export const logout = createAsyncThunk(
     'auth/logout',
     async ({ navigate, role }, { rejectWithValue, fulfillWithValue }) => {
         try {
-            const { data } = await api.get('/logout', { withCredentials: true })
-            localStorage.removeItem('accessToken')
+            const { data } = await api.get('/logout', { withCredentials: true });
+            localStorage.removeItem('accessToken');
             if (role === 'admin') {
-                navigate('/admin/login')
+                navigate('/admin/login');
             } else {
-                navigate('/login')
+                navigate('/login');
             }
-
-            return fulfillWithValue(data)
+            return fulfillWithValue(data);
         } catch (error) {
-            return rejectWithValue(error.response.data)
+            console.error("Logout error:", error.response?.data || error.message); 
+            return rejectWithValue(error.response?.data || { message: 'Logout failed' });
         }
     }
-)
+);
+
 const returnUserInfo = (token) => {
     if (token) {
         const decodeToken = jwtDecode(token);
@@ -126,6 +127,19 @@ export const upload_id_card = createAsyncThunk(
         }
     }
 );
+export const change_password = createAsyncThunk(
+    'auth/change_password',
+    async (info, { rejectWithValue }) => {
+        try {
+            const { data } = await api.post('/change-password', info, { withCredentials: true });
+            console.log(data);
+            return data;
+        } catch (error) {
+            console.error('Error during change password:', error.response?.data || error.message);
+            return rejectWithValue(error.response?.data || { message: 'Something went wrong' });
+        }
+    }
+);
 
 export const upload_face_image = createAsyncThunk(
     'auth/upload_face_image',
@@ -144,8 +158,6 @@ export const upload_face_image = createAsyncThunk(
         }
     }
 );
-
-
 export const authReducer =  createSlice({
     name : 'auth',
     initialState: {
@@ -166,6 +178,13 @@ export const authReducer =  createSlice({
         setUserInfo: (state, action) => {
             state.userInfo = action.payload; 
         },
+        logout: (state) => {
+            state.token = null;
+            state.userInfo = null;
+            state.role = null;
+            state.userId = null;
+            localStorage.removeItem('accessToken');
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(admin_login.pending, (state) => {
@@ -184,11 +203,11 @@ export const authReducer =  createSlice({
         });
         
         builder.addCase(seller_register.pending, (state) => {
-            state.loader = true; // Set loader to true
+            state.loader = true; 
         })
         builder.addCase(seller_register.rejected, (state, action) => {
-            state.loader = false; // Set loader to false
-            state.errorMessage = action.payload.error; // Store the error message
+            state.loader = false;
+            state.errorMessage = action.payload.error; 
         })
         builder.addCase(seller_register.fulfilled, (state, action) => {
             state.loader = false; 
@@ -269,6 +288,23 @@ export const authReducer =  createSlice({
             };
             state.successMessage = payload.message;
         });
+        builder.addCase(change_password.pending, (state) => {
+            state.loader = true;
+        });
+        builder.addCase(change_password.rejected, (state, { payload }) => {
+            state.loader = false;
+            state.errorMessage = payload?.message || 'Password change failed';
+        });
+        builder.addCase(change_password.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.successMessage = payload.message || 'Password changed successfully';
+        });
+        builder.addCase(logout.fulfilled, (state) => {
+            state.userInfo = null;
+            state.role = '';
+            state.token = '';
+            state.userId = '';
+          });
     }
       
       

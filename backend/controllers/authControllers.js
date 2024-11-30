@@ -47,7 +47,7 @@ class authControllers {
                     res.cookie('accessToken', token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
                     })
-                    responseReturn(res, 200, { token, message: 'Login success' })
+                    responseReturn(res, 200, { token })
                 } else {
                     responseReturn(res, 404, { error: "Password wrong" })
                 }
@@ -296,6 +296,42 @@ class authControllers {
         })
        
     }
+    change_password = async (req, res) => {
+        const { id } = req;
+        const { newPassword } = req.body;
+    
+        console.log('Seller ID:', id); 
+        console.log('Received password:', newPassword); 
+    
+        if (!newPassword || newPassword.length < 6) {
+            return responseReturn(res, 400, { error: 'Password must be at least 6 characters long' });
+        }
+    
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+        if (!passwordRegex.test(newPassword)) {
+            return responseReturn(res, 400, {
+                error: 'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+            });
+        }
+    
+        try {
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+            const updatedSeller = await sellerModel.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
+    
+            if (!updatedSeller) {
+                return responseReturn(res, 404, { error: 'Seller not found' });
+            }
+    
+            responseReturn(res, 200, { message: 'Password changed successfully' });
+        } catch (error) {
+            responseReturn(res, 500, { error: 'Internal server error' });
+        }
+    };
+    
+    
+    
+    
 }
     
 

@@ -7,7 +7,7 @@ import { PropagateLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux';
 import { overrideStyle } from '../../utils/utils';
-import { profile_image_upload, messageClear, profile_info_add } from '../../store/Reducers/authReducer';
+import { profile_image_upload, messageClear, profile_info_add,change_password } from '../../store/Reducers/authReducer';
 import { create_stripe_connect_account } from '../../store/Reducers/sellerReducer';
 import UploadIdCardModal from '../components/UploadCardModal';
 import CaptureFaceImageModal from '../components/CaptureFaceImageModal';
@@ -26,6 +26,34 @@ const Profile = () => {
     const dispatch = useDispatch();
     const { userInfo, loader, successMessage } = useSelector(state => state.auth);
 
+    const [passwordState, setPasswordState] = useState({
+        oldPassword: '',
+        newPassword: '',
+    });
+
+    const handlePasswordChange = (e) => {
+        setPasswordState({
+            ...passwordState,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmitPasswordChange = (e) => {
+        e.preventDefault();
+        if (!passwordState.oldPassword || !passwordState.newPassword) {
+            toast.error('Please fill in all fields!');
+            return;
+        }
+        dispatch(
+            change_password({
+                sellerId: userInfo._id,
+                email: userInfo.email,
+                oldPassword: passwordState.oldPassword,
+                newPassword: passwordState.newPassword,
+            })
+        );
+    };
+   
     const add_image = (e) => {
         if (e.target.files.length > 0) {
             const formData = new FormData();
@@ -247,7 +275,7 @@ const Profile = () => {
                 </div>
                 <div className='w-full md:w-6/12'>
                      <div className='w-full pl-0 md:pl-7 mt-6 md:mt-0'>
-                         <div className='bg-[#283046] rounded-md text-[#d0d2d6] p-4'>
+                         {/* <div className='bg-[#283046] rounded-md text-[#d0d2d6] p-4'>
                              <h1 className='text-[#d0d2d6] text-lg mb-3 font-semibold'>Change Password</h1>
                              <form>
                                  <div className='flex flex-col w-full gap-1 mb-3'>
@@ -264,7 +292,54 @@ const Profile = () => {
                                  </div>
                                  <button className='bg-blue-500 hover:shadow-blue-500/50 hover:shadow-lg text-white rounded-md px-7 py-2 mt-5'>Submit</button>
                              </form>
-                         </div>
+                         </div> */}
+                         <h2 className="text-2xl font-bold text-center text-white mb-4">Change Password</h2>
+            <form
+                onSubmit={handleSubmitPasswordChange}
+                className="p-4 bg-slate-800 rounded-md shadow-md"
+            >
+                <div className="flex flex-col gap-2 mb-4">
+                    <label htmlFor="oldPassword" className="text-sm text-gray-400">
+                        Old Password
+                    </label>
+                    <input
+                        type="password"
+                        name="oldPassword"
+                        id="oldPassword"
+                        value={passwordState.oldPassword}
+                        onChange={handlePasswordChange}
+                        className="px-4 py-2 bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]"
+                        placeholder="Enter your old password"
+                        required
+                    />
+                </div>
+                <div className="flex flex-col gap-2 mb-4">
+                    <label htmlFor="newPassword" className="text-sm text-gray-400">
+                        New Password
+                    </label>
+                    <input
+                        type="password"
+                        name="newPassword"
+                        id="newPassword"
+                        value={passwordState.newPassword}
+                        onChange={handlePasswordChange}
+                        className="px-4 py-2 bg-[#283046] border border-slate-700 rounded-md text-[#d0d2d6]"
+                        placeholder="Enter your new password"
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className={`w-full py-2 rounded-md text-white ${
+                        loader
+                            ? 'bg-gray-600 cursor-not-allowed'
+                            : 'bg-blue-500 hover:shadow-lg hover:shadow-blue-500/50'
+                    }`}
+                    disabled={loader}
+                >
+                    {loader ? 'Processing...' : 'Change Password'}
+                </button>
+            </form>
                      </div>
                  </div>
             </div>

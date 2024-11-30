@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import Ratings from '../Ratings'
 import { FaHeart,FaShoppingCart} from 'react-icons/fa'
 import { FaEye } from 'react-icons/fa'
-import { Link, } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
-import { get_wishlist_products,remove_wishlist, messageClear } from '../../store/reducers/cartReducer'
+import { get_wishlist_products,remove_wishlist,add_to_cart, messageClear } from '../../store/reducers/cartReducer'
 
 const Wishlist = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { userInfo } = useSelector(state => state.auth)
     const { wishlist, successMessage ,errorMessage} = useSelector(state => state.cart)
@@ -24,7 +25,17 @@ const Wishlist = () => {
             dispatch(messageClear())
         }
     }, [errorMessage, successMessage])
-    
+    const add_cart = (id) => {
+        if (userInfo) {
+            dispatch(add_to_cart({
+                userId: userInfo.id,
+                quantity: 1,
+                productId: id
+            }))
+        } else {
+            navigate('/login')
+        }
+    }
   return (
     <div className='w-full grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6'>
         {
@@ -37,7 +48,7 @@ const Wishlist = () => {
                     <ul className='flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3'>
                         <li onClick={() => dispatch(remove_wishlist(p._id))} className='w-[38px] h-[38px] cursor-pointer bg-red-500 flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaHeart /></li>
                         <Link to={`/product/details/${p.slug}`} className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all' ><FaEye /></Link>
-                        <li  className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaShoppingCart /></li>
+                        <li onClick={() => add_cart(p._id)} className='w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#7fad39] hover:text-white hover:rotate-[720deg] transition-all'><FaShoppingCart /></li>
                     </ul>
                 </div>
                 <div className='py-3 text-slate-600 px-2'>
