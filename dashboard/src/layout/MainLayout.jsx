@@ -8,7 +8,6 @@ import {updateCustomer,updateSellers,activeStatus_update} from '../store/Reducer
 const MainLayout = () => {
   const dispatch = useDispatch()
   const { userInfo } = useSelector(state => state.auth)
-
   const [showSidebar,setShowSidebar] = useState(false)
   useEffect(() => {
     if (userInfo && userInfo.role === 'seller') {

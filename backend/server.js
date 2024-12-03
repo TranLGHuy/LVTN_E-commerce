@@ -181,7 +181,6 @@ io.on('connection', (soc) => {
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use('/api', require('./routes/chatRoutes'))
-// app.use('/api', require('./routes/reportRoutes'))
 app.use('/api', require('./routes/dashboard/dashboardIndexRoutes'))
 app.use('/api', require('./routes/paymentRoutes'))
 app.use('/api',require('./routes/authRoutes'))

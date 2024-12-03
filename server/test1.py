@@ -1,97 +1,34 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import base64
-import io
-from PIL import Image
 import numpy as np
-import torch
-from facenet_pytorch import MTCNN, InceptionResnetV1
-from pymongo import MongoClient
-import requests
+import matplotlib.pyplot as plt
 
-app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3001"}})
+# Tạo giá trị FAR từ 0.00 đến 0.08, với 5 điểm
+far = np.array([0.00, 0.02, 0.04, 0.06, 0.08])
 
-# Thiết lập thiết bị
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-print('Running on device: {}'.format(device))
+# Tạo giá trị TAR từ 0.0 đến 1.0, với 5 điểm tương ứng
+tar = np.array([0.0, 0.2, 0.4, 0.6, 1.0])
 
-# Khởi tạo MTCNN và InceptionResnetV1
-mtcnn = MTCNN(keep_all=True, device=device)
-resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
+# Vẽ đồ thị ROC
+plt.figure(figsize=(8, 6))
 
-# Kết nối đến MongoDB
-client = MongoClient('mongodb://localhost:27017/')
-db = client['ecommerce']
-collection = db['sellers']
+# Đoạn đường ROC
+plt.plot(far, tar, color='blue', lw=2, label='ROC curve')
 
-def get_face_embedding(image):
-    if image is None:
-        return None
-    if image.shape[-1] == 4:
-        image = Image.fromarray(image).convert('RGB')
-        image = np.array(image)
+# Thêm đường chéo tham khảo (đường ROC ngẫu nhiên)
+plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
 
-    boxes, _ = mtcnn.detect(image)
-    if boxes is not None:
-        face = mtcnn(image)
-        if face is not None and face.shape[0] > 0:
-            embedding = resnet(face)
-            return embedding
-    return None
+# Thiết lập tiêu đề và nhãn cho trục
+plt.title('Sơ đồ ROC')
+plt.xlabel('Tỷ lệ chấp nhận sai (FAR)')
+plt.ylabel('Tỷ lệ chấp nhận đúng (TAR)')
 
-@app.route('/api/verify-face', methods=['POST'])
-def verify_face():
-    data = request.get_json()
-    image_data = data.get('image')
-    seller_id = data.get('sellerId')
+# Điều chỉnh nhãn cho trục X và Y sao cho khoảng cách đều
+plt.xticks(np.linspace(0.00, 0.08, 5))  # Điều chỉnh trục X sao cho có 5 điểm đều
+plt.yticks(np.linspace(0.0, 1.0, 6))   # Điều chỉnh trục Y sao cho có 6 điểm đều
 
-    if not image_data or not seller_id:
-        print("Invalid data received.")
-        return jsonify({'success': False, 'message': 'Invalid data'}), 400
+# Hiển thị legend
+plt.legend(loc='lower right')
 
-    # Chuyển đổi dữ liệu hình ảnh từ base64
-    image_data = image_data.split(',')[1]
-    image_data = base64.b64decode(image_data)
-
-    image = Image.open(io.BytesIO(image_data))
-
-    # Lưu ảnh gửi lên
-    image.save('camera_image.jpg')
-    print("Saved camera image as 'camera_image.jpg'")
-
-    # Lấy embedding từ hình ảnh được gửi
-    camera_embedding = get_face_embedding(np.array(image))
-
-    # Tìm seller trong MongoDB
-    seller_info = collection.find_one({"_id": seller_id})
-
-    if seller_info and 'faceImage' in seller_info and seller_info['faceImage']:
-        cloudinary_image_url = seller_info['faceImage']
-        print(f"Cloudinary Image URL: {cloudinary_image_url}")
-
-        try:
-            saved_image = Image.open(io.BytesIO(requests.get(cloudinary_image_url).content)).convert('RGB')
-            saved_image.save('faceImage.jpg')  # Lưu ảnh vào file
-            print("Saved seller face image as 'faceImage.jpg'")
-        except Exception as e:
-            print(f"Error loading or saving face image: {e}")
-            return jsonify({'success': False, 'message': 'Error loading seller face image.'}), 500
-
-        saved_embedding = get_face_embedding(np.array(saved_image))
-
-        if camera_embedding is not None and saved_embedding is not None:
-            distance = torch.norm(saved_embedding - camera_embedding).item()
-            threshold = 0.7  
-            if distance < threshold:
-                print("Face verification successful.")
-                return jsonify({'success': True, 'message': 'Face verification successful'})
-            else:
-                print("Face verification failed.")
-                return jsonify({'success': False, 'message': 'Face verification failed'})
-
-    return jsonify({'success': False, 'message': 'Seller not found or image not available.'})
-
-
-if __name__ == '__main__':
-    app.run(port=5001)
+# Hiển thị đồ thị
+plt.grid(True)
+plt.tight_layout()
+plt.show()

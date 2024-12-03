@@ -83,6 +83,7 @@ const SellerDashboard = () => {
   useEffect(() => {
       dispatch(get_seller_dashboard_index_data())
   }, [])
+  
   return (
     <div className='px-2 md:px-7 py-5 '>
         <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7'>
@@ -147,7 +148,11 @@ const SellerDashboard = () => {
                               <div className='p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm'>
                                   <div className='flex justify-between items-center mb-2'>
                                       <Link className='text-md font-normal'>{m.senderName}</Link>
-                                      <time className='mb-1 text-sm font-normal sm:order-last sm:mb-0'>{moment(m.createdAt).startOf('hour').fromNow()}</time>
+                                      <time className='mb-1 text-sm font-normal sm:order-last sm:mb-0'>
+                                        {moment(m.createdAt).startOf('hour').fromNow()}
+
+                                      </time>
+
                                   </div>
                                   <div className='p-2 text-xs font-normal bg-slate-700 rounded-lg border border-slate-800'>
                                   {m.message}

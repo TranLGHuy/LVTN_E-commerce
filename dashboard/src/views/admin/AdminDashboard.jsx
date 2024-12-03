@@ -163,7 +163,10 @@ const AdminDashboard = () => {
                           <div className='p-3 bg-slate-800 rounded-lg border border-slate-600 shadow-sm'>
                               <div className='flex justify-between items-center mb-2'>
                                   <Link className='text-md font-normal'>{m.senderName}</Link>
-                                  <time className='mb-1 text-sm font-normal sm:order-last sm:mb-0'>{moment(m.createdAt).startOf('hour').fromNow()}</time>
+                                  <time className='mb-1 text-sm font-normal sm:order-last sm:mb-0'>
+                                    {moment(m.createdAt).startOf('hour').fromNow()}
+                                  </time>
+
                               </div>
                               <div className='p-2 text-xs font-normal bg-slate-700 rounded-lg border border-slate-800'>
                                   {m.message}
